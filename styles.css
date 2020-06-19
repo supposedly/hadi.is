@@ -2,9 +2,26 @@ body {
   font-family: 'Noto Sans TC', sans-serif;
 }
 
-h1 {
+header :first-child {
+  margin-top: 1vh;
+}
+
+h1, h2 {
   font-weight: 900;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2, .big {
   font-size: 2em;
+  font-weight: 900;
+}
+
+.less-big {
+  font-size: 1.5em;
+  font-weight: 500;
 }
 
 .center-children {
@@ -16,4 +33,13 @@ h1 {
 
 .red {
   color: red;
+}
+
+.small {
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.faint {
+  opacity: 50%;
 }
