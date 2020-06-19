@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      window.addEventListener('load', setText);
+
+      function setText() {
+        words = window.location.pathname.split('/').filter(Boolean);
+        document.getElementById('url').textContent = words.join(' ');
+      }
+    </script>
+    <title>hadi is not found</title>
+  </head>
+  <body>
+    <h1>hadi <b>is not</b> <span id="url"></span></h1>
+  </body>
+</html>
