@@ -22,16 +22,18 @@
         <h1><pre>{{ page.header }}</pre></h1>
       </header>
     {% endif %}
-    <div class="center-children">
-      <p class="big">
-        hadi is
-        {% if page.adverb %}
-          <span class="red">{{page.adverb}}</span> <span class="input"></span>
-        {% else %}
-          <span class="red input"></span>
-        {% endif %}
-      </p>
-    </div>
+    {% if page.url !== '/' %}
+      <div class="center-children">
+        <p class="big">
+          hadi is
+          {% if page.adverb %}
+            <span class="red">{{page.adverb}}</span> <span class="input"></span>
+          {% else %}
+            <span class="red input"></span>
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
     {{ content }}
   </body>
 </html>
