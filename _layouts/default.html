@@ -10,31 +10,14 @@
 
       function setText() {
         words = window.location.pathname.split('/').filter(Boolean);
-        [...document.querySelectorAll('.input')].map(
-          e => { e.textContent = words.join(' '); }
-        );
+        [...document.querySelectorAll('.input')].map(e => {
+          if (!e.textContent) e.textContent = words.join(' ');
+        });
       }
     </script>
     <title>{% if page.title %} {{ page.title }} {% else %} I'm Hadi {% endif %}</title>
   </head>
   <body>
-    {% if page.header %}
-      <header class="center-children">
-        <h1><pre>{{ page.header }}</pre></h1>
-      </header>
-    {% endif %}
-    {% if page.url != '/' %}
-      <div class="center-children">
-        <p class="big">
-          hadi is
-          {% if page.adverb %}
-            <span class="red">{{page.adverb}}</span> <span class="input"></span>
-          {% else %}
-            <span class="red input"></span>
-          {% endif %}
-        </p>
-      </div>
-    {% endif %}
     {{ content }}
   </body>
 </html>

@@ -1,0 +1,10 @@
+
+<p class="big">
+  hadi is
+  {% if include.adverb %}
+    <span class="red">{{ include.adverb }}</span> <span class="input">{{ include.text }}</span>
+  {% else %}
+    <span class="red input">{{ include.text }}</span>
+  {% endif %}
+  {{ include.after }}
+</p>
