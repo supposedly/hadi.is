@@ -2,6 +2,10 @@ body {
   font-family: 'Noto Sans TC', sans-serif;
 }
 
+pre {
+  font-family: 'Consolas', 'Inconsolata', monospace;
+}
+
 header :first-child {
   margin-top: 1vh;
 }
