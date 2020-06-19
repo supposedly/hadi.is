@@ -8,12 +8,14 @@
 
       function setText() {
         words = window.location.pathname.split('/').filter(Boolean);
-        document.getElementById('url').textContent = words.join(' ');
+        document.getElementById('input').textContent = words.join(' ');
       }
     </script>
     <title>hadi is not found</title>
   </head>
   <body>
-    <h1>hadi <b>is not</b> <span id="url"></span></h1>
+    <div class="center-children">
+      <h1>hadi is <span class="red">not</span> <span id="input"></span></h1>
+    </div>
   </body>
 </html>
