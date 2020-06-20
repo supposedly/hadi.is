@@ -3,7 +3,7 @@ body {
 }
 
 pre {
-  font-family: 'Consolas', 'Inconsolata', monospace;
+  font-family: 'Inconsolata', monospace;
 }
 
 header :first-child {
@@ -46,4 +46,31 @@ h2, .big {
 
 .faint {
   opacity: 50%;
+}
+
+#expand {
+  width: 70%;
+  padding: 1em;
+  font-size: 2em;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 40%;
+  box-shadow: none;
+  border: none;
+  transition: background-color 200ms, opacity 200ms;
+}
+
+#expand:hover {
+  background-color: #eee;
+  opacity: 100%;
+}
+
+#main-image {
+  width: 100%;
+}
+
+@media only screen and (min-width: 500px) {
+  #main-image {
+    width: 500px;
+  }
 }
