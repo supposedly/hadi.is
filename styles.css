@@ -54,15 +54,21 @@ h2, .big {
   font-size: 2em;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0);
-  opacity: 40%;
+  color: rgba(0, 0, 0, 60%);
   box-shadow: none;
   border: none;
-  transition: background-color 200ms, opacity 200ms;
+  border-radius: 5px;
+  transition: background-color 200ms, color 200ms;
 }
 
 #expand:hover {
-  background-color: #eee;
-  opacity: 100%;
+  background-color: #ddd;
+}
+
+#expand:focus {
+  outline: none;
+  background-color: #999;
+  color: white;
 }
 
 #main-image {
