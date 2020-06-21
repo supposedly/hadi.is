@@ -1,0 +1,4 @@
+collections:
+  subpages:
+    output: true
+    permalink: /:name/

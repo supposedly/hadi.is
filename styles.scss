@@ -13,7 +13,7 @@ pre {
 }
 
 header :first-child {
-  margin-top: 1vh;
+  @include margin-top(1rem);
 }
 
 h1, h2 {
@@ -21,7 +21,7 @@ h1, h2 {
 }
 
 h1, .yuge {
-  @include font-size(3rem);
+  @include font-size(5rem);
 }
 
 h2, .big {
@@ -55,16 +55,18 @@ h2, .big {
 }
 
 #expand {
-  width: 80%;
   @include padding(1.6rem);
+  @include margin(.2em);
   @include font-size(3.2rem);
+  width: 80%;
   cursor: pointer;
   margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0);
   color: rgba(0, 0, 0, 60%);
   box-shadow: none;
-  border: none;
-  border-radius: 5px;
+  border: none {
+    radius: 5px;
+  }
   transition: background-color 200ms, color 200ms;
 
   &:hover {
