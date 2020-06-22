@@ -1,0 +1,57 @@
+---
+---
+
+@import "rfs-scss";
+
+button {
+  @include padding(1.6rem);
+  @include margin(.2em);
+  @include font-size(3.2rem);
+  width: 80%;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 60%);
+  box-shadow: none;
+  border: none {
+    radius: 5px;
+  }
+  transition: background-color 200ms, color 200ms;
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:focus {
+    outline: none;
+    background-color: #ddd;
+    color: white;
+
+    @media only screen and (min-width: 500px) {
+      background-color: #999;
+    }
+  }
+}
+
+#links {
+  > div {
+    width: 70%;
+  }
+  [class='big'] {
+    cursor: default;
+  }
+  a {
+    color: silver;
+    &:hover {
+      color: gray;
+    }
+    text-decoration: none;
+  }
+}
+
+#main-image {
+  @include rfs(500px, width);
+}
+
+section {
+  height: inherit;
+}

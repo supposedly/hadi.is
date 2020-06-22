@@ -1,15 +1,23 @@
 ---
 layout: default
 scripts: index.js
+stylesheets: /index.css
 ---
-<section id="start-section" class="center-children">
-  <img id="main-image" alt="a signature (placeholder for a real portrait)" src="img/siggy.png">
-  {% include title.html text='this guy' after='⤴' %}
-  <button id="expand"><span class="yuge">&amp;</span></button>
+<section id="main" class="center-children">
+  <div class="flex-main center-children">
+    <img id="main-image" alt="a signature (placeholder for a real portrait)" src="img/siggy.png">
+    {% include title.html text='this guy' after='⤴' %}
+  </div>
+  {% include navbutton.html id='show-links' text='&amp;' %}
 </section>
-<section id="links">
-  {% for subpage in site.subpages %}
-    <a href="{{ subpage.url }}">{{ subpage.title }}</a>
-    {{ subpage.content }}
-  {% endfor %}
+<section id="links" class="hidden center-children">
+  <div class="flex-main center-children">
+    {% include title.html after='also...' %}
+    <div class="center-children giga">
+      {% for subpage in site.subpages %}
+      <a href="{{ subpage.url }}">{{ subpage.title }}</a>&#x20;
+      {% endfor %}
+    </div>
+  </div>
+  {% include navbutton.html id='show-main' text='👆' %}
 </section>
