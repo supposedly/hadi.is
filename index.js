@@ -8,19 +8,19 @@
   }
 
   function showLinks() {
-    document.getElementById('links').classList.remove('hidden');
+    document.getElementById('links').classList.toggle('hidden');
     document.getElementById('links').scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
     awaitScrollEnd(
-      () => document.getElementById('main').classList.add('hidden')
+      () => document.getElementById('main').classList.toggle('hidden')
     );
   }
 
   function showMain() {
-    document.getElementById('main').classList.remove('hidden');
+    document.getElementById('main').classList.toggle('hidden');
     document.getElementById('links').scrollIntoView(true);
     setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 1);
     awaitScrollEnd(
-      () => document.getElementById('links').classList.add('hidden')
+      () => document.getElementById('links').classList.toggle('hidden')
     );
   }
 
