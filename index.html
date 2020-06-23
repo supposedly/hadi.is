@@ -12,11 +12,14 @@ stylesheets: /index.css
 </section>
 <section id="links" class="hidden center-children">
   <div class="flex-main center-children">
-    {% include title.html after='also...' %}
-    <div class="center-children giga">
-      {% for subpage in site.subpages %}
-      <a href="{{ subpage.url }}">{{ subpage.title }}</a>&#x20;
-      {% endfor %}
+    <div class="big">
+      {% include title.html after='also' inline=true %}
+      <nav>
+        {% for subpage in site.subpages %}
+          <a href="{{ subpage.url }}">{{ subpage.title | downcase }}</a>
+          <!-- <span> ⦁ </span> -->
+        {% endfor %}
+      </nav>
     </div>
   </div>
   {% include navbutton.html id='show-main' text='👆' %}

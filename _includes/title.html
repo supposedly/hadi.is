@@ -1,5 +1,5 @@
 
-<p class="big">
+{% if include.inline %}<span class="big"> {% else %}<p class="big">{% endif %}
   hadi is
   {% if include.adverb %}
     <span class="red">{{ include.adverb }}</span> <span class="input">{{ include.text }}</span>
@@ -7,4 +7,4 @@
     <span class="red input">{{ include.text }}</span>
   {% endif %}
   {{ include.after }}
-</p>
+{% if include.inline %}</span> {% else %}</p>{% endif %}
