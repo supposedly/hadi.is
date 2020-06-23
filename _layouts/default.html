@@ -16,13 +16,27 @@
       document.addEventListener('DOMContentLoaded', setText);
 
       function setText() {
-        words = window.location.pathname.split('/').filter(Boolean);
+        words = window.location.pathname.split('/').filter(Boolean).join(' ');
         [...document.querySelectorAll('.input')].map(e => {
-          if (!e.textContent) e.textContent = words.join(' ');
+          if (!e.textContent) e.textContent = words;
         });
+        document.head.querySelector(
+          'meta[property="og:description"]'
+        ).content = document.querySelector('.input').parentElement.textContent.split(/\s/).filter(Boolean).join(' ');
       }
     </script>
-    {% seo %}
+    {% if page.url == '/' %}
+      <title>hadi.is | I'm Hadi</title>
+      <meta name="title" content="hadi.is | I'm Hadi">
+      <meta property="og:title" content="hadi.is | I'm Hadi">
+    {% else %}
+      <title>{{ page.title }} | hadi.is</title>
+      <meta name="title" content="{{ page.title }} | hadi.is">
+      <meta property="og:title" content="{{ page.title }} | hadi.is">
+    {% endif %}
+    <meta property="og:description" content="{{ page.excerpt }}">
+    <meta property="og:url" content="{{ page.url | absolute_url | replace: 'index.html', '' }}">
+    <link rel="canonical" href="{{ page.url | absolute_url | replace: 'index.html', '' }}">
   </head>
   <body>
     {{ content }}

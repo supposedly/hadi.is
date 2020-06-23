@@ -4,16 +4,11 @@
 @import "rfs-scss";
 
 html, body {
-  height: 100%;
   &::-webkit-scrollbar {
     width: 0;
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-body {
-  margin: 0;
 }
 
 button {

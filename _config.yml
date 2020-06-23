@@ -4,5 +4,3 @@ collections:
     permalink: /:name/
 plugins:
   - jekyll-seo-tag
-title: hadi.is
-tagline: I'm Hadi
