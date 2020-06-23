@@ -22,8 +22,7 @@
         });
       }
     </script>
-    <title>{% if page.title %} {{ page.title }} {% else %} I'm Hadi {% endif %}</title>
-    <meta property="og:title" content="{% if page.title %} {{ page.title }} {% else %} I'm Hadi {% endif %}">
+    {% seo %}
   </head>
   <body>
     {{ content }}
