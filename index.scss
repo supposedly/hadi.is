@@ -18,7 +18,7 @@ button {
   width: 80%;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0);
-  color: rgba(0, 0, 0, 60%);
+  color: black;
   box-shadow: none;
   border: none {
     radius: 5px;
@@ -38,6 +38,10 @@ button {
       background-color: #999;
     }
   }
+
+  &#show-links {
+    font-family: 'Raleway', sans-serif;
+  }
 }
 
 #links {
@@ -54,14 +58,18 @@ button {
   }
   nav {
     display: inline;
-    a {
-      ::after {
-        content: ' test '
-      }
-    }
-    span:last-child {  // bullet point
-      display: none;
-    }
+    // a {
+    //   // comment these out for the no-list effect
+    //   &::after {
+    //     content: ', ';
+    //   }
+    //   &:last-child::before {
+    //     content: 'and ';
+    //   }
+    //   &:last-child::after {
+    //     content: '.';
+    //   }
+    // }
   }
   a {
     &:hover {
