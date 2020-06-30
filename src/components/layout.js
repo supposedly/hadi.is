@@ -5,14 +5,15 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import React from "react";
+import Helmet from "react-helmet";
+import PropTypes from "prop-types";
+import { useStaticQuery, graphql } from "gatsby";
+import { Location } from "@reach/router";
 
-import Header from "./header"
-import "./layout.css"
+import "../styles/global.scss";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, title, scripts }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -23,29 +24,72 @@ const Layout = ({ children }) => {
     }
   `)
 
+  if (title === ``) {
+    title = data.site.siteMetadata.siteTitle;
+  }
+
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
+      <Helmet>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inconsolata:wght@400&family=Raleway:wght@700&display=swap"
+          rel="stylesheet"
+        />
+        {
+          scripts.map(
+            (script, i) => <script key={i} src={script} />
+          )
+        }
+        <script>
+          {`
+            document.addEventListener('DOMContentLoaded', setText);
+
+            function setText() {
+              words = window.location.pathname.split('/').filter(Boolean).join(' ');
+              [...document.querySelectorAll('.input')].map(e => {
+                if (!e.textContent) e.textContent = words;
+              });
+              document.head.querySelector(
+                'meta[property="og:description"]'
+              ).content = document.querySelector('.input').parentElement.textContent.split(/\\s/).filter(Boolean).join(' ');
+            }
+          `}
+        </script>
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta property="og:title" content={title} />
+        {/* <meta property="og:description" content="{{ page.excerpt }}" /> */}
+        <Location>
+          {({ location }) => (
+            <>
+              <meta property="og:url" content={location.href} />
+              <link rel="canonical" href={location.href} />
+            </>
+          )}
+        </Location>
+      </Helmet>
+      <main>{children}</main>
+      {/* <footer>
+        © {new Date().getFullYear()}, Built with
+        {` `}
+        <a href="https://www.gatsbyjs.org">Gatsby</a>
+      </footer> */}
     </>
   )
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  title: PropTypes.string,
+  scripts: PropTypes.arrayOf(PropTypes.string),
+}
+
+Layout.defaultProps = {
+  children: undefined,
+  title: `I'm Hadi`,  // may as well hardcode here too
+  scripts: [],
 }
 
 export default Layout
