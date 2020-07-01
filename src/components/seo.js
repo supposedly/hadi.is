@@ -1,6 +1,8 @@
 /**
  * SEO component that queries for data with
  *  Gatsby's useStaticQuery React hook
+ * 
+ * (I updated this to the modern Helmet syntax)
  *
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
@@ -16,6 +18,7 @@ function SEO({ description, lang, meta, title }) {
       query {
         site {
           siteMetadata {
+            titleTemplate
             title
             description
             author
@@ -28,47 +31,19 @@ function SEO({ description, lang, meta, title }) {
   const metaDescription = description || site.siteMetadata.description
 
   return (
-    <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-      title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
-      meta={[
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata.author,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
+    <Helmet titleTemplate={site.siteMetadata.titleTemplate}>
+      <html lang={lang}/>
+      <title>{title}</title>
+      <meta property="og:title" content={title} />
+      <meta name="twitter:title" content={title} />
+      <meta name="description" content={metaDescription} />
+      <meta property="og:description" content={metaDescription} />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:creator" content={site.siteMetadata.author} />
+      <meta name="twitter:description" content={metaDescription} />
+      {meta.map(o => <meta key={o.name | o.property} name={o.name} property={o.property} content={o.content} />)}
+    </Helmet>
   )
 }
 

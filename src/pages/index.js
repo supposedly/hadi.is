@@ -1,49 +1,107 @@
-import React from "react"
+import React from "react";
+import Image from "gatsby-image";
 import { Link } from "gatsby"
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from "../components/layout";
 import Title from "../components/title";
 import NavButton from "../components/navbutton";
 
 import "../styles/index.scss";
-import siggy from "../images/siggy.png";
 
-const IndexPage = () => (
-  <Layout stylesheets={[`../styles/index.scss`]}>
-    {/* <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link> */}
+export default class IndexPage extends React.Component {
+  constructor(props) {
+    super(props);
+    [
+      this.mainRef,
+      this.linksRef,
+    ] = Array.from({length: 2}, () => React.createRef());
+  }
 
-    <section id="main" className="center-children">
-      <div className="flex-main center-children">
-        <img id="main-image" alt="a signature (placeholder for a real portrait)" src={siggy} />
-        <Title text="this guy" after="⤴" />
-      </div>
-      <NavButton id="show-links" text="&amp;" />
-    </section>
-    <section id="links" className="hidden center-children">
-      <div className="flex-main center-children">
-        <div className="big">
-          <Title after="also" inline={true} />
-          <nav>
-            {/* {% for subpage in site.subpages %}
-              <a href="{{ subpage.url }}">{{ subpage.title | downcase }}</a>
-              <!-- <span> ⦁ </span> -->
-            {% endfor %} */}
-            <span>pebis</span>
-          </nav>
-        </div>
-      </div>
-      <NavButton id="show-main" text="👆" />
-    </section>
-  </Layout>
-)
+  showLinks() {
+    document.getElementById('links').classList.toggle('hidden');
+    document.getElementById('links').scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    this.awaitScrollEnd(
+      () => document.getElementById('main').classList.toggle('hidden')
+    );
+  }
 
-export default IndexPage
+  showMain() {
+    document.getElementById('main').classList.toggle('hidden');
+    document.getElementById('links').scrollIntoView(true);
+    setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 1);
+    this.awaitScrollEnd(
+      () => document.getElementById('links').classList.toggle('hidden')
+    );
+  }
+
+  // thanks https://stackoverflow.com/a/51142522/
+  awaitScrollEnd(callback) {
+    let timeout;
+    function run() {
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        callback();
+        window.removeEventListener('scroll', run);
+      }, 100);
+    }
+    window.addEventListener('scroll', run);
+  }
+
+  fixPath(path) {
+    return path.replace(/\/|(\..+$)/g, '');
+  }
+
+  render() {
+    return (
+      <Layout>
+        <section ref={this.mainRef} id="main" className="center-children">
+          <div className="flex-main center-children" style={{ width: `100%` }}>
+            <Image
+              fluid={this.props.data.file.childImageSharp.fluid}
+            />
+            <Title text="this guy" after="⤴" />
+          </div>
+          <NavButton id="show-links" text="&amp;" onClick={this.showLinks.bind(this)} />
+        </section>
+        <section ref={this.linksRef} id="links" className="hidden center-children">
+          <div className="flex-main center-children">
+            <div className="big">
+              <Title after="also" inline={true} />
+              {` `}
+              <nav>
+                {
+                  this.props.data.allSitePage.nodes.filter(e => this.fixPath(e.path)).map(e => (
+                    <>
+                      <Link key={e.id} to={e.path}>{this.fixPath(e.path)}</Link>
+                      {` `}
+                      <span> ⦁ </span>
+                    </>
+                  ))
+                }
+              </nav>
+            </div>
+          </div>
+          <NavButton id="show-main" text="👆" onClick={this.showMain.bind(this)} />
+        </section>
+      </Layout>
+    );
+  }
+}
+
+export const query = graphql`
+  query ImageQuery {
+    file(relativePath: { eq: "siggy.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 500) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    allSitePage {
+      nodes {
+        id
+        path
+      }
+    }
+  }
+`;

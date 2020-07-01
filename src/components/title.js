@@ -14,6 +14,7 @@ const Title = ({ inline, adverb, text, after }) => {
           </>
         : <span className="red input">{text}</span>
       }
+      {` `}
       {after}
     </Wrapper>
   );

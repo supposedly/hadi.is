@@ -1,7 +1,8 @@
 module.exports = {
   siteMetadata: {
+    titleTemplate: `%s`,
     title: `I'm Hadi`,
-    description: `I'm hadi`,
+    description: `I'm Hadi`,
     author: `github/supposedly`,
   },
   plugins: [

@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
 import { Location } from "@reach/router";
 
+import SEO from "./seo";
 import "../styles/global.scss";
 
 const Layout = ({ children, title, scripts }) => {
@@ -30,6 +31,7 @@ const Layout = ({ children, title, scripts }) => {
 
   return (
     <>
+      <SEO title="I'm Hadi" />
       <Helmet>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,21 +44,6 @@ const Layout = ({ children, title, scripts }) => {
             (script, i) => <script key={i} src={script} />
           )
         }
-        <script>
-          {`
-            document.addEventListener('DOMContentLoaded', setText);
-
-            function setText() {
-              words = window.location.pathname.split('/').filter(Boolean).join(' ');
-              [...document.querySelectorAll('.input')].map(e => {
-                if (!e.textContent) e.textContent = words;
-              });
-              document.head.querySelector(
-                'meta[property="og:description"]'
-              ).content = document.querySelector('.input').parentElement.textContent.split(/\\s/).filter(Boolean).join(' ');
-            }
-          `}
-        </script>
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta property="og:title" content={title} />

@@ -1,6 +1,6 @@
 @import "rfs-scss";
 
-html, body {
+html, body, #___gatsby, #gatsby-focus-wrapper, main {
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -67,6 +67,9 @@ button {
     //     content: '.';
     //   }
     // }
+    span:last-child {
+      display: none;
+    }
   }
   a {
     &:hover {
@@ -76,7 +79,7 @@ button {
   }
 }
 
-#main-image {
+picture, .gatsby-image-wrapper {
   @include rfs(500px, width);
 }
 

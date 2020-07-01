@@ -1,6 +1,7 @@
 @import "rfs-scss";
 
-html, body {
+// wish there were a parent selector so i could just say "<main></main> and all its parents"
+html, body, #___gatsby, #gatsby-focus-wrapper, main {
   height: 100%;
   margin: 0;
 }
