@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "gatsby-image";
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout";
 import Title from "../components/title";
@@ -56,6 +56,10 @@ export default class IndexPage extends React.Component {
     return path.replace(/\/|(\..+$)/g, ``);
   }
 
+  noSlash(path) {
+    return path.replace(/\/$/, ``);
+  }
+
   render() {
     return (
       <Layout>
@@ -79,7 +83,7 @@ export default class IndexPage extends React.Component {
                     .filter(e => this.checkPath(e.path))
                     .map(e => (
                       <>
-                        <Link key={e.id} to={e.path}>{this.fixPath(e.path)}</Link>
+                        <Link key={e.id} to={this.noSlash(e.path)}>{this.fixPath(e.path)}</Link>
                         {` `}
                         <span> ⦁ </span>
                       </>
