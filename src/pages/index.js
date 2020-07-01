@@ -18,19 +18,19 @@ export default class IndexPage extends React.Component {
   }
 
   showLinks() {
-    document.getElementById('links').classList.toggle('hidden');
-    document.getElementById('links').scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+    document.getElementById(`links`).classList.toggle(`hidden`);
+    document.getElementById(`links`).scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
     this.awaitScrollEnd(
-      () => document.getElementById('main').classList.toggle('hidden')
+      () => document.getElementById(`main`).classList.toggle(`hidden`)
     );
   }
 
   showMain() {
-    document.getElementById('main').classList.toggle('hidden');
-    document.getElementById('links').scrollIntoView(true);
-    setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 1);
+    document.getElementById(`main`).classList.toggle(`hidden`);
+    document.getElementById(`links`).scrollIntoView(true);
+    setTimeout(() => window.scrollTo({top: 0, behavior: `smooth`}), 1);
     this.awaitScrollEnd(
-      () => document.getElementById('links').classList.toggle('hidden')
+      () => document.getElementById(`links`).classList.toggle(`hidden`)
     );
   }
 
@@ -41,14 +41,19 @@ export default class IndexPage extends React.Component {
       clearTimeout(timeout);
       timeout = setTimeout(function() {
         callback();
-        window.removeEventListener('scroll', run);
+        window.removeEventListener(`scroll`, run);
       }, 100);
     }
-    window.addEventListener('scroll', run);
+    window.addEventListener(`scroll`, run);
+  }
+
+  checkPath(path) {
+    path = path.replace(`/`, ``);
+    return path && !path.includes(`404`);
   }
 
   fixPath(path) {
-    return path.replace(/\/|(\..+$)/g, '');
+    return path.replace(/\/|(\..+$)/g, ``);
   }
 
   render() {
@@ -70,13 +75,15 @@ export default class IndexPage extends React.Component {
               {` `}
               <nav>
                 {
-                  this.props.data.allSitePage.nodes.filter(e => this.fixPath(e.path)).map(e => (
-                    <>
-                      <Link key={e.id} to={e.path}>{this.fixPath(e.path)}</Link>
-                      {` `}
-                      <span> ⦁ </span>
-                    </>
-                  ))
+                  this.props.data.allSitePage.nodes
+                    .filter(e => this.checkPath(e.path))
+                    .map(e => (
+                      <>
+                        <Link key={e.id} to={e.path}>{this.fixPath(e.path)}</Link>
+                        {` `}
+                        <span> ⦁ </span>
+                      </>
+                    ))
                 }
               </nav>
             </div>
