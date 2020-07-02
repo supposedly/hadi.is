@@ -9,7 +9,6 @@ import React from "react";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
-import { Location } from "@reach/router";
 
 import SEO from "./seo";
 import "../styles/global.scss";
@@ -25,13 +24,19 @@ const Layout = ({ children, title, scripts }) => {
     }
   `)
 
+  let useTitle = true;
+  if (title === null) {
+    useTitle = false;
+    title = ``;
+  }
+
   if (title === ``) {
-    title = data.site.siteMetadata.siteTitle;
+    title = data.site.siteMetadata.title;
   }
 
   return (
     <>
-      <SEO title="I'm Hadi" />
+      <SEO title={useTitle ? title : null} />
       <Helmet>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,18 +49,6 @@ const Layout = ({ children, title, scripts }) => {
             (script, i) => <script key={i} src={script} />
           )
         }
-        <title>{title}</title>
-        <meta name="title" content={title} />
-        <meta property="og:title" content={title} />
-        {/* <meta property="og:description" content="{{ page.excerpt }}" /> */}
-        <Location>
-          {({ location }) => (
-            <>
-              <meta property="og:url" content={location.href} />
-              <link rel="canonical" href={location.href} />
-            </>
-          )}
-        </Location>
       </Helmet>
       <main>{children}</main>
       {/* <footer>
@@ -69,13 +62,13 @@ const Layout = ({ children, title, scripts }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
   scripts: PropTypes.arrayOf(PropTypes.string),
 }
 
 Layout.defaultProps = {
   children: undefined,
-  title: `I'm Hadi`,  // may as well hardcode here too
+  title: ``,
   scripts: [],
 }
 

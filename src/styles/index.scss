@@ -55,20 +55,20 @@ button {
   }
   nav {
     display: inline;
-    // a {
-    //   // comment these out for the no-list effect
-    //   &::after {
-    //     content: ', ';
-    //   }
-    //   &:last-child::before {
-    //     content: 'and ';
-    //   }
-    //   &:last-child::after {
-    //     content: '.';
-    //   }
-    // }
-    span:last-child {
-      display: none;
+    a {
+      // comment these out for the no-list effect
+      &::after {
+        content: ', ';
+      }
+      &:first-child:nth-last-child(2)::after {
+        content: ' ';
+      }
+      &:last-child:not(:first-child)::before {
+        content: 'and ';
+      }
+      &:last-child::after {
+        content: '.';
+      }
     }
   }
   a {

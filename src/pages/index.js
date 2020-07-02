@@ -82,11 +82,7 @@ export default class IndexPage extends React.Component {
                   this.props.data.allSitePage.nodes
                     .filter(e => this.checkPath(e.path))
                     .map(e => (
-                      <>
-                        <Link key={e.id} to={this.noSlash(e.path)}>{this.fixPath(e.path)}</Link>
-                        {` `}
-                        <span> ⦁ </span>
-                      </>
+                      <Link key={e.id} to={this.noSlash(e.path)}>{this.fixPath(e.path)}</Link>
                     ))
                 }
               </nav>
