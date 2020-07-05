@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-const Title = ({ inline, adverb, text, after }) => {
+export default function Title ({ inline, adverb, text, after }) {
   const Wrapper = inline ? `span` : `p`;
   return (
     <Wrapper className="big">
@@ -18,20 +18,18 @@ const Title = ({ inline, adverb, text, after }) => {
       {after}
     </Wrapper>
   );
-};
+}
 
 Title.propTypes = {
   inline: PropTypes.bool,
   adverb: PropTypes.string,
   text: PropTypes.string,
   after: PropTypes.string
-}
+};
 
 Title.defaultProps = {
   inline: false,
   adverb: ``,
   text: ``,
   after: ``
-}
-
-export default Title
+};

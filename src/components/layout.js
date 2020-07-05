@@ -13,7 +13,7 @@ import { useStaticQuery, graphql } from "gatsby";
 import SEO from "./seo";
 import "../styles/global.scss";
 
-const Layout = ({ children, title }) => {
+export default function Layout({ children, title }) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -24,19 +24,13 @@ const Layout = ({ children, title }) => {
     }
   `)
 
-  let useTitle = true;
-  if (title === null) {
-    useTitle = false;
-    title = ``;
-  }
-
   if (title === ``) {
     title = data.site.siteMetadata.title;
   }
 
   return (
     <>
-      <SEO title={useTitle ? title : null} />
+      <SEO title={title} />
       <Helmet>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -59,12 +53,10 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
   scripts: PropTypes.arrayOf(PropTypes.string),
-}
+};
 
 Layout.defaultProps = {
   children: undefined,
   title: ``,
   scripts: [],
-}
-
-export default Layout
+};
