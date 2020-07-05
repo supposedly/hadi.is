@@ -1,14 +1,14 @@
-from flask import Flask, Response#, request, render_template_string as rts
-app = Flask(__name__)
+from sanic import Sanic, response
+app = Sanic(__name__)
 
 document = '''
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>hadi is 404</title>
-    <link rel="canonical" href="{{ url }}">
-    <meta property="og:url" href="{{ url }}">
-    <meta name="description" content="hadi is not {{ readable }}">
+    <link rel="canonical" href="{url}">
+    <meta property="og:url" href="{url}">
+    <meta name="description" content="hadi is not {readable}">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -16,14 +16,14 @@ document = '''
       rel="stylesheet"
     />
     <style>
-      body,html{height:100%;margin:0}body{font-family:'Noto Sans TC',sans-serif;font-size:1rem}pre{font-family:Inconsolata,monospace}header :first-child{margin-top:1rem}h1,h2{font-weight:900}.yuge,h1{font-size:calc(1.625rem + 4.5vw)}@media (min-width:1200px){.yuge,h1{font-size:5rem}}.big,h2{font-size:calc(1.325rem + .9vw);font-weight:900}@media (min-width:1200px){.big,h2{font-size:2rem}}.less-big{font-size:calc(1.275rem + .3vw);font-weight:500}@media (min-width:1200px){.less-big{font-size:1.5rem}}.small{font-size:.75rem;font-weight:400}.giga{font-size:calc(1.525rem + 3.3vw);font-weight:900}@media (min-width:1200px){.giga{font-size:4rem}}.center-children{display:flex;flex-direction:column;align-items:center}.red{color:red}.faint{opacity:50%}.hidden{display:none}.flex-main{flex:1 0 auto}.flex-last{flex-shrink:0}.full-height{height:100%};
+      body,html{{height:100%;margin:0}}body{{font-family:'Noto Sans TC',sans-serif;font-size:1rem}}pre{{font-family:Inconsolata,monospace}}header :first-child{{margin-top:1rem}}h1,h2{{font-weight:900}}.yuge,h1{{font-size:calc(1.625rem + 4.5vw)}}@media (min-width:1200px){{.yuge,h1{{font-size:5rem}}.big,h2{{font-size:calc(1.325rem + .9vw);font-weight:900}}@media (min-width:1200px){{.big,h2{{font-size:2rem}}.less-big{{font-size:calc(1.275rem + .3vw);font-weight:500}}@media (min-width:1200px){{.less-big{{font-size:1.5rem}}.small{{font-size:.75rem;font-weight:400}}.giga{{font-size:calc(1.525rem + 3.3vw);font-weight:900}}@media (min-width:1200px){{.giga{{font-size:4rem}}.center-children{{display:flex;flex-direction:column;align-items:center}}.red{{color:red}}.faint{{opacity:50%}}.hidden{{display:none}}.flex-main{{flex:1 0 auto}}.flex-last{{flex-shrink:0}}.full-height{{height:100%}};
     </style>
   </head>
   <body>
     <div class="center-children full-height">
       <div class="flex-main center-children">
         <p class="big">
-          hadi is <span class="red">not</span> <span class="input">{{ readable }}</span>
+          hadi is <span class="red">not</span> <span class="input">{readable}</span>
         </p>
         <p class="less-big">(for now)</p>
       </div>
@@ -37,8 +37,10 @@ document = '''
 </html>
 '''
 
-@app.route('/', defaults={'path': ''})
+@app.route('/')
 @app.route('/<path:path>')
-def catch_all(path):
-  return Response("hi!", mimetype='text/html')
-  #return rts(document, url=request.base_url, readable=' '.join(path.split('.', 1)[0].replace('/', ' ').split())), 404
+async def catch_all(request, path='index.html'):
+    return response.html(
+      document.format(url=request.url, readable=' '.join(path.split('.', 1)[0].replace('/', ' ').split())),
+      status=404
+    )
