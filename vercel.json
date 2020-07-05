@@ -1,6 +1,7 @@
 {
     "routes": [
-      { "handle": "filesystem" },
-      { "src": "/(.*)", "status": 404, "dest": "/404-test.html" }
+        { "src": "/(?!api)(.*)", "dest": "/public/$1", "continue": true },
+        { "src": "/404.html", "dest": "/api/not-found" },
+        { "handle": "filesystem" }
     ]
   }

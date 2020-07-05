@@ -33,9 +33,9 @@ function SEO({ description, lang, meta, title }) {
   return (
     <Helmet titleTemplate={site.siteMetadata.titleTemplate}>
       <html lang={lang} />
-      {title !== null && <title>{title}</title>}
-      {title !== null && <meta property="og:title" content={title} />}
-      {title !== null && <meta name="twitter:title" content={title} />}
+      <title>{title}</title>
+      <meta property="og:title" content={title} />
+      <meta name="twitter:title" content={title} />
       <meta name="description" content={metaDescription} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />

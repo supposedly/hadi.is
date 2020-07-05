@@ -24,6 +24,7 @@
     "react-icons": "^3.10.0"
   },
   "devDependencies": {
+    "@vercel/node": "^1.7.1",
     "prettier": "2.0.5"
   },
   "keywords": [

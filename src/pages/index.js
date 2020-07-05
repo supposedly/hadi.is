@@ -8,91 +8,86 @@ import NavButton from "../components/navbutton";
 
 import "../styles/index.scss";
 
-export default class IndexPage extends React.Component {
-  constructor(props) {
-    super(props);
-    [
-      this.mainRef,
-      this.linksRef,
-    ] = Array.from({length: 2}, () => React.createRef());
-  }
+const [
+  mainRef,
+  linksRef,
+] = Array.from({length: 2}, () => React.createRef());
 
-  showLinks() {
-    document.getElementById(`links`).classList.toggle(`hidden`);
-    document.getElementById(`links`).scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
-    this.awaitScrollEnd(
-      () => document.getElementById(`main`).classList.toggle(`hidden`)
-    );
-  }
+function showLinks() {
+  document.getElementById(`links`).classList.toggle(`hidden`);
+  document.getElementById(`links`).scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
+  awaitScrollEnd(
+    () => document.getElementById(`main`).classList.toggle(`hidden`)
+  );
+}
 
-  showMain() {
-    document.getElementById(`main`).classList.toggle(`hidden`);
-    document.getElementById(`links`).scrollIntoView(true);
-    setTimeout(() => window.scrollTo({top: 0, behavior: `smooth`}), 1);
-    this.awaitScrollEnd(
-      () => document.getElementById(`links`).classList.toggle(`hidden`)
-    );
-  }
+function showMain() {
+  document.getElementById(`main`).classList.toggle(`hidden`);
+  document.getElementById(`links`).scrollIntoView(true);
+  setTimeout(() => window.scrollTo({top: 0, behavior: `smooth`}), 1);
+  awaitScrollEnd(
+    () => document.getElementById(`links`).classList.toggle(`hidden`)
+  );
+}
 
-  // thanks https://stackoverflow.com/a/51142522/
-  awaitScrollEnd(callback) {
-    let timeout;
-    function run() {
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        callback();
-        window.removeEventListener(`scroll`, run);
-      }, 100);
-    }
-    window.addEventListener(`scroll`, run);
+// thanks https://stackoverflow.com/a/51142522/
+function awaitScrollEnd(callback) {
+  let timeout;
+  function run() {
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      callback();
+      window.removeEventListener(`scroll`, run);
+    }, 100);
   }
+  window.addEventListener(`scroll`, run);
+}
 
-  checkPath(path) {
-    path = path.replace(`/`, ``);
-    return path && !path.includes(`404`);
-  }
+function checkPath(path) {
+  path = path.replace(`/`, ``);
+  return path && !path.includes(`404`);
+}
 
-  fixPath(path) {
-    return path.replace(/\/|(\..+$)/g, ``);
-  }
+function fixPath(path) {
+  return path.replace(/\/|(\..+$)/g, ``);
+}
 
-  noSlash(path) {
-    return path.replace(/\/$/, ``);
-  }
+function noSlash(path) {
+  return path.replace(/\/$/, ``);
+}
 
-  render() {
-    return (
-      <Layout>
-        <section ref={this.mainRef} id="main" className="center-children">
-          <div className="flex-main center-children" style={{ width: `100%` }}>
-            <Image
-              fluid={this.props.data.file.childImageSharp.fluid}
-            />
-            <Title text="this guy" after="⤴" />
+export default (props) => {
+  return (
+    <Layout>
+      <section ref={mainRef} id="main" className="center-children">
+        <div className="flex-main center-children" style={{ width: `100%` }}>
+          <Image
+            fluid={props.data.file.childImageSharp.fluid}
+          />
+          <Title text="this guy" after="⤴" />
+        </div>
+        <NavButton id="show-links" text="&amp;" onClick={showLinks} />
+      </section>
+      <section ref={linksRef} id="links" className="hidden center-children">
+        <div className="flex-main center-children">
+          <div className="big">
+            <Title after="also" inline={true} />
+            {` `}
+            <nav>
+              {
+                props.data.allSitePage.nodes
+                  .filter(e => checkPath(e.path))
+                  .map(e => (
+                    <Link key={e.id} to={noSlash(e.path)}>{fixPath(e.path)}</Link>
+                  ))
+              }
+            </nav>
           </div>
-          <NavButton id="show-links" text="&amp;" onClick={this.showLinks.bind(this)} />
-        </section>
-        <section ref={this.linksRef} id="links" className="hidden center-children">
-          <div className="flex-main center-children">
-            <div className="big">
-              <Title after="also" inline={true} />
-              {` `}
-              <nav>
-                {
-                  this.props.data.allSitePage.nodes
-                    .filter(e => this.checkPath(e.path))
-                    .map(e => (
-                      <Link key={e.id} to={this.noSlash(e.path)}>{this.fixPath(e.path)}</Link>
-                    ))
-                }
-              </nav>
-            </div>
-          </div>
-          <NavButton id="show-main" text="👆" onClick={this.showMain.bind(this)} />
-        </section>
-      </Layout>
-    );
-  }
+        </div>
+        <NavButton id="show-main" text="👆" onClick={showMain} />
+      </section>
+    </Layout>
+  );
 }
 
 export const query = graphql`

@@ -13,7 +13,7 @@ import { useStaticQuery, graphql } from "gatsby";
 import SEO from "./seo";
 import "../styles/global.scss";
 
-const Layout = ({ children, title, scripts }) => {
+const Layout = ({ children, title }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -44,11 +44,6 @@ const Layout = ({ children, title, scripts }) => {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inconsolata:wght@400&family=Raleway:wght@700&display=swap"
           rel="stylesheet"
         />
-        {
-          scripts.map(
-            (script, i) => <script key={i} src={script} />
-          )
-        }
       </Helmet>
       <main>{children}</main>
       {/* <footer>
