@@ -1,6 +1,6 @@
 {
     "routes": [
-        { "src": "/404.html", "dest": "/api/not-found" },
-        { "handle": "filesystem" }
+        { "handle": "filesystem" },
+        { "src": "/(.*)", "dest": "/api/not-found" }
     ]
   }
