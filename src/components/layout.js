@@ -7,8 +7,9 @@
 
 import React from "react";
 import Helmet from "react-helmet";
+import { FaLinkedin, FaGithub, FaPencilAlt, FaRegFileAlt, FaRegEnvelope } from "react-icons/fa";
+import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
-import { useStaticQuery, graphql } from "gatsby";
 
 import SEO from "./seo";
 import "../styles/global.scss";
@@ -41,7 +42,26 @@ export default function Layout({ children, title, literalTitle }) {
           rel="stylesheet"
         />
       </Helmet>
-      <main>{children}</main>
+      <main>
+        <nav id="quicc-icons">
+          <Link title="Resume" to="/resume">
+            <FaRegFileAlt size={32} />
+          </Link>
+          <Link title="Blog" to="/blog">
+            <FaPencilAlt size={32} />
+          </Link>
+          <a title="hi@how.hadi.is" href="mailto:hi@how.hadi.is">
+            <FaRegEnvelope size={32} />
+          </a>
+          <a title="Linkedin" href="https://linkedin.com/in/hat">
+            <FaLinkedin size={32} />
+          </a>
+          <a title="Github" href="https://github.com/supposedly">
+            <FaGithub size={32} />
+          </a>
+        </nav>
+        {children}
+      </main>
       {/* <footer>
         © {new Date().getFullYear()}, Built with
         {` `}

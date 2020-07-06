@@ -76,3 +76,29 @@ h2, .big {
 .full-height {
   height: 100%;
 }
+
+#quicc-icons {
+  position: fixed;
+  z-index: 1; // so they don't get covered by the main-image being funky
+  @include margin-top(.5em);
+  @include margin-left(.5em);
+  height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  @media only screen and (min-width: 700px) {
+    display: block;
+  }
+
+  a {
+    margin-right: 10px;
+    opacity: 30%;
+    color: #000;
+
+    &:hover {
+      opacity: 100%;
+    }
+  }
+}

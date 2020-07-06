@@ -42,8 +42,8 @@ export default function SEO({ description, lang, meta, title }) {
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:creator" content={site.siteMetadata.author} />
       <meta name="twitter:description" content={metaDescription} />
-      <meta property="og:url" content={withPrefix(pathname)} />
-      <link rel="canonical" href={withPrefix(pathname)} />,
+      {/* <meta property="og:url" content={withPrefix(pathname)} />
+      <link rel="canonical" href={withPrefix(pathname)} /> */}
       {meta.map(o => <meta key={o.name | o.property} name={o.name} property={o.property} content={o.content} />)}
     </Helmet>
   )
