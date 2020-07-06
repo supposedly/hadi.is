@@ -59,5 +59,5 @@ SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
+  title: PropTypes.string,
 };

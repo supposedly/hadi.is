@@ -13,7 +13,7 @@ import { useStaticQuery, graphql } from "gatsby";
 import SEO from "./seo";
 import "../styles/global.scss";
 
-export default function Layout({ children, title }) {
+export default function Layout({ children, title, literalTitle }) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -26,6 +26,8 @@ export default function Layout({ children, title }) {
 
   if (title === ``) {
     title = data.site.siteMetadata.title;
+  } else if (!literalTitle) {
+    title = `hadi is ${title}`;
   }
 
   return (
@@ -52,11 +54,11 @@ export default function Layout({ children, title }) {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
-  scripts: PropTypes.arrayOf(PropTypes.string),
+  literalTitle: PropTypes.bool
 };
 
 Layout.defaultProps = {
   children: undefined,
   title: ``,
-  scripts: [],
+  literalTitle: false
 };
