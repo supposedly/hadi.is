@@ -94,11 +94,29 @@ h2, .big {
 
   a {
     margin-right: 1em;
-    opacity: 30%;
     color: #000;
+    opacity: 30%;
+    transition: opacity 75ms;
 
     &:hover {
       opacity: 100%;
+    }
+
+    // pseudo-pseudo-random rotation
+    &:nth-child(3n-1) svg {
+      transform: rotate(20deg);
+    }
+    &:nth-child(3n+1) svg, &:nth-child(3n) svg {
+      transform: rotate(10deg);
+    }
+    &:nth-child(4n-2) svg {
+      transform: rotate(-20deg);
+    }
+    &:nth-child(2n) svg {
+      transform: rotate(0);
+    }
+    &:nth-child(4n) svg {
+      transform:rotate(-10deg);
     }
   }
 }
