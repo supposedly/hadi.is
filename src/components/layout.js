@@ -13,7 +13,6 @@ import PropTypes from "prop-types";
 
 import SEO from "./seo";
 import "../styles/global.scss";
-import "font-awesome/css/font-awesome.min.css";
 
 export default function Layout({ children, title, literalTitle }) {
   const data = useStaticQuery(graphql`

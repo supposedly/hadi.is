@@ -58,7 +58,7 @@ h2, .big {
 }
 
 .faint {
-  opacity: 50%;
+  opacity: 0.50;
 }
 
 .hidden {
@@ -95,11 +95,11 @@ h2, .big {
   a {
     margin-right: 1em;
     color: #000;
-    opacity: 30%;
+    opacity: 0.25;
     transition: opacity 75ms;
 
     &:hover {
-      opacity: 100%;
+      opacity: 1;
     }
 
     // pseudo-pseudo-random rotation
