@@ -28,7 +28,7 @@ export default function Layout({ children, title, literalTitle }) {
   if (title === ``) {
     title = data.site.siteMetadata.title;
   } else if (!literalTitle) {
-    title = `hadi is ${title}`;
+    title = `Hadi is ${title}`;
   }
 
   return (

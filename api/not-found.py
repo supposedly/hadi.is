@@ -6,15 +6,15 @@ document = '''
 <html lang="en">
   <head>
     <meta property="og:type" content="website">
-    <title>hadi is 404</title>
-    <meta property="og:title" content="hadi is 404">
+    <title>Hadi is 404</title>
+    <meta property="og:title" content="Hadi is 404">
     <link rel="canonical" href="{url}">
     <meta property="og:url" content="{url}">
-    <meta property="og:site_name" content="hadi.is">
-    <meta name="description" content="hadi is not {readable}">
-    <meta property="og:description" content="hadi is not {readable}">
+    <meta property="og:site_name" content="Hadi.is">
+    <meta name="description" content="Hadi is not {readable}">
+    <meta property="og:description" content="Hadi is not {readable}">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="hadi is not {readable}">
+    <meta name="twitter:title" content="Hadi is not {readable}">
     <meta name="twitter:description" content="(for now)">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
