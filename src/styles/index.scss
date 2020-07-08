@@ -33,12 +33,12 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
   }
 
   &:hover {
-    background-color: #ddd;
+    background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
   }
 
   &:focus {
     outline: none;
-    background-color: #ddd;
+    background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
     color: white;
     z-index: 1;
 

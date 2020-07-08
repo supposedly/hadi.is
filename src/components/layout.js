@@ -50,7 +50,7 @@ export default function Layout({ children, title, literalTitle }) {
           <Link title="Blog" to="/blog">
             <FaPencilAlt size={32} />
           </Link>
-          {/* the address below has a fullwidth @ and a cyrillic o and i */}
+          {/* the title below has a fullwidth @ and a cyrillic o and i */}
           <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
             <FaRegEnvelope size={32} />
           </a>
