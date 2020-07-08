@@ -77,7 +77,7 @@ h2, .big {
   z-index: 1; // so they don't get covered by the main-image being funky
   @include margin-top(.5em);
   @include margin-left(.5em);
-  height: 100%;
+  height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -97,21 +97,23 @@ h2, .big {
       opacity: 1;
     }
 
-    // pseudo-pseudo-random rotation
-    &:nth-child(3n-1) svg {
-      transform: rotate(20deg);
-    }
-    &:nth-child(3n+1) svg, &:nth-child(3n) svg {
-      transform: rotate(10deg);
-    }
-    &:nth-child(4n-2) svg {
-      transform: rotate(-20deg);
-    }
-    &:nth-child(2n) svg {
-      transform: rotate(0);
-    }
-    &:nth-child(4n) svg {
-      transform:rotate(-10deg);
+    &:not(.no-skew) {
+      // pseudo-pseudo-random rotation
+      &:nth-child(3n-1) svg {
+        transform: rotate(20deg);
+      }
+      &:nth-child(3n+1) svg, &:nth-child(3n) svg {
+        transform: rotate(10deg);
+      }
+      &:nth-child(4n-2) svg {
+        transform: rotate(-20deg);
+      }
+      &:nth-child(2n) svg {
+        transform: rotate(0);
+      }
+      &:nth-child(4n) svg {
+        transform:rotate(-10deg);
+      }
     }
   }
 }

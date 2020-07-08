@@ -8,6 +8,7 @@
 import React from "react";
 import Helmet from "react-helmet";
 import { FaLinkedin, FaGithub, FaPencilAlt, FaRegFileAlt, FaRegEnvelope } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
 
@@ -25,7 +26,9 @@ export default function Layout({ children, title, literalTitle }) {
     }
   `);
 
+  let onHomepage = false;
   if (title === ``) {
+    onHomepage = true;
     title = data.site.siteMetadata.title;
   } else if (!literalTitle) {
     title = `Hadi is ${title}`;
@@ -44,20 +47,36 @@ export default function Layout({ children, title, literalTitle }) {
       </Helmet>
       <main>
         <nav id="quicc-icons">
-          <Link title="Resume" to="/resume">
-            <FaRegFileAlt size={32} />
-          </Link>
-          <Link title="Blog" to="/blog">
-            <FaPencilAlt size={32} />
-          </Link>
+          { onHomepage ?
+            <>
+              <Link title="resume" to="/resume">
+                <FaRegFileAlt size={32} />
+              </Link>
+              <Link title="blog" to="/blog">
+                <FaPencilAlt size={32} />
+              </Link>
+            </>
+          :
+            <>
+              <a title="main page" href="/" className="no-skew" style={{ color: 'red' }}>
+                <FaHome size={34} />
+              </a>
+              <Link title="blog" to="/blog">
+                <FaPencilAlt size={32} />
+              </Link>
+              <Link title="resume" to="/resume">
+                <FaRegFileAlt size={32} />
+              </Link>
+            </>
+          }
           {/* the title below has a fullwidth @ and a cyrillic o and i */}
           <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
             <FaRegEnvelope size={32} />
           </a>
-          <a title="Linkedin" href="https://linkedin.com/in/hat">
+          <a title="linkedin" href="https://linkedin.com/in/hat">
             <FaLinkedin size={32} />
           </a>
-          <a title="Github" href="https://github.com/supposedly">
+          <a title="github" href="https://github.com/supposedly">
             <FaGithub size={32} />
           </a>
         </nav>
