@@ -1,0 +1,60 @@
+@import "rfs-scss";
+
+.img-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  @include margin-top(1rem);
+}
+
+img {
+  border-radius: 1em;
+}
+
+.arrow-btn {
+  display: inline-block;
+  font-family: monospace;
+  color: white;
+  font-weight: bolder;
+  background-color: #c0c0c0;
+  box-shadow: 0 0 1px .5px #c0c0c0;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 200ms, background-color 200ms, color 200ms, transform 50ms ease-in-out;
+  @include rfs(50px, height);
+  @include rfs(50px, width);
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  transform: none;
+  z-index: 1;  // so image doesn't hide button
+  outline: none;
+  @include margin(1rem);
+
+  .img-container:hover & {
+    opacity: .6;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:focus:not(:active) {
+      animation: jump 200ms linear;
+    }
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: none;
+  }
+  10% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: none;
+  }
+}

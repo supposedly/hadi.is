@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-export default function NavButton({ id, text, onClick }) {
+export default function NavButton({ className, id, text, onClick }) {
   return (
-    <button className="flex-last" id={id} onClick={onClick}>
+    <button
+      className={`flex-last ${className}`}
+      id={id}
+      onClick={onClick}
+      style={{ position: `sticky`, bottom: `0` }}
+    >
       <span className="yuge">
         {text}
       </span>
@@ -12,6 +17,7 @@ export default function NavButton({ id, text, onClick }) {
 }
 
 NavButton.propTypes = {
+  className: PropTypes.string,
   id: PropTypes.string,
   text: PropTypes.string
 };

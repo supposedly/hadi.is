@@ -24,7 +24,7 @@ h1, h2 {
 }
 
 h1, .yuge {
-  @include font-size(5rem);
+  @include font-size(3rem);
 }
 
 h2, .big {
@@ -40,11 +40,6 @@ h2, .big {
 .small {
   @include font-size(.75rem);
   font-weight: 400;
-}
-
-.giga {
-  @include font-size(4rem);
-  font-weight: 900;
 }
 
 .center-children {

@@ -1,32 +1,30 @@
 import React from "react";
-import Image from "gatsby-image";
 import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout";
 import Title from "../components/title";
 import NavButton from "../components/navbutton";
+import ImageSwitcher from "../components/image-switcher";
 
 import "../styles/index.scss";
 
-const [
-  mainRef,
-  linksRef,
-] = Array.from({length: 2}, () => React.createRef());
+const mainRef = React.createRef();
+const linksRef = React.createRef();
 
 function showLinks() {
-  document.getElementById(`links`).classList.toggle(`hidden`);
-  document.getElementById(`links`).scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
+  linksRef.current.classList.toggle(`hidden`);
+  linksRef.current.scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
   awaitScrollEnd(
-    () => document.getElementById(`main`).classList.toggle(`hidden`)
+    () => mainRef.current.classList.toggle(`hidden`)
   );
 }
 
 function showMain() {
-  document.getElementById(`main`).classList.toggle(`hidden`);
-  document.getElementById(`links`).scrollIntoView(true);
+  mainRef.current.classList.toggle(`hidden`);
+  linksRef.current.scrollIntoView(true);
   setTimeout(() => window.scrollTo({top: 0, behavior: `smooth`}), 1);
   awaitScrollEnd(
-    () => document.getElementById(`links`).classList.toggle(`hidden`)
+    () => linksRef.current.classList.toggle(`hidden`)
   );
 }
 
@@ -61,12 +59,17 @@ export default (props) => {
     <Layout>
       <section ref={mainRef} id="main" className="center-children">
         <div className="flex-main center-children" style={{ width: `100%` }}>
-          <Image
-            fluid={props.data.file.childImageSharp.fluid}
+          <ImageSwitcher
+            data={props.data}
+            alts={[
+              `A fancy digital rendition of my signature`,
+              `A pic of the dude himself`
+            ]}
+            prefix="img"
           />
           <Title text="this guy" after="⤴" />
         </div>
-        <NavButton id="show-links" text="&amp;" onClick={showLinks} />
+        <NavButton className="fat-btn" id="show-links" text="&amp;" onClick={showLinks} />
       </section>
       <section ref={linksRef} id="links" className="hidden center-children">
         <div className="flex-main center-children">
@@ -84,25 +87,32 @@ export default (props) => {
             </nav>
           </div>
         </div>
-        <NavButton id="show-main" text="👆" onClick={showMain} />
+        <NavButton className="fat-btn" id="show-main" text="👆" onClick={showMain} />
       </section>
     </Layout>
   );
 }
 
 export const query = graphql`
-  query ImageQuery {
-    file(relativePath: { eq: "siggy.png" }) {
-      childImageSharp {
-        fluid(maxWidth: 500) {
-          ...GatsbyImageSharpFluid
-        }
-      }
-    }
+  query PageQuery {
     allSitePage {
       nodes {
         id
         path
+      }
+    }
+    img0: file(relativePath: { eq: "siggy.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 500, maxHeight: 350) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    img1: file(relativePath: { eq: "facepic.png" }) {
+      childImageSharp {
+        fluid(maxWidth: 500, maxHeight: 350) {
+          ...GatsbyImageSharpFluid
+        }
       }
     }
   }

@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-export default function Title ({ inline, adverb, text, after }) {
+export default function Title ({ inline, adverb, text, after, style }) {
   const Wrapper = inline ? `span` : `p`;
   return (
-    <Wrapper className="big">
+    <Wrapper className="big" style={{ cursor: 'default', ...style }}>
       hadi is
       {` `}
       {adverb
@@ -24,12 +24,14 @@ Title.propTypes = {
   inline: PropTypes.bool,
   adverb: PropTypes.string,
   text: PropTypes.string,
-  after: PropTypes.string
+  after: PropTypes.string,
+  style: PropTypes.object
 };
 
 Title.defaultProps = {
   inline: false,
   adverb: ``,
   text: ``,
-  after: ``
+  after: ``,
+  style: {}
 };
