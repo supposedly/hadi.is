@@ -9,18 +9,21 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
 }
 
 .fat-btn {
-  @include padding(1.6rem);
-  @include margin(.2em);
+  @include padding(1rem);
+  @include margin(.2rem);
   @include font-size(3.2rem);
+  @include rfs(9rem, height);
+  -webkit-tap-highlight-color: transparent;
   width: 80%;
   cursor: pointer;
+  overflow: hidden;
   background-color: rgba(0, 0, 0, 0);
   color: black;
+  transition: background-color 200ms, color 140ms;
   box-shadow: none;
   border: none {
     radius: 5px;
   }
-  transition: background-color 200ms, color 200ms;
 
   .yuge {
     background-color: rgba(0, 255, 255, 0.8);
@@ -28,22 +31,51 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
     @include rfs(6rem, height);
     @include rfs(6rem, width);
     @include rfs(6rem, line-height);
-    display: inline-block;
+    display: inline-flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    // yOu hAvE tO dEveLoP MoBiLe-FirSt
+    @media only screen and (max-width: 700px) {
+      transition: border-radius 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
+    }
   }
 
   &:hover {
     background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
+
+    @media only screen and (max-width: 700px) {
+      background-color: rgba(255, 255, 255, 0);
+      .yuge {
+        transition-duration: 450ms;
+        @include rfs(9rem, height);
+        @include rfs(9rem, width);
+        @include rfs(9rem, line-height);
+      }
+    }
   }
 
-  &:focus {
+  &:focus, &:active {
     outline: none;
-    background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
-    color: white;
     z-index: 1;
+
+    @media only screen and (min-width: 700px) {
+      color: white;
+      background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
+    }
 
     @media only screen and (min-width: 500px) {
       background-color: #999;
+    }
+
+    @media only screen and (max-width: 700px) {
+      background-color: rgba(255, 255, 255, 0);
+      .yuge {
+        @include rfs(60rem, height);
+        @include rfs(60rem, width);
+        @include rfs(60rem, line-height);
+      }
     }
   }
 

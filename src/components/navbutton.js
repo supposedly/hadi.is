@@ -4,7 +4,7 @@ import React from "react";
 export default function NavButton({ className, id, text, onClick }) {
   return (
     <button
-      className={`flex-last ${className}`}
+      className={`flex-last center-children center-across ${className}`}
       id={id}
       onClick={onClick}
       style={{ position: `sticky`, bottom: `0` }}
