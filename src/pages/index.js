@@ -62,8 +62,8 @@ export default (props) => {
           <ImageSwitcher
             data={props.data}
             alts={[
-              `A fancy digital rendition of my signature`,
-              `A pic of the dude himself`
+              `fancy fake signature`,
+              `hadi`
             ]}
             prefix="img"
           />

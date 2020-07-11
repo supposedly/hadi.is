@@ -8,6 +8,7 @@ export default class ImageSwitcher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {currentImg: 0};
+    this.arrowRefs = {left: React.createRef(), right: React.createRef()};
     this.maxImg = Object.keys(this.props.data).filter(k => k.startsWith(this.props.prefix)).length - 1;
   }
 
@@ -27,16 +28,37 @@ export default class ImageSwitcher extends React.Component {
     this.setState({currentImg: newImg});
   }
 
+  blurArrows() {
+    this.arrowRefs.left.current.blur();
+    this.arrowRefs.right.current.blur();
+  }
+
   render() {
     return (
-      <div className={styles.imgContainer} style={{ height: '300px', maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/ }}>
-        <button className={styles.arrowBtn} onClick={this.left.bind(this)}>&lt;</button>
+      <div
+        className={styles.imgContainer} 
+        style={{ height: '300px', maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
+        onMouseLeave={this.blurArrows.bind(this)}
+      >
+        <button
+          ref={this.arrowRefs.left}
+          className={`${styles.leftMargin} ${styles.arrowBtn}`}
+          onClick={this.left.bind(this)}
+        >
+          &lt;
+        </button>
         <Image
           fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
           alt={this.props.alts[this.state.currentImg]}
           style={{ maxHeight: '100%' }}
         />
-        <button className={styles.arrowBtn} onClick={this.right.bind(this)}>&gt;</button>
+        <button
+          ref={this.arrowRefs.right}
+          className={`${styles.rightMargin} ${styles.arrowBtn}`}
+          onClick={this.right.bind(this)}
+        >
+          &gt;
+        </button>
       </div>
     );
   }

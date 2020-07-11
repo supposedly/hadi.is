@@ -13,7 +13,9 @@ img {
 }
 
 .arrow-btn {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: monospace;
   color: white;
   font-weight: bolder;
@@ -21,18 +23,16 @@ img {
   box-shadow: 0 0 1px .5px #999;
   border-radius: 50%;
   opacity: 0;
-  transition: opacity 200ms, background-color 200ms, color 200ms, transform 50ms ease-in-out;
+  transition: opacity 200ms, background-color 200ms, color 200ms;
   @include rfs(50px, height);
   @include rfs(50px, width);
-  text-align: center;
-  vertical-align: middle;
   padding: 0;
   border: none;
   cursor: pointer;
   transform: none;
   z-index: 1;  // so image doesn't hide button
   outline: none;
-  @include margin(1rem);
+  @include margin(1.5rem);
 
   .img-container:hover & {
     opacity: .34;  // #ddd on a white bg
@@ -42,17 +42,17 @@ img {
     }
 
     &:focus:not(:active) {
-      animation: jump 200ms linear;
+      animation: jump 200ms;
     }
   }
 }
 
 @keyframes jump {
   0% {
-    transform: none;
+    width: 0;
   }
-  10% {
-    transform: scale(1.2);
+  50% {
+    transform: scale(1.4);
   }
   100% {
     transform: none;
