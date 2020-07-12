@@ -4,12 +4,28 @@ import Image from "gatsby-image";
 
 import styles from "../styles/image-switcher.module.scss";
 
+
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {currentImg: 0};
     this.arrowRefs = {left: React.createRef(), right: React.createRef()};
     this.maxImg = Object.keys(this.props.data).filter(k => k.startsWith(this.props.prefix)).length - 1;
+    this.JUMP_DURATION = parseInt(styles.jumpDuration);
+    
+    // this is HIDEOUS i gotta make it less awful at some point
+    this.isFirefox = navigator.userAgent.match(/Gecko\/\S+/) !== null;
+    this.arrowTouched = false;
+    this.touchActive = false;
+    document.addEventListener(`touchstart`, () => { this.touchActive = true; });
+    document.addEventListener(`mousedown`, () => { if (!this.touchActive) this.arrowTouched = false; this.touchActive = false; });
+  }
+
+  switch(refName, ignoreArrowTouched = false) {
+    if (this.arrowTouched && !ignoreArrowTouched) {
+      return;
+    }
+    this[refName]();
   }
 
   left() {
@@ -33,6 +49,19 @@ export default class ImageSwitcher extends React.Component {
     this.arrowRefs.right.current.blur();
   }
 
+  jumpArrow(refName) {
+    const el = this.arrowRefs[refName].current;
+    if (el === undefined || el === null || el.classList.contains(`jump`)) {
+      return;
+    }
+    this.arrowTouched = true;
+    el.classList.add(styles.jump);
+    el.classList.remove(styles.jump);
+    setTimeout(() => {
+      this.switch(refName, true);
+    }, this.isFirefox ? 75 : this.JUMP_DURATION);
+  }
+
   render() {
     return (
       <div
@@ -42,8 +71,9 @@ export default class ImageSwitcher extends React.Component {
       >
         <button
           ref={this.arrowRefs.left}
-          className={`${styles.leftMargin} ${styles.arrowBtn}`}
-          onClick={this.left.bind(this)}
+          className={styles.arrowBtn}
+          onClick={() => this.switch(`left`)}
+          onTouchStart={this.jumpArrow.bind(this, `left`)}
         >
           &lt;
         </button>
@@ -54,8 +84,9 @@ export default class ImageSwitcher extends React.Component {
         />
         <button
           ref={this.arrowRefs.right}
-          className={`${styles.rightMargin} ${styles.arrowBtn}`}
-          onClick={this.right.bind(this)}
+          className={styles.arrowBtn}
+          onClick={() => this.switch(`right`)}
+          onTouchStart={this.jumpArrow.bind(this, `right`)}
         >
           &gt;
         </button>

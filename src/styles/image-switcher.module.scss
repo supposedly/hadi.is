@@ -1,5 +1,11 @@
 @import "rfs-scss";
 
+$jump-duration: 200ms;
+
+:export {
+  jumpDuration: $jump-duration;
+}
+
 .img-container {
   display: flex;
   flex-direction: row;
@@ -42,9 +48,13 @@ img {
     }
 
     &:focus:not(:active) {
-      animation: jump 200ms;
+      @extend .jump;
     }
   }
+}
+
+.jump {
+  animation: jump $jump-duration;
 }
 
 @keyframes jump {
