@@ -14,9 +14,13 @@ export default class ImageSwitcher extends React.Component {
     this.JUMP_DURATION = parseInt(styles.jumpDuration);
     
     // this is HIDEOUS i gotta make it less awful at some point
-    this.isFirefox = navigator.userAgent.match(/Gecko\/\S+/) !== null;
     this.arrowTouched = false;
     this.touchActive = false;
+  }
+
+  componentDidMount() {
+    // continued HIDEOUSness
+    this.isFirefox = navigator.userAgent.match(/Gecko\/\S+/) !== null;
     document.addEventListener(`touchstart`, () => { this.touchActive = true; });
     document.addEventListener(`mousedown`, () => { if (!this.touchActive) this.arrowTouched = false; this.touchActive = false; });
   }
