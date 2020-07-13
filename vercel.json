@@ -1,4 +1,9 @@
 {
+    "functions": {
+        "api/not-found.py": {
+            "excludeFiles": "**/*.png"
+        }
+    },
     "routes": [
         { "handle": "filesystem" },
         { "src": "/(.*)", "dest": "/api/not-found" }
