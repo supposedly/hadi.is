@@ -46,6 +46,7 @@ export default function Layout({ children, title, literalTitle }) {
         />
       </Helmet>
       <main>
+        <div id="icon-spaceholder"></div>
         <nav id="quicc-icons">
           { onHomepage ?
             <>

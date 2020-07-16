@@ -1,5 +1,7 @@
 @import "rfs-scss";
 
+$icon-nav-height: 39.33px;
+
 // wish there were a parent selector so i could just say "<main></main> and all its parents"
 html, body, #___gatsby, #gatsby-focus-wrapper, main {
   height: 100%;
@@ -76,8 +78,14 @@ h2, .big {
   height: 100%;
 }
 
+#icon-spaceholder {
+  top: 0;
+  height: $icon-nav-height;
+}
+
 #quicc-icons {
   position: fixed;
+  top: 0;  // https://stackoverflow.com/a/38679996
   z-index: 1; // so they don't get covered by the main-image being funky
   @include margin-top(.5em);
   @include margin-left(.5em);
@@ -89,7 +97,7 @@ h2, .big {
 
   @media only screen and (min-width: 700px) {
     display: block;
-    height: auto;
+    height: auto; // $icon-nav-height
   }
 
   a {
