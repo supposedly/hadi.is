@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-export default function NavButton({ className, id, text, onClick }) {
+const NavButton = React.forwardRef(({ className, id, text, onClick }, ref) => {
   return (
     <button
+      ref={ref}
       className={`flex-last center-children center-across ${className}`}
       id={id}
       onClick={onClick}
@@ -14,10 +15,12 @@ export default function NavButton({ className, id, text, onClick }) {
       </span>
     </button>
   );
-}
+});
 
 NavButton.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   text: PropTypes.string
 };
+
+export default NavButton;

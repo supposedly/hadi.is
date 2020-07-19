@@ -56,30 +56,22 @@ export default function Layout({ children, title, literalTitle }) {
               <Link title="blog" to="/blog">
                 <FaPencilAlt size={32} />
               </Link>
+              {/* the title below has a fullwidth @ and a cyrillic o and i */}
+              <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
+                <FaRegEnvelope size={32} />
+              </a>
+              <a title="linkedin" href="https://linkedin.com/in/hat">
+                <FaLinkedin size={32} />
+              </a>
+              <a title="github" href="https://github.com/supposedly">
+                <FaGithub size={32} />
+              </a>
             </>
           :
-            <>
-              <a title="main page" href="/" className="no-skew" style={{ color: 'red' }}>
-                <FaHome size={34} />
-              </a>
-              <Link title="blog" to="/blog">
-                <FaPencilAlt size={32} />
-              </Link>
-              <Link title="resume" to="/resume">
-                <FaRegFileAlt size={32} />
-              </Link>
-            </>
+            <a title="main page" href="/" className="no-skew" style={{ color: 'red' }}>
+              <FaHome size={34} />
+            </a>
           }
-          {/* the title below has a fullwidth @ and a cyrillic o and i */}
-          <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
-            <FaRegEnvelope size={32} />
-          </a>
-          <a title="linkedin" href="https://linkedin.com/in/hat">
-            <FaLinkedin size={32} />
-          </a>
-          <a title="github" href="https://github.com/supposedly">
-            <FaGithub size={32} />
-          </a>
         </nav>
         {children}
       </main>
