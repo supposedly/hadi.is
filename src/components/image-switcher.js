@@ -68,7 +68,8 @@ export default class ImageSwitcher extends React.Component {
 
   render() {
     return (
-      <div
+      <section
+        role="presentation"  // for no-noninteractive-element-interactions :/
         className={styles.imgContainer} 
         style={{ height: '300px', maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
         onMouseLeave={this.blurArrows.bind(this)}
@@ -94,7 +95,7 @@ export default class ImageSwitcher extends React.Component {
         >
           &gt;
         </button>
-      </div>
+      </section>
     );
   }
 }
