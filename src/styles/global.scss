@@ -1,6 +1,7 @@
 @import "rfs-scss";
 
 $icon-nav-height: 39.33px;
+$icon-nav-width: 48px;
 
 // wish there were a parent selector so i could just say "<main></main> and all its parents"
 html, body, #___gatsby, #gatsby-focus-wrapper, main {
@@ -81,6 +82,13 @@ h2, .big {
 #icon-spaceholder {
   top: 0;
   height: $icon-nav-height;
+
+  // @media only screen and (max-width: 700px) {
+  //   left: 0;
+  //   width: $icon-nav-width;
+  //   margin: 0;
+  //   height: 100%;
+  // }
 }
 
 #quicc-icons {

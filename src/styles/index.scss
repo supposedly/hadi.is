@@ -10,7 +10,6 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
 
 .fat-btn {
   @include padding(1rem);
-  @include margin(.2rem);
   @include font-size(3.2rem);
   @include rfs(9rem, height);
   -webkit-tap-highlight-color: transparent;
@@ -36,23 +35,16 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
     justify-content: center;
     align-items: center;
 
-    // yOu hAvE tO dEveLoP MoBiLe-FirSt
-    @media only screen and (max-width: 700px) {
-      transition: border-radius 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
-    }
+    transition: border-radius 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
   }
 
   &:hover {
-    background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
-
-    @media only screen and (max-width: 700px) {
-      background-color: rgba(255, 255, 255, 0);
-      .yuge {
-        transition-duration: 450ms;
-        @include rfs(9rem, height);
-        @include rfs(9rem, width);
-        @include rfs(9rem, line-height);
-      }
+    background-color: rgba(255, 255, 255, 0);
+    .yuge {
+      transition-duration: 450ms;
+      @include rfs(9rem, height);
+      @include rfs(9rem, width);
+      @include rfs(9rem, line-height);
     }
   }
 
@@ -60,22 +52,11 @@ html, body, #___gatsby, #gatsby-focus-wrapper, main {
     outline: none;
     z-index: 1;
 
-    @media only screen and (min-width: 700px) {
-      color: white;
-      background-color: rgba(217, 217, 217, .9);  // #ddd on a white bg
-    }
-
-    @media only screen and (min-width: 500px) {
-      background-color: #999;
-    }
-
-    @media only screen and (max-width: 700px) {
-      background-color: rgba(255, 255, 255, 0);
-      .yuge {
-        @include rfs(60rem, height);
-        @include rfs(60rem, width);
-        @include rfs(60rem, line-height);
-      }
+    background-color: rgba(255, 255, 255, 0);
+    .yuge {
+      @include rfs(60rem, height);
+      @include rfs(100vw, width);
+      @include rfs(100rem, line-height);
     }
   }
 

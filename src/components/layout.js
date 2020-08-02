@@ -7,7 +7,7 @@
 
 import React from "react";
 import Helmet from "react-helmet";
-import { FaLinkedin, FaGithub, FaPencilAlt, FaRegFileAlt, FaRegEnvelope } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaPencilAlt, FaRegFileAlt, FaRegEnvelope, FaTwitter } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
@@ -59,6 +59,9 @@ export default function Layout({ children, title, literalTitle }) {
               {/* the title below has a fullwidth @ and a cyrillic o and i */}
               <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
                 <FaRegEnvelope size={32} />
+              </a>
+              <a title="twitter" href="https://twitter.com/yarxiti">
+                <FaTwitter size={32} />
               </a>
               <a title="linkedin" href="https://linkedin.com/in/hat">
                 <FaLinkedin size={32} />
