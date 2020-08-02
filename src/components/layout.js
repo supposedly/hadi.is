@@ -60,7 +60,7 @@ export default function Layout({ children, title, literalTitle }) {
               <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
                 <FaRegEnvelope size={32} />
               </a>
-              <a title="twitter" href="https://twitter.com/yarxiti">
+              <a title="twitter" href="https://twitter.com/tarhyny">
                 <FaTwitter size={32} />
               </a>
               <a title="linkedin" href="https://linkedin.com/in/hat">
