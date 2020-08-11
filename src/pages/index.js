@@ -47,7 +47,6 @@ function checkPath(path) {
 }
 
 function fixPath(path) {
-  console.log(path);
   return path.replace(/\..+$/g, ``).replace(/\//g, ` `).trim();
 }
 
