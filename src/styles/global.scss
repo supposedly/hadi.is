@@ -94,7 +94,7 @@ h2, .big {
 #quicc-icons {
   position: fixed;
   top: 0;  // https://stackoverflow.com/a/38679996
-  z-index: 1; // so they don't get covered by the main-image being funky
+  z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
   @include margin-top(.5em);
   @include margin-left(.5em);
   height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens

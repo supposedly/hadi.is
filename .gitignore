@@ -72,3 +72,7 @@ yarn-error.log
 .yarn-integrity
 
 .vercel
+
+# test files
+src/pages/demo.js
+src/styles/anim-test.scss

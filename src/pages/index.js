@@ -42,12 +42,13 @@ function awaitScrollEnd(callback) {
 }
 
 function checkPath(path) {
-  path = path.replace(`/`, ``);
+  path = path.replace(/\//g, ` `).trim();
   return path && !path.includes(`404`);
 }
 
 function fixPath(path) {
-  return path.replace(/\/|(\..+$)/g, ``);
+  console.log(path);
+  return path.replace(/\..+$/g, ``).replace(/\//g, ` `).trim();
 }
 
 function noSlash(path) {
