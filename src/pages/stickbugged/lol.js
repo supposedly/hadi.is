@@ -1,5 +1,6 @@
 import React from "react";
 
+import "../../styles/stickbug.css";
 
 export default () => (
   <div class="container" style={{ height: '100%' }}>
