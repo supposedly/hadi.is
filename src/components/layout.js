@@ -7,7 +7,7 @@
 
 import React from "react";
 import Helmet from "react-helmet";
-import { FaLinkedin, FaGithub, FaPencilAlt, FaRegFileAlt, FaRegEnvelope, FaTwitter } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaRegAddressBook, FaRegEnvelope, FaTwitter } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
@@ -50,13 +50,13 @@ export default function Layout({ children, title, literalTitle }) {
         <nav id="quicc-icons">
           { onHomepage ?
             <>
-              <Link title="resume" to="/resume">
-                <FaRegFileAlt size={32} />
-              </Link>
-              <Link title="blog" to="/blog">
+              {/* <Link title="blog" to="/blog">
                 <FaPencilAlt size={32} />
+              </Link> */}
+              <Link title="portfolio" to="/stuff">
+                <FaRegAddressBook size={32} />
               </Link>
-              {/* the title below has a fullwidth @ and a cyrillic o and i */}
+              {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
               <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
                 <FaRegEnvelope size={32} />
               </a>
