@@ -3,10 +3,9 @@ import React from "react";
 import Image from "gatsby-image";
 import styled, { keyframes } from "styled-components";
 
-import RFS from '../utils/rfs.js';
+import rfs from '../utils/rfs.js';
 
 const jumpDuration = `200ms`;
-const rfs = new RFS();
 
 const RoundedImage = styled(Image)`
   border-radius: 1em
@@ -17,10 +16,10 @@ const ImgContainer = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  ${rfs.marginTop(`1rem`)};
+  ${rfs.marginTop(`1rem`)}
 
   picture, .gatsby-image-wrapper {
-    ${rfs.rfs(`500px`, `width`)};
+    ${rfs(`500px`, `width`)}
   }
 `;
 
@@ -48,8 +47,8 @@ const ArrowButton = styled.button`
   border-radius: 50%;
   opacity: 0;
   transition: opacity 200ms, background-color 200ms, color 200ms;
-  ${rfs.rfs(`50px`, `height`)};
-  ${rfs.rfs(`50px`, `width`)};
+  ${rfs(`50px`, `height`)}
+  ${rfs(`50px`, `width`)}
   padding: 0;
   border: none;
   cursor: pointer;

@@ -37,7 +37,8 @@ function typeOf(val) {
   if (typeof val === `string`) {
     return /-?^(\.\d+|\d+(\.\d+)?)([a-z]+)?$/.test(val) ? `number` : `string`;
   }
-  //TODO: color names i guess eugh
+  // TODO: not necessary for this script, but needs to detect color names
+  // to be an accurate translation of SASS's type-of()
   return typeof val;
 }
 
@@ -78,353 +79,370 @@ function dd(strings, ...keys) {
   const ret = lines
     .slice(1, includeLastLine ? undefined : -1)
     .map(s => s.slice(leastCommonIndent))
-    .join('\n');
+    .join(`\n`);
   return includeFirstLine ? `${lines[0]}\n${ret}` : ret;
 }
 
 const defaultArgs = {
-  $rfsBaseValue: `1.25rem`, // ends up unitless!!
-  $rfsUnit: `rem`,
-  $rfsBreakpoint: `1200px`, // ends up unitless!!
-  $rfsBreakpointUnit: `px`,
-  $rfsTwoDimensional: false,
-  $rfsFactor: 10,
-  $rfsMode: `min-media-query`,
-  $rfsClass: false,
-  $rfsRemValue: 16,
-  $rfsSafariIframeResizeBugFix: false,
-  $enableRfs: true
+  rfsBaseValue: `1.25rem`, // ends up unitless!!
+  rfsUnit: `rem`,
+  rfsBreakpoint: `1200px`, // ends up unitless!!
+  rfsBreakpointUnit: `px`,
+  rfsTwoDimensional: false,
+  rfsFactor: 10,
+  rfsMode: `min-media-query`,
+  rfsClass: false,
+  rfsRemValue: 16,
+  rfsSafariIframeResizeBugFix: false,
+  enableRfs: true
 }
 
-export default class RFS {
+export class RFS {
   // Configuration
   constructor(args) {
-    args = {...defaultArgs, ...args}
+    args = {...defaultArgs, ...args};
     // Base value
-    this.$rfsBaseValue = args.$rfsBaseValue;
-    this.$rfsUnit = args.$rfsUnit;
+    this.rfsBaseValue = args.rfsBaseValue;
+    this.rfsUnit = args.rfsUnit;
 
-    if (this.$rfsUnit !== `rem` && this.$rfsUnit !== `px`) {
-      throw new Error(`\`${args.$rfsUnit}\` is not a valid unit for $rfs-unit. Use \`px\` or \`rem\`.`);
+    if (this.rfsUnit !== `rem` && this.rfsUnit !== `px`) {
+      throw new Error(`\`${args.rfsUnit}\` is not a valid unit for rfsUnit. Use \`px\` or \`rem\`.`);
     }
 
     // Breakpoint at where value-s start decreasing if screen width is smaller
-    this.$rfsBreakpoint = args.$rfsBreakpoint;
-    this.$rfsBreakpointUnit = args.$rfsBreakpointUnit;
+    this.rfsBreakpoint = args.rfsBreakpoint;
+    this.rfsBreakpointUnit = args.rfsBreakpointUnit;
 
-    if (this.$rfsBreakpointUnit !== `px` && this.$rfsBreakpointUnit !== `em` && this.$rfsBreakpointUnit !== `rem`) {     
-      throw new Error(`\`${this.$rfsBreakpointUnit}\` is not a valid unit for $rfsBreakpointUnit. Use \`px\`, \`em\` or \`rem\`.`);
+    if (this.rfsBreakpointUnit !== `px` && this.rfsBreakpointUnit !== `em` && this.rfsBreakpointUnit !== `rem`) {     
+      throw new Error(`\`${this.rfsBreakpointUnit}\` is not a valid unit for rfsBreakpointUnit. Use \`px\`, \`em\` or \`rem\`.`);
     }
 
     // Resize values based on screen height and width
-    this.$rfsTwoDimensional = args.$rfsTwoDimensional;
+    this.rfsTwoDimensional = args.rfsTwoDimensional;
 
     // Factor of decrease
-    this.$rfsFactor = args.$rfsFactor;
+    this.rfsFactor = args.rfsFactor;
 
-    if (typeOf(this.$rfsFactor) !== `number` || this.$rfsFactor <= 1) {
-      throw new Error(`\`${this.$rfsFactor}\` is not a valid  $rfsFactor, it must be greater than 1.`);
+    if (typeOf(this.rfsFactor) !== `number` || this.rfsFactor <= 1) {
+      throw new Error(`\`${this.rfsFactor}\` is not a valid  rfsFactor, it must be greater than 1.`);
     }
 
     // Mode. Possibilities: `min-media-query`, `max-media-query`
-    this.$rfsMode = args.$rfsMode;
+    this.rfsMode = args.rfsMode;
 
     // Generate enable or disable classes. Possibilities: false, `enable` or `disable`
-    this.$rfsClass = args.$rfsClass;
+    this.rfsClass = args.rfsClass;
 
-    // 1 `rem` = args.$rfs-rem-value `px`
-    this.$rfsRemValue = args.$rfsRemValue;
+    // 1 `rem` = args.rfsRemValue `px`
+    this.rfsRemValue = args.rfsRemValue;
 
     // Safari iframe resize bug: https://github.com/twbs/rfs/issues/14
-    this.$rfsSafariIframeResizeBugFix = args.$rfsSafariIframeResizeBugFix;
+    this.rfsSafariIframeResizeBugFix = args.rfsSafariIframeResizeBugFix;
 
-    // Disable RFS by setting $enableRfs to false
-    this.$enableRfs = args.$enableRfs;
+    // Disable RFS by setting enableRfs to false
+    this.enableRfs = args.enableRfs;
 
-    // Cache $rfs-base-value unit
-    this.$rfsBaseValueUnit = unit(this.$rfsBaseValue);
+    // Cache rfsBaseValue unit
+    this.rfsBaseValueUnit = unit(this.rfsBaseValue);
 
-    // Remove `px`-unit from $rfs-base-value for calculations
-    this.$rfsBaseValue = unitless(this.$rfsBaseValue);
-    if (this.$rfsBaseValueUnit === `rem`) {
-      this.$rfsBaseValue *= this.$rfsRemValue;
+    // Remove `px`-unit from rfsBaseValue for calculations
+    this.rfsBaseValue = unitless(this.rfsBaseValue);
+    if (this.rfsBaseValueUnit === `rem`) {
+      this.rfsBaseValue *= this.rfsRemValue;
     }
 
-    // Cache $rfs-breakpoint unit to prevent multiple calls
-    this.$rfsBreakpointUnitCache = unit(this.$rfsBreakpoint);
+    // Cache rfsBreakpoint unit to prevent multiple calls
+    this.rfsBreakpointUnitCache = unit(this.rfsBreakpoint);
 
-    // Remove unit from $rfs-breakpoint for calculations
-    this.$rfsBreakpoint = unitless(this.$rfsBreakpoint);
-    if (this.$rfsBreakpointUnitCache === `rem`) {
-      this.$rfsBreakpoint *= this.$rfsRemValue;
+    // Remove unit from rfsBreakpoint for calculations
+    this.rfsBreakpoint = unitless(this.rfsBreakpoint);
+    if (this.rfsBreakpointUnitCache === `rem`) {
+      this.rfsBreakpoint *= this.rfsRemValue;
     }
 
     // Calculate the media query value
-    this.$rfsMqValue = this.$rfsBreakpointUnit === `px` ? `${this.$rfsBreakpoint}px` : `${this.$rfsBreakpoint / this.$rfsRemValue}${this.$rfsBreakpointUnit}`;
-    this.$rfsMqPropertyWidth = this.$rfsMode === `max-media-query` ? `max-width` : `min-width`;
-    this.$rfsMqPropertyHeight = this.$rfsMode === `max-media-query` ? `max-height` : `min-height`;
+    this.rfsMqValue = this.rfsBreakpointUnit === `px` ? `${this.rfsBreakpoint}px` : `${this.rfsBreakpoint / this.rfsRemValue}${this.rfsBreakpointUnit}`;
+    this.rfsMqPropertyWidth = this.rfsMode === `max-media-query` ? `max-width` : `min-width`;
+    this.rfsMqPropertyHeight = this.rfsMode === `max-media-query` ? `max-height` : `min-height`;
   }
 
   // Internal mixin used to determine which media query needs to be used
-  _rfsMediaQuery($content) {
-    if (this.$rfsTwoDimensional) {
-      if (this.$rfsMode === `max-media-query`) {
+  _rfsMediaQuery(content) {
+    if (this.rfsTwoDimensional) {
+      if (this.rfsMode === `max-media-query`) {
         return dd`
-          @media (${this.$rfsMqPropertyWidth} = ${this.$rfsMqValue}), (${this.$rfsMqPropertyHeight} = ${this.$rfsMqValue}) {
-            ${$content}
+          @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}), (${this.rfsMqPropertyHeight} = ${this.rfsMqValue}) {
+            ${content}
           }
         `
       }
       else {
         return dd`
-          @media (${this.$rfsMqPropertyWidth} = ${this.$rfsMqValue}) and (${this.$rfsMqPropertyHeight} = ${this.$rfsMqValue}) {
-            ${$content}
+          @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}) and (${this.rfsMqPropertyHeight} = ${this.rfsMqValue}) {
+            ${content}
           }
         `
       }
     }
     else {
       return dd`
-        @media (${this.$rfsMqPropertyWidth} = ${this.$rfsMqValue}) {
-          ${$content}
+        @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}) {
+          ${content}
         }
       `
     }
   }
 
   // Internal mixin that adds disable classes to the selector if needed.
-  _rfsRule($content) {
-    if (this.$rfsClass === `disable` && this.$rfsMode === `max-media-query`) {
+  _rfsRule(content) {
+    if (this.rfsClass === `disable` && this.rfsMode === `max-media-query`) {
       // Adding an extra class increases specificity, which prevents the media query to override the property
       return dd`
         &,
         .disable-rfs &,
         &.disable-rfs {
-          ${$content}
+          ${content}
         }
       `
     }
-    else if (this.$rfsClass === `enable` && this.$rfsMode === `min-media-query`) {
+    else if (this.rfsClass === `enable` && this.rfsMode === `min-media-query`) {
       return dd`
         .enable-rfs &,
         &.enable-rfs {
-          ${$content}
+          ${content}
         }
       `
     }
     else {
-      return $content;
+      return content;
     }
   }
 
   // Internal mixin that adds enable classes to the selector if needed.
-  _rfsMediaQueryRule($content) {
+  _rfsMediaQueryRule(content) {
     let ret = [];
 
-    if (this.$rfsClass === `enable`) {
-      if (this.$rfsMode === `min-media-query`) {
-        ret.push($content);
+    if (this.rfsClass === `enable`) {
+      if (this.rfsMode === `min-media-query`) {
+        ret.push(content);
       }
 
       ret.push(this._rfsMediaQuery(dd`
         {
           .enable-rfs &,
           &.enable-rfs {
-            ${$content}
+            ${content}
           }
         }
       `));
     }
     else {
-      if (this.$rfsClass === `disable` && this.$rfsMode === `min-media-query`) {
+      if (this.rfsClass === `disable` && this.rfsMode === `min-media-query`) {
         ret.push(dd`
           .disable-rfs &,
           &.disable-rfs {
-            ${$content}
+            ${content}
           }
         `);
       }
-      ret.push(this._rfsMediaQuery($content));
+      ret.push(this._rfsMediaQuery(content));
     }
 
-    return ret.join('\n');
+    return ret.join(`\n`);
   }
 
   // Helper function to get the formatted non-responsive value
-  rfsValue($values) {
+  rfsValue(values) {
     // Convert to list
-    $values = typeOf($values) !== `array` ? [...$values] : $values;
+    values = typeOf(values) !== `array` ? [...values] : values;
 
-    let $val = '';
+    let val = ``;
 
     // Loop over each value and calculate value
-    $values.forEach($value => {
-      if ($value === 0) {
-        $val = `${$val} 0`;
+    values.forEach(value => {
+      if (value === 0) {
+        val = `${val} 0`;
       }
       else {
-        // Cache $value unit
-        let $unit = typeOf($value) === `number` ? unit($value) : false;
+        // Cache value unit
+        let $unit = typeOf(value) === `number` ? unit(value) : false;
 
         if ($unit === `px`) {
           // Convert to `rem` if needed
-          $val = `${$val}  ${this.$rfsUnit === `rem` ? `${(unitless($value) + this.$rfsRemValue)}rem` : $value}`;
+          val = `${val}  ${this.rfsUnit === `rem` ? `${(unitless(value) + this.rfsRemValue)}rem` : value}`;
         }
         else if ($unit === `rem`) {
           // Convert to `px` if needed
-          $val = `${$val} ${this.$rfsUnit === `px` ? `${unitless($value) * this.$rfsRemValue}px` : $value}`;
+          val = `${val} ${this.rfsUnit === `px` ? `${unitless(value) * this.rfsRemValue}px` : value}`;
         }
         else {
-          // If $value isn't a number (like inherit) or $value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
-          $val = `${$val} ${$value}`;
+          // If value isn't a number (like inherit) or value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
+          val = `${val} ${value}`;
         }
       }
     });
 
-    // Remove first space (UNNEEDED IN JS i think)
-    // return unquote(strSlice($val, 2));
-    return $val.slice(1);
+    // Remove first space
+    return val.slice(1);
   }
 
   // Helper function to get the responsive value calculated by RFS
-  rfsFluidValue($values) {
+  rfsFluidValue(values) {
     // Convert to list
-    $values = typeOf($values) !== `array` ? [...$values] : $values;
+    values = typeOf(values) !== `array` ? [...values] : values;
 
-    let $val = '';
+    let val = ``;
 
     // Loop over each value and calculate value
-    $values.forEach($value => {
-      if ($value === 0) {
-        $val = $val + ' 0';
+    values.forEach(value => {
+      if (value === 0) {
+        val = val + ` 0`;
       }
 
       else {
-        // Cache $value unit
-        let $unit = typeOf($value) === `number` ? unit($value) : false;
+        // Cache value unit
+        let $unit = typeOf(value) === `number` ? unit(value) : false;
 
-        // If $value isn't a number (like inherit) or $value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
+        // If value isn't a number (like inherit) or value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
         if (!$unit || ($unit !== `px` && $unit !== `rem`)) {
-          $val = `${$val} ${$value}`;
+          val = `${val} ${value}`;
         }
         else {
-          // Remove unit from $value for calculations
-          $value = unitless($value);
+          // Remove unit from value for calculations
+          value = unitless(value);
           if ($unit !== `px`) {
-            $value *= this.$rfsRemValue;
+            value *= this.rfsRemValue;
           }
 
           // Only add the media query if the value is greater than the minimum value
-          if (abs($value) <= this.$rfsBaseValue || !this.$enableRfs) {
-            $val = `${$val} ${this.$rfsUnit === `rem` ? `${$value / this.$rfsRemValue}rem` : `${$value}px`}`;
+          if (abs(value) <= this.rfsBaseValue || !this.enableRfs) {
+            val = `${val} ${this.rfsUnit === `rem` ? `${value / this.rfsRemValue}rem` : `${value}px`}`;
           }
           else {
             // Calculate the minimum value
-            let $valueMin = this.$rfsBaseValue + (abs($value) - this.$rfsBaseValue) / this.$rfsFactor;
+            let valueMin = this.rfsBaseValue + (abs(value) - this.rfsBaseValue) / this.rfsFactor;
 
-            // Calculate difference between $value and the minimum value
-            let $valueDiff = abs($value) - $valueMin;
+            // Calculate difference between value and the minimum value
+            let valueDiff = abs(value) - valueMin;
 
             // Base value formatting
-            let $minWidth = this.$rfsUnit === `rem` ? `${$valueMin / this.$rfsRemValue}rem` : `${$valueMin}px`;
+            let minWidth = this.rfsUnit === `rem` ? `${valueMin / this.rfsRemValue}rem` : `${valueMin}px`;
             // Use negative value if needed
-            $minWidth = $value < 0 ? `-${$minWidth}` : $minWidth;
-            if ($minWidth.startsWith('--')) {
-              $minWidth = $minWidth.slice(2);
+            minWidth = value < 0 ? `-${minWidth}` : minWidth;
+            if (minWidth.startsWith(`--`)) {
+              minWidth = minWidth.slice(2);
             }
 
             // Use `vmin` if two-dimensional is enabled
-            let $variableUnit = this.$rfsTwoDimensional ? `vmin` : `vw`;
+            let variableUnit = this.rfsTwoDimensional ? `vmin` : `vw`;
 
-            // Calculate the variable width between 0 and $rfs-breakpoint
-            let $variableWidth = `${$valueDiff * 100 / this.$rfsBreakpoint}${$variableUnit}`;
+            // Calculate the variable width between 0 and rfsBreakpoint
+            let variableWidth = `${valueDiff * 100 / this.rfsBreakpoint}${variableUnit}`;
 
             // Return the calculated value
-            $val = `${$val} calc(${$minWidth} ${$value < 0 ? '-' : '+'} ${$variableWidth})`;
+            val = `${val} calc(${minWidth} ${value < 0 ? `-` : `+`} ${variableWidth})`;
           }
         }
       }
     });
 
-    // Remove first space (UNNEEDED IN JS i think)
-    // return unquote(strSlice($val, 2));
-    return $val.slice(1);
+    // Remove first space
+    return val.slice(1);
   }
 
   // RFS mixin
-  _rfs($values, $property = `font-size`) {
-    if (!Array.isArray($values)) {
-      $values = [$values];
+  rfs(values, property = `font-size`) {
+    if (!Array.isArray(values)) {
+      values = [values];
     }
-    if ($values !== null) {
-      let $val = this.rfsValue($values);
-      let $fluidVal = this.rfsFluidValue($values);
+    if (values && values.length) {
+      let val = this.rfsValue(values);
+      let fluidVal = this.rfsFluidValue(values);
 
       // Do not print the media query if responsive & non-responsive values are the same        
-      if ($val === $fluidVal) {
-        return `${$property}: ${$val}`;
+      if (val === fluidVal) {
+        return `${property}: ${val};`;
       }
       else {
         return dd`
         ${this._rfsRule(dd`
-          ${$property}: ${this.$rfsMode === `max-media-query` ? $val : $fluidVal};
-          ${this.$rfsSafariIframeResizeBugFix ? `min-width: (0 * 1vw);` : ``}
+          ${property}: ${this.rfsMode === `max-media-query` ? val : fluidVal};
+          ${this.rfsSafariIframeResizeBugFix ? `min-width: (0 * 1vw);` : ``}
         `)}
 
         ${this._rfsMediaQueryRule(dd`
-          ${$property}: ${this.$rfsMode === `max-media-query` ? $fluidVal : $val};
+          ${property}: ${this.rfsMode === `max-media-query` ? fluidVal : val};
         `)}
       `
       }
+    } else {
+      throw new Error(`No arguments given to RFS`);
     }
   }
 
-  rfs(...args) {
-    return this._rfs(...args).trim();
-  }
-
   // Shorthand helper mixins
-  fontSize(...$values) {
-    return this.rfs($values);
+  fontSize(...values) {
+    return this.rfs(values);
   }
 
-  padding(...$values) {
-    return this.rfs($values, `padding`);
+  padding(...values) {
+    return this.rfs(values, `padding`);
   }
 
-  paddingTop(...$values) {
-    return this.rfs($values, `padding-top`);
+  paddingTop(...values) {
+    return this.rfs(values, `padding-top`);
   }
 
-  paddingRight(...$values) {
-    return this.rfs($values, `padding-right`);
+  paddingRight(...values) {
+    return this.rfs(values, `padding-right`);
   }
 
-  paddingBottom(...$values) {
-    return this.rfs($values, `padding-bottom`);
+  paddingBottom(...values) {
+    return this.rfs(values, `padding-bottom`);
   }
 
-  paddingLeft(...$values) {
-    return this.rfs($values, `padding-left`);
+  paddingLeft(...values) {
+    return this.rfs(values, `padding-left`);
   }
 
-  margin(...$values) {
-    return this.rfs($values, `margin`);
+  margin(...values) {
+    return this.rfs(values, `margin`);
   }
 
-  marginTop(...$values) {
-    return this.rfs($values, `margin-top`);
+  marginTop(...values) {
+    return this.rfs(values, `margin-top`);
   }
 
-  marginRight(...$values) {
-    return this.rfs($values, `margin-right`);
+  marginRight(...values) {
+    return this.rfs(values, `margin-right`);
   }
 
-  marginBottom(...$values) {
-    return this.rfs($values, `margin-bottom`);
+  marginBottom(...values) {
+    return this.rfs(values, `margin-bottom`);
   }
 
-  marginLeft(...$values) {
-    return this.rfs($values, `margin-left`);
+  marginLeft(...values) {
+    return this.rfs(values, `margin-left`);
   }
 }
+
+export function createRFS(args) {
+  const rfsInstance = new RFS(args);
+
+  function rfs(...values) {
+    if (values.length > 1) {
+      const property = values.pop();
+      return rfsInstance.rfs(values, property);
+    }
+    return rfsInstance.rfs(values);
+  }
+
+  Object.getOwnPropertyNames(Object.getPrototypeOf(rfsInstance))
+    .filter(prop => typeof rfsInstance[prop] === `function` && !/^(?:_|rfs)/.test(prop))
+    .forEach(prop => {
+      rfs[prop] = rfsInstance[prop].bind(rfsInstance);
+    });
+  return rfs;
+}
+
+export default createRFS();

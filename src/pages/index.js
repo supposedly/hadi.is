@@ -8,14 +8,12 @@ import Title from "../components/title";
 import NavButton from "../components/navbutton";
 import ImageSwitcher from "../components/image-switcher";
 
-import RFS from '../utils/rfs.js';
-
-const rfs = new RFS();
+import rfs from '../utils/rfs.js';
 
 const FatButton = styled.button`
-  ${rfs.padding(`1rem`)};
-  ${rfs.fontSize(`3.2rem`)};
-  ${rfs.rfs(`9rem`, `height`)};
+  ${rfs.padding(`1rem`)}
+  ${rfs.fontSize(`3.2rem`)}
+  ${rfs(`9rem`, `height`)}
   -webkit-tap-highlight-color: transparent;
   width: 80%;
   cursor: pointer;
@@ -30,9 +28,9 @@ const FatButton = styled.button`
   .yuge {
     background-color: rgba(255, 191, 191, 0.8);
     border-radius: 50%;
-    ${rfs.rfs(`6rem`, `height`)};
-    ${rfs.rfs(`6rem`, `width`)};
-    ${rfs.rfs(`6rem`, `line-height`)};
+    ${rfs(`6rem`, `height`)}
+    ${rfs(`6rem`, `width`)}
+    ${rfs(`6rem`, `line-height`)}
     display: inline-flex;
     text-align: center;
     justify-content: center;
@@ -45,9 +43,9 @@ const FatButton = styled.button`
     background-color: rgba(255, 255, 255, 0);
     .yuge {
       transition-duration: 450ms;
-      ${rfs.rfs(`9rem`, `height`)};
-      ${rfs.rfs(`9rem`, `width`)};
-      ${rfs.rfs(`9rem`, `line-height`)};
+      ${rfs(`9rem`, `height`)}
+      ${rfs(`9rem`, `width`)}
+      ${rfs(`9rem`, `line-height`)}
     }
   }
 
@@ -57,9 +55,9 @@ const FatButton = styled.button`
 
     background-color: rgba(255, 255, 255, 0);
     .yuge {
-      ${rfs.rfs(`60rem`, `height`)};
-      ${rfs.rfs(`100vw`, `width`)};
-      ${rfs.rfs(`100rem`, `line-height`)};
+      ${rfs(`60rem`, `height`)}
+      ${rfs(`100vw`, `width`)}
+      ${rfs(`100rem`, `line-height`)}
     }
   }
 
@@ -71,7 +69,7 @@ const FatButton = styled.button`
 const LinksSection = styled.section`
   > div {
     width: 50%;
-    ${rfs.marginTop(`3rem`)};
+    ${rfs.marginTop(`3rem`)}
     align-items: flex-start;
   }
   nav, a {
