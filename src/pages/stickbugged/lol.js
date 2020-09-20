@@ -1,7 +1,7 @@
 import React from "react";
 
 export default () => (
-  <div className="container" style={{ position: 'absolute', height: '100%' }}>
+  <div className="container" style={{ position: 'absolute', height: '100%', width: '100%' }}>
     <iframe
       title="Get stick bugged lol"
       width="100%"

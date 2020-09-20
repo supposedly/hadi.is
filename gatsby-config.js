@@ -6,6 +6,7 @@ module.exports = {
     author: `github/supposedly`,
   },
   plugins: [
+    `gatsby-plugin-styled-components`,
     `gatsby-disable-404`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-remove-trailing-slashes`,

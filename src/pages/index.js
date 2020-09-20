@@ -1,44 +1,125 @@
 import React from "react";
 import { Link, graphql } from "gatsby"
+import styled from "styled-components";
+
 
 import Layout from "../components/layout";
 import Title from "../components/title";
 import NavButton from "../components/navbutton";
 import ImageSwitcher from "../components/image-switcher";
 
-import "../styles/index.scss";
+import RFS from '../utils/rfs.js';
+
+const rfs = new RFS();
+
+const FatButton = styled.button`
+  ${rfs.padding(`1rem`)};
+  ${rfs.fontSize(`3.2rem`)};
+  ${rfs.rfs(`9rem`, `height`)};
+  -webkit-tap-highlight-color: transparent;
+  width: 80%;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0);
+  color: black;
+  transition: background-color 200ms, color 140ms;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+
+  .yuge {
+    background-color: rgba(255, 191, 191, 0.8);
+    border-radius: 50%;
+    ${rfs.rfs(`6rem`, `height`)};
+    ${rfs.rfs(`6rem`, `width`)};
+    ${rfs.rfs(`6rem`, `line-height`)};
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    transition: border-radius 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0);
+    .yuge {
+      transition-duration: 450ms;
+      ${rfs.rfs(`9rem`, `height`)};
+      ${rfs.rfs(`9rem`, `width`)};
+      ${rfs.rfs(`9rem`, `line-height`)};
+    }
+  }
+
+  &:focus, &:active {
+    outline: none;
+    z-index: 1;
+
+    background-color: rgba(255, 255, 255, 0);
+    .yuge {
+      ${rfs.rfs(`60rem`, `height`)};
+      ${rfs.rfs(`100vw`, `width`)};
+      ${rfs.rfs(`100rem`, `line-height`)};
+    }
+  }
+
+  &#show-links {
+    font-family: 'Raleway', sans-serif;
+  }
+`
+
+const LinksSection = styled.section`
+  > div {
+    width: 50%;
+    ${rfs.marginTop(`3rem`)};
+    align-items: flex-start;
+  }
+  nav, a {
+    color: silver;
+  }
+  a {
+    &:hover {
+      color: black;
+    }
+    text-decoration: none;
+  }
+  nav {
+    display: inline;
+    a {
+      text-shadow: 2px white;
+      // comment these out for the no-list effect
+      &::after {
+        content: ', ';
+      }
+      &:first-child:nth-last-child(2)::after {
+        content: ' ';
+      }
+      &:last-child:not(:first-child)::before {
+        content: 'and ';
+      }
+      &:last-child::after {
+        content: '.';
+      }
+    }
+  }
+`
 
 const mainRef = React.createRef();
 const linksRef = React.createRef();
 
+// TODO: This is kinda icky, fix
+function blurSoon(delay = 350) {
+  setTimeout(() => document.activeElement.blur(), delay);
+}
+
 function showLinks() {
-  linksRef.current.classList.toggle(`hidden`);
   linksRef.current.scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
-  awaitScrollEnd(
-    () => mainRef.current.classList.toggle(`hidden`)
-  );
+  blurSoon();
 }
 
 function showMain() {
-  mainRef.current.classList.toggle(`hidden`);
-  linksRef.current.scrollIntoView(true);
-  setTimeout(() => window.scrollTo({top: 0, behavior: `smooth`}), 1);
-  awaitScrollEnd(
-    () => linksRef.current.classList.toggle(`hidden`)
-  );
-}
-
-// thanks https://stackoverflow.com/a/51142522/
-function awaitScrollEnd(callback) {
-  let timeout;
-  function run() {
-    clearTimeout(timeout);
-    timeout = setTimeout(function() {
-      callback();
-      window.removeEventListener(`scroll`, run);
-    }, 100);
-  }
-  window.addEventListener(`scroll`, run);
+  window.scrollTo({top: 0, behavior: `smooth`});
+  blurSoon();
 }
 
 function checkPath(path) {
@@ -57,7 +138,7 @@ function noSlash(path) {
 export default (props) => {
   return (
     <Layout>
-      <section ref={mainRef} id="main" className="center-children">
+      <section ref={mainRef} style={{ height: `inherit` }} id="main" className="center-children">
         <div className="flex-main center-children" style={{ width: `100%` }}>
           <ImageSwitcher
             data={props.data}
@@ -69,9 +150,9 @@ export default (props) => {
           />
           <Title text="this guy" after="⤴" />
         </div>
-        <NavButton className="fat-btn" id="show-links" text="&amp;" onClick={showLinks} />
+        <FatButton as={NavButton} id="show-links" text="&amp;" onClick={showLinks} />
       </section>
-      <section ref={linksRef} id="links" className="hidden center-children">
+      <LinksSection ref={linksRef} style={{ height: `inherit` }} id="links" className="center-children">
         <div className="flex-main center-children">
           <div className="big">
             <Title after="also" inline={true} />
@@ -87,14 +168,14 @@ export default (props) => {
             </nav>
           </div>
         </div>
-        <NavButton className="fat-btn" id="show-main" text="👆" onClick={showMain} />
-      </section>
+        <FatButton as={NavButton} id="show-main" text="👆" onClick={showMain} />
+      </LinksSection>
     </Layout>
   );
 }
 
 export const query = graphql`
-  query PageQuery {
+  query IndexQuery {
     allSitePage {
       nodes {
         id

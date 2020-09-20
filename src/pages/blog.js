@@ -6,7 +6,7 @@ import Layout from "../components/layout";
 export default () => (
   <Layout title="blog">
     <h1>Nothing here yet</h1>
-    <p>Brew a coffee and come back</p>
+    <p>But wait till you see the other pages</p>
     <Link to="/">Go back to the homepage</Link>
   </Layout>
 )

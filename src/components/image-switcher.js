@@ -1,18 +1,84 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Image from "gatsby-image";
+import styled, { keyframes } from "styled-components";
 
-import styles from "../styles/image-switcher.module.scss";
+import RFS from '../utils/rfs.js';
+
+const jumpDuration = `200ms`;
+const rfs = new RFS();
+
+const RoundedImage = styled(Image)`
+  border-radius: 1em
+`;
+
+const ImgContainer = styled.section`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  ${rfs.marginTop(`1rem`)};
+
+  picture, .gatsby-image-wrapper {
+    ${rfs.rfs(`500px`, `width`)};
+  }
+`;
+
+const jump = keyframes`
+  0% {
+    width: 0;
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: none;
+  }
+`
+
+const ArrowButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  color: white;
+  font-weight: bolder;
+  background-color: #999;
+  box-shadow: 0 0 1px .5px #999;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 200ms, background-color 200ms, color 200ms;
+  ${rfs.rfs(`50px`, `height`)};
+  ${rfs.rfs(`50px`, `width`)};
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  transform: none;
+  z-index: 1;  // so image doesn't hide button
+  outline: none;
+  ${rfs.margin(`1.5rem`)};
+
+  ${ImgContainer}:hover & {
+    opacity: .34;  // #ddd on a white bg
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:focus:not(:active), &.jump {
+      animation: ${jump} ${jumpDuration};
+    }
+  }
+`;
 
 
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {currentImg: 0};
     this.arrowRefs = {left: React.createRef(), right: React.createRef()};
-    this.maxImg = Object.keys(this.props.data).filter(k => k.startsWith(this.props.prefix)).length - 1;
-    this.JUMP_DURATION = parseInt(styles.jumpDuration);
-    
+    this.maxImg = Object.keys(props.data).filter(k => k.startsWith(props.prefix)).length - 1;
+
     // this is HIDEOUS i gotta make it less awful at some point
     this.arrowTouched = false;
     this.touchActive = false;
@@ -59,43 +125,40 @@ export default class ImageSwitcher extends React.Component {
       return;
     }
     this.arrowTouched = true;
-    el.classList.add(styles.jump);
-    el.classList.remove(styles.jump);
+    el.classList.add(`.jump`);
+    el.classList.remove(`.jump`);
     setTimeout(() => {
       this.switch(refName, true);
-    }, this.isFirefox ? 75 : this.JUMP_DURATION);
+    }, this.isFirefox ? 75 : jumpDuration);
   }
 
   render() {
     return (
-      <section
+      <ImgContainer
         role="presentation"  // for no-noninteractive-element-interactions :/
-        className={styles.imgContainer} 
         style={{ height: '300px', maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
         onMouseLeave={this.blurArrows.bind(this)}
       >
-        <button
+        <ArrowButton
           ref={this.arrowRefs.left}
-          className={styles.arrowBtn}
           onClick={() => this.switch(`left`)}
           onTouchStart={this.jumpArrow.bind(this, `left`)}
         >
           &lt;
-        </button>
-        <Image
+        </ArrowButton>
+        <RoundedImage
           fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
           alt={this.props.alts[this.state.currentImg]}
           style={{ maxHeight: '100%' }}
         />
-        <button
+        <ArrowButton
           ref={this.arrowRefs.right}
-          className={styles.arrowBtn}
           onClick={() => this.switch(`right`)}
           onTouchStart={this.jumpArrow.bind(this, `right`)}
         >
           &gt;
-        </button>
-      </section>
+        </ArrowButton>
+      </ImgContainer>
     );
   }
 }

@@ -74,5 +74,7 @@ yarn-error.log
 .vercel
 
 # test files
-src/pages/demo.js
-src/styles/anim-test.scss
+demo.js
+anim-test.scss
+anim-test.module.scss
+anim-test.scoped.scss

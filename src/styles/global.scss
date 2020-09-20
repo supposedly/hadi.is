@@ -59,6 +59,14 @@ h2, .big {
   color: red;
 }
 
+.black-underline {
+  box-shadow: 0px 4px black;
+}
+
+.black-shadow {
+  text-shadow: 2px 2px 0px black
+}
+
 .faint {
   opacity: 0.50;
 }

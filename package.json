@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "author": "github/supposedly",
   "dependencies": {
+    "babel-plugin-styled-components": "^1.11.1",
+    "dedent": "^0.7.0",
     "gatsby": "^2.23.10",
     "gatsby-disable-404": "^0.2.1",
     "gatsby-image": "^2.4.8",
@@ -13,7 +15,8 @@
     "gatsby-plugin-react-helmet": "^3.3.5",
     "gatsby-plugin-remove-trailing-slashes": "^2.3.9",
     "gatsby-plugin-sass": "^2.3.6",
-    "gatsby-plugin-sharp": "^2.6.14",
+    "gatsby-plugin-sharp": "^2.6.36",
+    "gatsby-plugin-styled-components": "^3.3.11",
     "gatsby-source-filesystem": "^2.3.13",
     "gatsby-transformer-sharp": "^2.5.7",
     "node-sass": "^4.14.1",
@@ -21,11 +24,14 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
-    "react-icons": "^3.10.0"
+    "react-icons": "^3.10.0",
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@vercel/node": "^1.7.1",
-    "prettier": "2.0.5"
+    "prettier": "2.0.5",
+    "query-ast": "^1.0.3",
+    "scss-parser": "^1.0.4"
   },
   "keywords": [
     "gatsby"
