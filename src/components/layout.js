@@ -71,9 +71,9 @@ export default function Layout({ children, title, literalTitle }) {
               </a>
             </>
           :
-            <a title="main page" href="/" className="no-skew" style={{ color: 'red' }}>
+            <Link title="main page" to="/" className="no-skew" style={{ color: 'red' }}>
               <FaHome size={34} />
-            </a>
+            </Link>
           }
         </nav>
         {children}
