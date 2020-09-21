@@ -103,8 +103,8 @@ h2, .big {
   position: fixed;
   top: 0;  // https://stackoverflow.com/a/38679996
   z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
-  @include margin-top(.5em);
-  @include margin-left(.5em);
+  @include margin-top(.5rem);
+  @include margin-left(.5rem);
   height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens
   padding: 0;
   display: flex;
@@ -112,6 +112,12 @@ h2, .big {
   justify-content: space-around;
 
   @media only screen and (min-width: 700px) {
+    display: block;
+    height: auto; // $icon-nav-height
+  }
+
+  // weird redundancy idk
+  &.invariable {
     display: block;
     height: auto; // $icon-nav-height
   }
@@ -128,12 +134,6 @@ h2, .big {
 
     &:not(.no-skew) {
       // pseudo-pseudo-random rotation
-      &:nth-child(2n-1) svg {
-        transform: rotate(20deg);
-      }
-      &:nth-child(2n) svg {
-        transform: rotate(-20deg);
-      }
       &:nth-child(3n+1) svg, &:nth-child(3n) svg {
         transform: rotate(10deg);
       }

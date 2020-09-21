@@ -73,18 +73,18 @@ const LinksSection = styled.section`
     align-items: flex-start;
   }
   nav, a {
-    color: silver;
+    color: black;
   }
   a {
-    &:hover {
-      color: black;
+    opacity: .25;
+    &:hover, &.activate {
+      opacity: 1;
     }
     text-decoration: none;
   }
   nav {
     display: inline;
     a {
-      text-shadow: 2px white;
       // comment these out for the no-list effect
       &::after {
         content: ', ';
