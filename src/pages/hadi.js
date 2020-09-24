@@ -11,7 +11,7 @@ import Title from "../components/title";
 const MainArticle = styled.article`
   margin: 1rem;
   font-family: 'Epilogue', sans-serif;
-  ${rfs(`17px`)}
+  ${rfs(`16px`)}
 `  
 
 const MainImage = styled(Image)`
