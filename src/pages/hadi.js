@@ -12,10 +12,12 @@ const MainArticle = styled.article`
   margin: 1rem;
   font-family: 'Epilogue', sans-serif;
   font-variation-settings: "wght" 250;
+  font-weight: 250; // for firefox, idk why
   ${rfs(`19px`)}
   
   strong {
     font-variation-settings: "wght" 500;
+    font-weight: 500; // for firefox, idk why
   }
 `
 
@@ -56,7 +58,7 @@ export default ({ data }) => {
             href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
           >
             by email
-          </a> and on <a href="https://twitter.com/tarhyny">Twitter</a>.
+          </a> and <a href="https://twitter.com/tarhyny">on Twitter</a>.
         </P>
     </MainArticle>
   </Layout>
