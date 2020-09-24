@@ -5,6 +5,8 @@ import Title from "../components/title";
 
 export default () => (
   <Layout title="stuff">
-    <Title text="stuff" />
+    <header class="center-children">
+      <Title text="stuff" />
+    </header>
   </Layout>
 )
