@@ -20,10 +20,18 @@ const FatButton = styled.button`
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0);
   color: black;
-  transition: background-color 200ms, color 140ms;
+  transition: background-color 450ms, color 140ms;
   box-shadow: none;
   border: none;
   border-radius: 5px;
+  font-weight: 600;
+
+  &:hover .yuge {
+    transition-duration: 400ms;
+    ${rfs(`7.5rem`, `height`)}
+    ${rfs(`7.5rem`, `width`)}
+    ${rfs(`7.5rem`, `line-height`)}
+  }
 
   .yuge {
     background-color: rgba(255, 191, 191, 0.8);
@@ -36,13 +44,11 @@ const FatButton = styled.button`
     justify-content: center;
     align-items: center;
 
-    transition: border-radius 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
-  }
+    transition: background-color 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0);
-    .yuge {
+    &:hover {
       transition-duration: 450ms;
+      // background-color: rgba(255, 64, 64, 1);
       ${rfs(`9rem`, `height`)}
       ${rfs(`9rem`, `width`)}
       ${rfs(`9rem`, `line-height`)}
@@ -53,7 +59,6 @@ const FatButton = styled.button`
     outline: none;
     z-index: 1;
 
-    background-color: rgba(255, 255, 255, 0);
     .yuge {
       ${rfs(`60rem`, `height`)}
       ${rfs(`100vw`, `width`)}
@@ -62,7 +67,7 @@ const FatButton = styled.button`
   }
 
   &#show-links {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
   }
 `
 
@@ -153,7 +158,7 @@ export default (props) => {
       <LinksSection ref={linksRef} style={{ height: `inherit` }} id="links" className="center-children">
         <div className="flex-main center-children">
           <div className="big">
-            <Title after="also" inline={true} />
+            <Title after="also" inline />
             {` `}
             <nav>
               {
