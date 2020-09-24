@@ -10,7 +10,15 @@ const Header = styled.h1`
   ${props => props.inline ? `` : `margin-top: 1em`}
 `
 
-export default function Title ({ inline = false, adverb, text, after, style }) {
+export default function Title ({
+  inline = false,
+  adverb,
+  punctuation = `.`,
+  space = `\u00A0`,
+  text,
+  after,
+  style
+}) {
   return (
     <Header className="big" inline={inline} style={style}>
       hadi is
@@ -22,8 +30,7 @@ export default function Title ({ inline = false, adverb, text, after, style }) {
           </>
         : <span className="red input">{text}</span>
       }
-      {` `}
-      {after}
+      {punctuation}{space}{after}
     </Header>
   );
 }

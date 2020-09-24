@@ -158,7 +158,7 @@ export default (props) => {
       <LinksSection ref={linksRef} style={{ height: `inherit` }} id="links" className="center-children">
         <div className="flex-main center-children">
           <div className="big">
-            <Title after="also" inline />
+            <Title punctuation space after="also" inline />
             {` `}
             <nav>
               {
