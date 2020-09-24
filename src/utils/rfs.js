@@ -42,7 +42,7 @@ function typeOf(val) {
   return typeof val;
 }
 
-function unit(val) {
+function unitOf(val) {
   return /[a-z]+$/.exec(val)[0];
 }
 
@@ -143,7 +143,7 @@ export class RFS {
     this.enableRfs = args.enableRfs;
 
     // Cache rfsBaseValue unit
-    this.rfsBaseValueUnit = unit(this.rfsBaseValue);
+    this.rfsBaseValueUnit = unitOf(this.rfsBaseValue);
 
     // Remove `px`-unit from rfsBaseValue for calculations
     this.rfsBaseValue = unitless(this.rfsBaseValue);
@@ -152,7 +152,7 @@ export class RFS {
     }
 
     // Cache rfsBreakpoint unit to prevent multiple calls
-    this.rfsBreakpointUnitCache = unit(this.rfsBreakpoint);
+    this.rfsBreakpointUnitCache = unitOf(this.rfsBreakpoint);
 
     // Remove unit from rfsBreakpoint for calculations
     this.rfsBreakpoint = unitless(this.rfsBreakpoint);
@@ -265,13 +265,13 @@ export class RFS {
       }
       else {
         // Cache value unit
-        let $unit = typeOf(value) === `number` ? unit(value) : false;
+        let unit = typeOf(value) === `number` ? unitOf(value) : false;
 
-        if ($unit === `px`) {
+        if (unit === `px`) {
           // Convert to `rem` if needed
           val = `${val}  ${this.rfsUnit === `rem` ? `${(unitless(value) + this.rfsRemValue)}rem` : value}`;
         }
-        else if ($unit === `rem`) {
+        else if (unit === `rem`) {
           // Convert to `px` if needed
           val = `${val} ${this.rfsUnit === `px` ? `${unitless(value) * this.rfsRemValue}px` : value}`;
         }
@@ -301,16 +301,16 @@ export class RFS {
 
       else {
         // Cache value unit
-        let $unit = typeOf(value) === `number` ? unit(value) : false;
+        let unit = typeOf(value) === `number` ? unitOf(value) : false;
 
         // If value isn't a number (like inherit) or value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
-        if (!$unit || ($unit !== `px` && $unit !== `rem`)) {
+        if (!unit || (unit !== `px` && unit !== `rem`)) {
           val = `${val} ${value}`;
         }
         else {
           // Remove unit from value for calculations
           value = unitless(value);
-          if ($unit !== `px`) {
+          if (unit !== `px`) {
             value *= this.rfsRemValue;
           }
 
