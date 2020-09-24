@@ -13,6 +13,10 @@ const MainArticle = styled.article`
   font-family: 'Epilogue', sans-serif;
   font-variation-settings: "wght" 250;
   ${rfs(`19px`)}
+  
+  strong {
+    font-variation-settings: "wght" 500;
+  }
 `
 
 const P = styled.p`
@@ -43,11 +47,11 @@ export default ({ data }) => {
           and personal interests include software development, linguistics, and animation.
         </P>
         <P>
-          If you wanna see what I've been up to in those terms, my portfolio's at <Link to="/stuff">hadi is stuff</Link>.
-          Feel free to snoop around the other pages afterwards, too!
+          If you wanna see what I've been up to in those terms, my portfolio's at <Link to="/stuff">hadi is <strong>stuff</strong></Link>.
+          Feel free to snoop around some other pages afterwards, too!
         </P>
         <P>
-          If you'd like to get in touch, check out the top-left of <Link to="/">the homepage</Link> for some links.
+          If you'd like to get in touch, check out the top-left of <Link to="/">the homepage</Link> for links.
           In particular, I'm always reachable <a
             href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
           >

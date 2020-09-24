@@ -13,7 +13,7 @@ const Header = styled.h1`
 export default function Title ({
   inline = false,
   adverb,
-  punctuation = `.`,
+  punctuation = `!`,
   space = `\u00A0`,
   text,
   after,

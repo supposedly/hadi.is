@@ -26,7 +26,6 @@ export default function Layout({ children, title, literalTitle }) {
   `);
 
   let onHomepage = false;
-  const originalTitle = title;
   if (title === ``) {
     onHomepage = true;
     title = data.site.siteMetadata.title;
