@@ -53,7 +53,7 @@ export default ({ data }) => {
           Feel free to snoop around some other pages afterwards, too!
         </P>
         <P>
-          If you'd like to get in touch, check out the top-left of <Link to="/">the homepage</Link> for links.
+          If you'd like to get in touch, check out the upper left of <Link to="/">the homepage</Link> for links.
           In particular, I'm always reachable <a
             href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
           >
