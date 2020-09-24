@@ -135,7 +135,7 @@ export default class ImageSwitcher extends React.Component {
     return (
       <ImgContainer
         role="presentation"  // for no-noninteractive-element-interactions :/
-        style={{ height: '300px', maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
+        style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
         onMouseLeave={this.blurArrows.bind(this)}
       >
         <ArrowButton
