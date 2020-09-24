@@ -1,10 +1,18 @@
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
 
-export default function Title ({ inline, adverb, text, after, style }) {
-  const Wrapper = inline ? `span` : `p`;
+const Header = styled.h1`
+  cursor: default;
+  font-family: 'Noto Sans TC', sans-serif;
+  display: ${props => props.inline ? `inline-block` : `block`};
+  margin: 0;
+  ${props => props.inline ? `` : `margin-top: 1em`}
+`
+
+export default function Title ({ inline = false, adverb, text, after, style }) {
   return (
-    <Wrapper className="big" style={{ cursor: 'default', ...style }}>
+    <Header className="big" inline={inline} style={style}>
       hadi is
       {` `}
       {adverb
@@ -16,7 +24,7 @@ export default function Title ({ inline, adverb, text, after, style }) {
       }
       {` `}
       {after}
-    </Wrapper>
+    </Header>
   );
 }
 
