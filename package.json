@@ -5,7 +5,6 @@
   "version": "0.1.0",
   "author": "github/supposedly",
   "dependencies": {
-    "@loadable/component": "^5.13.2",
     "babel-plugin-styled-components": "^1.11.1",
     "dedent": "^0.7.0",
     "gatsby": "^2.23.10",
@@ -26,7 +25,8 @@
     "react-dom": "^16.12.0",
     "react-helmet": "^6.1.0",
     "react-icons": "^3.10.0",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "use-sound": "^1.0.2"
   },
   "devDependencies": {
     "@vercel/node": "^1.7.1",
