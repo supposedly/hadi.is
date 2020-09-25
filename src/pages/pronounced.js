@@ -88,6 +88,15 @@ paddy
 daddy
 addy
 faddy
+Matty
+gnatty
+natty
+catty
+tatty
+fatty
+ratty
+batty
+patty
 `
 const rhymeRef = createRef();
 
@@ -95,20 +104,15 @@ function randRhyme() {
   return rhymes[Math.floor(Math.random() * rhymes.length)];
 }
 
-function wipe(setWord, displayedWord, updatedWord, erasing = true) {
-  // this method works but it looks pretty lame when the words only differ in their initial lol
-  // if (i < updatedWord.length + displayedWord.length) {
-  //   setWord(`${updatedWord.slice(0, i)}${displayedWord.slice(i) || ``}`);
-  //   setTimeout(() => wipe(setWord, displayedWord, updatedWord, i + 1), 100);
-  // }
+function replace(setWord, displayedWord, updatedWord, erasing = true) {
   if (erasing) {
     displayedWord = displayedWord.slice(0, -1);
-    setTimeout(() => wipe(setWord, displayedWord, updatedWord, !!displayedWord), displayedWord.length * 2 + 10);
+    setTimeout(() => replace(setWord, displayedWord, updatedWord, !!displayedWord), displayedWord.length * 2 + 10);
   } else {
     displayedWord = `${displayedWord || ``}${updatedWord[0]}`;
     updatedWord = updatedWord.slice(1);
     if (updatedWord) {
-      setTimeout(() => wipe(setWord, displayedWord, updatedWord, false), displayedWord.length * 2 + 10);
+      setTimeout(() => replace(setWord, displayedWord, updatedWord, false), displayedWord.length * 2 + 10);
     } else {
       rhymeRef.current.blur();
     }
@@ -116,10 +120,25 @@ function wipe(setWord, displayedWord, updatedWord, erasing = true) {
   setWord(displayedWord);
 }
 
+function wipe(setWord, displayedWord, updatedWord, i = 1) {
+  if (i <= updatedWord.length + displayedWord.length) {
+    setWord(`${updatedWord.slice(0, i)}${displayedWord.slice(i) || ``}`);
+    setTimeout(() => wipe(setWord, displayedWord, updatedWord, i + 1), displayedWord.length * 2 + 10);
+  }
+}
+
 export default () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [word, setWord] = useState(rhymes[0]);
-  const wipeWord = () => wipe(setWord, word, randRhyme());
+  const [modifier, setModifier] = useState(``);
+  const wipeModifier = (kinda = word.includes(`t`)) => (
+    wipe(setModifier, modifier, kinda ? `kinda\u0020` : ``)
+  );
+  const replaceWord = () => {
+    const newWord = randRhyme();
+    replace(setWord, word, newWord);
+    wipeModifier(newWord.includes(`t`));
+  };
 
   const [playName] = useSound(nameURL, {
     onend() { buttonRef.current.blur(); }
@@ -139,7 +158,7 @@ export default () => {
           playName();
         }}
       />
-      <P>(like <button ref={rhymeRef} onClick={wipeWord}>{word} <FaSyncAlt size="16"/></button> with an H)</P>
+      <P>({modifier}like <button ref={rhymeRef} onClick={() => { replaceWord(); }}>{word} <FaSyncAlt size="16"/></button> with an H)</P>
     </article>
   </Layout>
 }
