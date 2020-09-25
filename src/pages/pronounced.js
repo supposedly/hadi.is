@@ -1,13 +1,12 @@
 import React, { createRef, useState } from "react";
 import styled/*, { keyframes }*/ from "styled-components";
+import loadable from '@loadable/component';
 import { FaSyncAlt } from "react-icons/fa";
 
 import rfs from "../utils/rfs.js";
 
 import Layout from "../components/layout";
 import Title from "../components/title";
-
-import nameAudio from "../assets/name-pronunciation.mp3";
 
 const FatSoundButton = styled.button`
   margin-top: 3em;
@@ -66,7 +65,7 @@ const P = styled.p`
     border-bottom: 1px solid black;
     transition: border 150ms;
 
-    &:focus {
+    &:focus, &:hover {
       outline: none;
       border-bottom: 3px solid black;
     }
@@ -74,8 +73,16 @@ const P = styled.p`
 `
 
 const buttonRef = createRef();
-const name = new Audio(nameAudio);
-name.addEventListener(`ended`, () => { name.currentTime = 0; buttonRef.current.blur(); });
+let name = null;
+// because gatsby can't build `new Audio()` on its own
+const AudioLoading = loadable(() => import("../assets/name-pronunciation.mp3"), {
+  fallback: (() => <P>Loading audio.</P>)(),
+  resolveComponent(module) {
+    name = new Audio(module.default);
+    name.addEventListener(`ended`, () => { name.currentTime = 0; buttonRef.current.blur(); });
+    return () => <P></P>;
+  }
+});
 
 const rhymes = (s => s[0].trim().split(`\n`))`
 Maddie
@@ -122,7 +129,6 @@ export default () => {
   const [word, setWord] = useState(rhymes[0]);
   const wipeWord = () => wipe(setWord, word, randRhyme());
 
-
   return <Layout title="pronounced">
     <article className="center-children">
       <header>
@@ -132,12 +138,13 @@ export default () => {
         ref={buttonRef}
         pop={buttonClicked}
         onClick={() => {
+          if (!name) return;
           setButtonClicked(true);
           setTimeout(() => { setButtonClicked(false); }, 250);
           name.play();
         }}
       />
-      <P>(like <button ref={rhymeRef} onClick={wipeWord}>{word} <FaSyncAlt size="16"/></button> with an H)</P>
+      {name ? <AudioLoading/> : <P>(like <button ref={rhymeRef} onClick={wipeWord}>{word} <FaSyncAlt size="16"/></button> with an H)</P>}
     </article>
   </Layout>
 }

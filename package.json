@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "github/supposedly",
   "dependencies": {
+    "@loadable/component": "^5.13.2",
     "babel-plugin-styled-components": "^1.11.1",
     "dedent": "^0.7.0",
     "gatsby": "^2.23.10",
