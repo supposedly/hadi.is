@@ -30,7 +30,7 @@ export default function Layout({ children, title, literalTitle }) {
     onHomepage = true;
     title = data.site.siteMetadata.title;
   } else if (!literalTitle) {
-    title = `Hadi is ${title}`;
+    title = `Hadi is ${title}`.toLowerCase();
   }
 
   return (
