@@ -58,7 +58,7 @@ export default ({ data }) => {
             href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
           >
             by email
-          </a> and <a href="https://twitter.com/tarhyny">on Twitter</a>.
+          </a> and <a href="https://twitter.com/tarxini">on Twitter</a>.
         </P>
     </MainArticle>
   </Layout>
