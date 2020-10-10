@@ -10,6 +10,14 @@ module.exports = {
     `gatsby-disable-404`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-remove-trailing-slashes`,
+    // `gatsby-transformer-mdx`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `articles`,
+        path: `${__dirname}/src/assets/articles`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -18,7 +26,9 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
+    `gatsby-transformer-ffmpeg`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-mdx`,
     `gatsby-plugin-sass`,
     {
       resolve: `gatsby-plugin-manifest`,

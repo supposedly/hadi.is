@@ -12,6 +12,7 @@ import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
 
 import SEO from "./seo";
+import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
 import "../styles/global.scss";
 
 export default function Layout({ children, title, literalTitle }) {
@@ -40,9 +41,15 @@ export default function Layout({ children, title, literalTitle }) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inconsolata:wght@400;500;600&family=Epilogue:wght@100..900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inconsolata:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        <style>{`
+          @font-face {
+            font-family: Epilogue;
+            src: url(${EpilogueWithSlant}) format('woff2-variations');
+          }
+        `}</style>
       </Helmet>
       <main>
         <div id="icon-spaceholder"></div>
