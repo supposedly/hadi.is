@@ -1,14 +1,17 @@
 import { graphql } from "gatsby";
 import Image from "gatsby-image";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { createRef } from "react";
 import styled from "styled-components";
 
-import rfs from '../utils/rfs.js';
+import GalleryArticle from "../components/gallery-article";
+import ArrowButton from "../components/arrow-button";
+
+import rfs from "../utils/rfs.js";
 
 const ImgContainer = styled.section`
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   ${rfs.marginTop(`1rem`)}
@@ -18,24 +21,54 @@ const ImgContainer = styled.section`
   }
 
   .gatsby-image-wrapper {
-    padding: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border: 10px solid black;
-    border-radius: 5px;
+    ${rfs(`75px`, `width`)}
+    ${rfs(`75px`, `height`)}
+    border: 4px solid black;
+  }
+
+  &:not(:last-child) .gatsby-image-wrapper {
+    border-right-width: 2px;
+  }
+
+  &:first-child .gatsby-image-wrapper {
+    border-radius: 5px 0 0 5px;
+  }
+
+  &:not(:first-child) .gatsby-image-wrapper {
+    border-left-width: 2px;
+  }
+
+  &:last-child .gatsby-image-wrapper {
+    border-radius: 0 5px 5px 0;
+  }
+
+  .highlighted .gatsby-image-wrapper {
+    border: 8px solid white;
   }
 `;
 
-export default function Gallery({ children }) {
+export default function Gallery({ articles }) {
+  const articleEntries = Object.entries(articles);
+  const articleRefs = articleEntries.map(createRef);
   return <>
-    <section>
-      {children.map(el =>
-        <>
-          <ImgContainer>
-            <Image fluid={el.props.assets.png.thumb.childImageSharp.thumb}></Image>
+    <section className="center-children">
+      <nav>
+        <ArrowButton direction="left" container="nav" changeDOMWidth={false} />
+        {articleEntries.map(([name, assets]) =>
+          <ImgContainer key={name}>
+            <Image fluid={assets.png.thumb.childImageSharp.thumb}></Image>
           </ImgContainer>
-          {el}
-        </>
+        )}
+        <ArrowButton direction="right" container="nav" changeDOMWidth={false} />
+      </nav>
+      {articleEntries.map(([name, assets], i) =>
+        <GalleryArticle
+          ref={articleRefs[i]}
+          key={name}
+          className="center-children"
+          name={name}
+          assets={assets}
+        />
       )}
     </section>
   </>;

@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Image from "gatsby-image";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-import rfs from '../utils/rfs.js';
+import ArrowButton from "../components/arrow-button";
 
-const jumpDuration = `200ms`;
+import rfs from "../utils/rfs.js";
+
+const jumpDuration = 200;
 
 const RoundedImage = styled(Image)`
   border-radius: 1em
@@ -22,54 +24,6 @@ const ImgContainer = styled.section`
     ${rfs(`500px`, `width`)}
   }
 `;
-
-const jump = keyframes`
-  0% {
-    width: 0;
-  }
-  50% {
-    transform: scale(1.4);
-  }
-  100% {
-    transform: none;
-  }
-`
-
-const ArrowButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: monospace;
-  color: white;
-  font-weight: bolder;
-  background-color: #999;
-  box-shadow: 0 0 1px .5px #999;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 200ms, background-color 200ms, color 200ms;
-  ${rfs(`50px`, `height`)}
-  ${rfs(`50px`, `width`)}
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  transform: none;
-  z-index: 1;  // so image doesn't hide button
-  outline: none;
-  ${rfs.margin(`1.5rem`)};
-
-  ${ImgContainer}:hover & {
-    opacity: .34;  // #ddd on a white bg
-
-    &:hover {
-      opacity: 1;
-    }
-
-    &:focus:not(:active), &.jump {
-      animation: ${jump} ${jumpDuration};
-    }
-  }
-`;
-
 
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
@@ -140,11 +94,12 @@ export default class ImageSwitcher extends React.Component {
       >
         <ArrowButton
           ref={this.arrowRefs.left}
+          direction="left"
+          container={ImgContainer}
+          jumpDuration={jumpDuration}
           onClick={() => this.switch(`left`)}
           onTouchStart={this.jumpArrow.bind(this, `left`)}
-        >
-          &lt;
-        </ArrowButton>
+        />
         <RoundedImage
           fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
           alt={this.props.alts[this.state.currentImg]}
@@ -152,11 +107,12 @@ export default class ImageSwitcher extends React.Component {
         />
         <ArrowButton
           ref={this.arrowRefs.right}
+          direction="right"
+          container={ImgContainer}
+          jumpDuration={jumpDuration}
           onClick={() => this.switch(`right`)}
           onTouchStart={this.jumpArrow.bind(this, `right`)}
-        >
-          &gt;
-        </ArrowButton>
+        />
       </ImgContainer>
     );
   }

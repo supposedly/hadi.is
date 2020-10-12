@@ -4,7 +4,6 @@ import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import Title from "../components/title";
 import Gallery from "../components/gallery";
-import GalleryArticle from "../components/gallery-article";
 
 export default ({ data }) => {
   const dataMap = useRef();
@@ -29,11 +28,7 @@ export default ({ data }) => {
   return <Layout title="stuff">
     <header className="center-children">
       <Title text="stuff" />
-      <Gallery>
-        {Object.entries(dataMap.current).map(([name, assets]) =>
-          <GalleryArticle key={name} name={name} assets={assets}></GalleryArticle>
-        )}
-      </Gallery>
+      <Gallery articles={dataMap.current} />
     </header>
   </Layout>
 }
