@@ -8,6 +8,7 @@ import Gallery from "../components/gallery";
 export default ({ data }) => {
   const dataMap = useRef();
 
+  // this is like 78% faster than if i did it with Object.fromEntries()
   useMemo(() => {
     dataMap.current = {};
     Object.keys(data).forEach(k => {
@@ -54,13 +55,13 @@ export default ({ data }) => {
 // NOTE to future me: you can optionally specify sourceInstanceName to be "articles"
 export const query = graphql`
   query PortfolioQuery {
-    lebnxyz: allFile(filter: {relativeDirectory: {eq: "lebnxyz"}}) {
-      ...ArticleAssets
-    }
     copy: allFile(filter: {relativeDirectory: {eq: "copy"}}) {
       ...ArticleAssets
     }
     nutshell: allFile(filter: {relativeDirectory: {eq: "nutshell"}}) {
+      ...ArticleAssets
+    }
+    lebnxyz: allFile(filter: {relativeDirectory: {eq: "lebnxyz"}}) {
       ...ArticleAssets
     }
   }

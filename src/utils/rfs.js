@@ -440,7 +440,13 @@ export function createRFS(args) {
   Object.getOwnPropertyNames(Object.getPrototypeOf(rfsInstance))
     .filter(prop => typeof rfsInstance[prop] === `function` && !/^(?:_|rfs)/.test(prop))
     .forEach(prop => {
-      rfs[prop] = rfsInstance[prop].bind(rfsInstance);
+      const boundFunction = rfsInstance[prop].bind(rfsInstance);
+      rfs[prop] = boundFunction;
+      // if prop is kebab-caseable, add a kebab-cased variant
+      if (prop.toLowerCase() !== prop) {
+        // (add ^\K to the start of the regex to use this as a general kebab-caser)
+        rfs[prop.replace(/(?=[A-Z])/g, `-`).toLowerCase()] = boundFunction;
+      }
     });
   return rfs;
 }

@@ -10,7 +10,8 @@ import rfs from "../utils/rfs.js";
 const jumpDuration = 200;
 
 const RoundedImage = styled(Image)`
-  border-radius: 1em
+  border-radius: 1em;
+  color: transparent;  // because Firefox displays alt-text while loading
 `;
 
 const ImgContainer = styled.section`
@@ -30,6 +31,7 @@ export default class ImageSwitcher extends React.Component {
     super();
     this.state = {currentImg: 0};
     this.arrowRefs = {left: React.createRef(), right: React.createRef()};
+    this.containerRef = React.createRef();
     this.maxImg = Object.keys(props.data).filter(k => k.startsWith(props.prefix)).length - 1;
 
     // this is HIDEOUS i gotta make it less awful at some point
@@ -67,11 +69,6 @@ export default class ImageSwitcher extends React.Component {
     this.setState({currentImg: newImg});
   }
 
-  blurArrows() {
-    this.arrowRefs.left.current.blur();
-    this.arrowRefs.right.current.blur();
-  }
-
   jumpArrow(refName) {
     const el = this.arrowRefs[refName].current;
     if (el === undefined || el === null || el.classList.contains(`jump`)) {
@@ -88,13 +85,14 @@ export default class ImageSwitcher extends React.Component {
   render() {
     return (
       <ImgContainer
+        ref={this.containerRef}
         role="presentation"  // for no-noninteractive-element-interactions :/
         style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
-        onMouseLeave={this.blurArrows.bind(this)}
       >
         <ArrowButton
           ref={this.arrowRefs.left}
           direction="left"
+          containerRef={this.containerRef}
           container={ImgContainer}
           jumpDuration={jumpDuration}
           onClick={() => this.switch(`left`)}
@@ -108,6 +106,7 @@ export default class ImageSwitcher extends React.Component {
         <ArrowButton
           ref={this.arrowRefs.right}
           direction="right"
+          containerRef={this.containerRef}
           container={ImgContainer}
           jumpDuration={jumpDuration}
           onClick={() => this.switch(`right`)}

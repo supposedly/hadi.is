@@ -1,7 +1,7 @@
 import { graphql } from "gatsby";
 import Image from "gatsby-image";
 import PropTypes from "prop-types";
-import React, { createRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 import GalleryArticle from "../components/gallery-article";
@@ -14,7 +14,6 @@ const ImgContainer = styled.section`
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  ${rfs.marginTop(`1rem`)}
 
   picture, .gatsby-image-wrapper {
     ${rfs(`50px`, `width`)}
@@ -23,6 +22,7 @@ const ImgContainer = styled.section`
   .gatsby-image-wrapper {
     ${rfs(`75px`, `width`)}
     ${rfs(`75px`, `height`)}
+    cursor: pointer;
     border: 4px solid black;
   }
 
@@ -47,25 +47,45 @@ const ImgContainer = styled.section`
   }
 `;
 
+const ClickableImage = styled.button``
+
 export default function Gallery({ articles }) {
   const articleEntries = Object.entries(articles);
-  const articleRefs = articleEntries.map(createRef);
+  const [current, setCurrent] = useState(articleEntries.length - 1);
+  const containerRef = useRef(null);
   return <>
+    <p>(this page is under construction 😊)</p>
     <section className="center-children">
-      <nav>
-        <ArrowButton direction="left" container="nav" changeDOMWidth={false} />
-        {articleEntries.map(([name, assets]) =>
-          <ImgContainer key={name}>
-            <Image fluid={assets.png.thumb.childImageSharp.thumb}></Image>
-          </ImgContainer>
-        )}
-        <ArrowButton direction="right" container="nav" changeDOMWidth={false} />
-      </nav>
+      <section style={{ marginTop: `2rem` }} className="center-vertically">
+        <ArrowButton
+          containerRef={containerRef}
+          onClick={() => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); }}}
+          direction="left"
+          container="section"
+          changeDOMWidth={false}
+        />
+        <nav ref={containerRef} style={{ display: `inline-block` }}>
+          {articleEntries.map(([name, assets], i) =>
+            // should find a way to make the onClick be on a button element idk
+            <ImgContainer onClick={() => { setCurrent(i); }} key={name}>
+              <Image
+                fluid={assets.png.thumb.childImageSharp.thumb}
+              />
+            </ImgContainer>
+          )}
+        </nav>
+        <ArrowButton
+          containerRef={containerRef}
+          onClick={() => { if (current < articleEntries.length - 1) { setCurrent(current + 1); } else { setCurrent(0); }}}
+          direction="right"
+          container="section"
+          changeDOMWidth={false}
+        />
+      </section>
       {articleEntries.map(([name, assets], i) =>
         <GalleryArticle
-          ref={articleRefs[i]}
           key={name}
-          className="center-children"
+          className={current === i ? `highlighted` : `hidden`}
           name={name}
           assets={assets}
         />
