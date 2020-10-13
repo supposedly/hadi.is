@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 import GalleryArticle from "../components/gallery-article";
-import ArrowButton from "../components/arrow-button";
+import { ArrowPair } from "../components/arrow-button";
 
 import rfs from "../utils/rfs.js";
 
@@ -55,30 +55,29 @@ export default function Gallery({ articles }) {
     <p>(this page is under construction 😊)</p>
     <section className="center-children">
       <section style={{ marginTop: `2rem` }} ref={containerRef} className="center-vertically">
-        <ArrowButton
+        <ArrowPair
+          directions="left right"
           containerRef={containerRef}
           container="section"
-          onClick={() => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); }}}
-          direction="left"
+          handlers={{
+            onClick: [
+              () => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); } },
+              () => { if (current < articleEntries.length - 1) { setCurrent(current + 1); } else { setCurrent(0); } }
+            ]
+          }}
           changeDOMWidth={false}
-        />
-        <nav style={{ display: `inline-block` }}>
-          {articleEntries.map(([name, assets], i) =>
-            // should find a way to make the onClick be on a button element idk
-            <ImgContainer onClick={() => { setCurrent(i); }} key={name}>
-              <Image
-                fluid={assets.png.thumb.childImageSharp.thumb}
-              />
-            </ImgContainer>
-          )}
-        </nav>
-        <ArrowButton
-          containerRef={containerRef}
-          container="section"
-          onClick={() => { if (current < articleEntries.length - 1) { setCurrent(current + 1); } else { setCurrent(0); }}}
-          direction="right"
-          changeDOMWidth={false}
-        />
+        >
+          <nav style={{ display: `inline-block` }}>
+            {articleEntries.map(([name, assets], i) =>
+              // should find a way to make the onClick be on a button element idk
+              <ImgContainer onClick={() => { setCurrent(i); }} key={name}>
+                <Image
+                  fluid={assets.png.thumb.childImageSharp.thumb}
+                />
+              </ImgContainer>
+            )}
+          </nav>
+        </ArrowPair>
       </section>
       {articleEntries.map(([name, assets], i) =>
         <GalleryArticle

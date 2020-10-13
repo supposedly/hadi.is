@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 
 import rfs from "../utils/rfs.js";
@@ -96,11 +96,9 @@ const ArrowComponent = styled.button.attrs(props => {
   }
 `;
 
-const arrowRef = createRef();
-
-export default React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
+const ArrowButton = React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
   if (!ref) {
-    ref = arrowRef;
+    ref = useRef(null);
   }
   useEffect(() => {
     let nonNullContainer;
@@ -114,9 +112,35 @@ export default React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
       }
     }
   }, [containerRef, ref]);
+  console.log(props);
   return <ArrowComponent
     ref={ref}
     onClick={(...args) => { if (onClick) onClick(...args); }}
     {...props}
   />;
 })
+
+export const ArrowPair = React.forwardRef(({ children, directions, handlers, ...props }, refs) => {
+  delete props.direction;  // just in case
+  let [ref1, ref2] = [useRef(null), useRef(null)];
+  if (refs) {
+    [ref1, ref2] = refs;
+  }
+  const [dir1, dir2] = directions.split(/\s+/);
+  const [handlers1, handlers2] = useMemo(() => {
+    const handlers1 = {}, handlers2 = {};
+    Object.entries(handlers).forEach(([handler, [func1, func2]]) => {
+      handlers1[handler] = func1;
+      handlers2[handler] = func2;
+    });
+    return [handlers1, handlers2];
+  });
+  console.log(dir2);
+  return <>
+    <ArrowButton direction={dir1} ref={ref1 || useRef(null)} {...handlers1} {...props}/>
+      {children}
+    <ArrowButton direction={dir2} ref={ref2 || useRef(null)} {...handlers2} {...props} />
+  </>
+})
+
+export default ArrowButton;

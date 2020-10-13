@@ -3,7 +3,7 @@ import React from "react";
 import Image from "gatsby-image";
 import styled from "styled-components";
 
-import ArrowButton from "../components/arrow-button";
+import { ArrowPair } from "../components/arrow-button";
 
 import rfs from "../utils/rfs.js";
 
@@ -89,29 +89,29 @@ export default class ImageSwitcher extends React.Component {
         role="presentation"  // for no-noninteractive-element-interactions :/
         style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
       >
-        <ArrowButton
-          ref={this.arrowRefs.left}
-          direction="left"
+        <ArrowPair
+          ref={[this.arrowRefs.left, this.arrowRefs.right]}
+          directions="left right"
           containerRef={this.containerRef}
           container={ImgContainer}
           jumpDuration={jumpDuration}
-          onClick={() => this.switch(`left`)}
-          onTouchStart={this.jumpArrow.bind(this, `left`)}
-        />
-        <RoundedImage
-          fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
-          alt={this.props.alts[this.state.currentImg]}
-          style={{ maxHeight: '100%' }}
-        />
-        <ArrowButton
-          ref={this.arrowRefs.right}
-          direction="right"
-          containerRef={this.containerRef}
-          container={ImgContainer}
-          jumpDuration={jumpDuration}
-          onClick={() => this.switch(`right`)}
-          onTouchStart={this.jumpArrow.bind(this, `right`)}
-        />
+          handlers={{
+            onClick: [
+              () => this.switch(`left`),
+              () => this.switch(`right`)
+            ],
+            onTouchStart: [
+              () => this.jumpArrow.bind(this, `left`),
+              () => this.jumpArrow.bind(this, `right`)
+            ]
+          }}
+        >
+          <RoundedImage
+            fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
+            alt={this.props.alts[this.state.currentImg]}
+            style={{ maxHeight: '100%' }}
+          />
+        </ArrowPair>
       </ImgContainer>
     );
   }
