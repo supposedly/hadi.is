@@ -96,10 +96,6 @@ const ArrowComponent = styled.button.attrs(props => {
   }
 `;
 
-function blurSoon(delay = 350) {
-  setTimeout(() => document.activeElement.blur(), delay);
-}
-
 const arrowRef = createRef();
 
 export default React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
@@ -107,18 +103,20 @@ export default React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
     ref = arrowRef;
   }
   useEffect(() => {
-    if (containerRef) {
-      containerRef.current.addEventListener(`onMouseLeave`, ref.current.blur);
+    let nonNullContainer;
+    if (containerRef && containerRef.current && ref) {
+      nonNullContainer = containerRef.current;
+      containerRef.current.addEventListener(`mouseleave`, () => { if (ref.current) ref.current.blur(); });
     }
     return () => {
-      if (containerRef) {
-        containerRef.current.removeEventListener(`onMouseLeave`, ref.current.blur);
+      if (nonNullContainer) {
+        nonNullContainer.removeEventListener(`mouseleave`, () => { if (ref.current) ref.current.blur(); });
       }
     }
   }, [containerRef, ref]);
   return <ArrowComponent
     ref={ref}
-    onClick={(...args) => { if (onClick) onClick(...args); blurSoon(); }}
+    onClick={(...args) => { if (onClick) onClick(...args); }}
     {...props}
   />;
 })

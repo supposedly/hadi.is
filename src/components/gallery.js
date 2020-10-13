@@ -47,8 +47,6 @@ const ImgContainer = styled.section`
   }
 `;
 
-const ClickableImage = styled.button``
-
 export default function Gallery({ articles }) {
   const articleEntries = Object.entries(articles);
   const [current, setCurrent] = useState(articleEntries.length - 1);
@@ -56,15 +54,15 @@ export default function Gallery({ articles }) {
   return <>
     <p>(this page is under construction 😊)</p>
     <section className="center-children">
-      <section style={{ marginTop: `2rem` }} className="center-vertically">
+      <section style={{ marginTop: `2rem` }} ref={containerRef} className="center-vertically">
         <ArrowButton
           containerRef={containerRef}
+          container="section"
           onClick={() => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); }}}
           direction="left"
-          container="section"
           changeDOMWidth={false}
         />
-        <nav ref={containerRef} style={{ display: `inline-block` }}>
+        <nav style={{ display: `inline-block` }}>
           {articleEntries.map(([name, assets], i) =>
             // should find a way to make the onClick be on a button element idk
             <ImgContainer onClick={() => { setCurrent(i); }} key={name}>
@@ -76,9 +74,9 @@ export default function Gallery({ articles }) {
         </nav>
         <ArrowButton
           containerRef={containerRef}
+          container="section"
           onClick={() => { if (current < articleEntries.length - 1) { setCurrent(current + 1); } else { setCurrent(0); }}}
           direction="right"
-          container="section"
           changeDOMWidth={false}
         />
       </section>
