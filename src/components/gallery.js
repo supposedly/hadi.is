@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 import GalleryArticle from "../components/gallery-article";
-import { ArrowPair } from "../components/arrow-button";
+import { FlankingArrows } from "../components/arrow-button";
 
 import rfs from "../utils/rfs.js";
 
@@ -52,10 +52,10 @@ export default function Gallery({ articles }) {
   const [current, setCurrent] = useState(articleEntries.length - 1);
   const containerRef = useRef(null);
   return <>
-    <p>(this page is under construction 😊)</p>
+    <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p>
     <section className="center-children">
       <section style={{ marginTop: `2rem` }} ref={containerRef} className="center-vertically">
-        <ArrowPair
+        <FlankingArrows
           directions="left right"
           containerRef={containerRef}
           container="section"
@@ -77,7 +77,7 @@ export default function Gallery({ articles }) {
               </ImgContainer>
             )}
           </nav>
-        </ArrowPair>
+        </FlankingArrows>
       </section>
       {articleEntries.map(([name, assets], i) =>
         <GalleryArticle
@@ -92,9 +92,7 @@ export default function Gallery({ articles }) {
 }
 
 Gallery.propTypes = {
-};
-
-Gallery.defaultProps = {
+  articles: PropTypes.objectOf(PropTypes.object)
 };
 
 export const fragment = graphql`

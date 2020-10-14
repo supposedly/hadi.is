@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useMemo, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -96,33 +97,36 @@ const ArrowComponent = styled.button.attrs(props => {
   }
 `;
 
-const ArrowButton = React.forwardRef(({ onClick, containerRef, ...props }, ref) => {
+const ArrowButton = React.forwardRef(({ containerRef, ...props }, ref) => {
   if (!ref) {
     ref = useRef(null);
   }
   useEffect(() => {
     let nonNullContainer;
+    const blurArrow = () => { if (ref.current) ref.current.blur(); };
     if (containerRef && containerRef.current && ref) {
       nonNullContainer = containerRef.current;
-      containerRef.current.addEventListener(`mouseleave`, () => { if (ref.current) ref.current.blur(); });
+      containerRef.current.addEventListener(`mouseleave`, blurArrow);
     }
     return () => {
       if (nonNullContainer) {
-        nonNullContainer.removeEventListener(`mouseleave`, () => { if (ref.current) ref.current.blur(); });
+        nonNullContainer.removeEventListener(`mouseleave`, blurArrow);
       }
     }
   }, [containerRef, ref]);
-  console.log(props);
   return <ArrowComponent
     ref={ref}
-    onClick={(...args) => { if (onClick) onClick(...args); }}
     {...props}
   />;
-})
+});
 
-export const ArrowPair = React.forwardRef(({ children, directions, handlers, ...props }, refs) => {
+ArrowButton.propTypes = {
+  containerRef: PropTypes.shape({current: PropTypes.instanceOf(Element)}).isRequired
+}
+
+export const FlankingArrows = React.forwardRef(({ children, directions, handlers, ...props }, refs) => {
   delete props.direction;  // just in case
-  let [ref1, ref2] = [useRef(null), useRef(null)];
+  let ref1 = useRef(null), ref2 = useRef(null);
   if (refs) {
     [ref1, ref2] = refs;
   }
@@ -134,13 +138,24 @@ export const ArrowPair = React.forwardRef(({ children, directions, handlers, ...
       handlers2[handler] = func2;
     });
     return [handlers1, handlers2];
-  });
-  console.log(dir2);
+  }, [handlers]);
   return <>
-    <ArrowButton direction={dir1} ref={ref1 || useRef(null)} {...handlers1} {...props}/>
+    <ArrowButton direction={dir1} ref={ref1} {...handlers1} {...props}/>
       {children}
-    <ArrowButton direction={dir2} ref={ref2 || useRef(null)} {...handlers2} {...props} />
+    <ArrowButton direction={dir2} ref={ref2} {...handlers2} {...props} />
   </>
 })
+
+FlankingArrows.propTypes = {
+  children: PropTypes.node.isRequired,
+  directions: PropTypes.string,
+  handlers: PropTypes.objectOf(PropTypes.func)
+}
+
+FlankingArrows.defaultProps = {
+  children: undefined,
+  directions: "left right",
+  handlers: {}
+}
 
 export default ArrowButton;

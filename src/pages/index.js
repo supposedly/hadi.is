@@ -171,7 +171,12 @@ export default (props) => {
             </nav>
           </div>
         </div>
-        <FatButton as={NavButton} id="show-main" text="👆" onClick={showMain} />
+        <FatButton
+          as={NavButton}
+          id="show-main"
+          text={<span role="img" aria-label="go back up">👆</span>}
+          onClick={showMain}
+        />
       </LinksSection>
     </Layout>
   );

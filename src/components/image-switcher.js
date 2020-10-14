@@ -3,7 +3,7 @@ import React from "react";
 import Image from "gatsby-image";
 import styled from "styled-components";
 
-import { ArrowPair } from "../components/arrow-button";
+import { FlankingArrows } from "../components/arrow-button";
 
 import rfs from "../utils/rfs.js";
 
@@ -89,7 +89,7 @@ export default class ImageSwitcher extends React.Component {
         role="presentation"  // for no-noninteractive-element-interactions :/
         style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
       >
-        <ArrowPair
+        <FlankingArrows
           ref={[this.arrowRefs.left, this.arrowRefs.right]}
           directions="left right"
           containerRef={this.containerRef}
@@ -111,7 +111,7 @@ export default class ImageSwitcher extends React.Component {
             alt={this.props.alts[this.state.currentImg]}
             style={{ maxHeight: '100%' }}
           />
-        </ArrowPair>
+        </FlankingArrows>
       </ImgContainer>
     );
   }
