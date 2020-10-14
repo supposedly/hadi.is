@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 import rfs from "../utils/rfs.js";
@@ -9,14 +9,14 @@ const polygons = {
   left: `50% 0, 55% 0, 5% 50%, 55% 100%, 50% 100%, 0% 50%`,
   right: `45% 0, 50% 0, 100% 50%, 50% 100%, 45% 100%, 95% 50%`,
   up: `5% 50%, 50% 5%, 95% 50%, 100% 50%, 50% 0, 0% 50%`
-}
+};
 
 const inverses = {
   down: `up`,
   left: `right`,
   right: `left`,
   up: `down`
-}
+};
 
 const jump = keyframes`
   0% {
@@ -28,7 +28,7 @@ const jump = keyframes`
   100% {
     transform: none;
   }
-`
+`;
 
 const cosmeticJump = keyframes`
   0% {
@@ -40,7 +40,7 @@ const cosmeticJump = keyframes`
   100% {
     transform: none;
   }
-`
+`;
 
 const ArrowComponent = styled.button.attrs(props => {
   const direction = props.direction || `right`;
@@ -84,7 +84,7 @@ const ArrowComponent = styled.button.attrs(props => {
     clip-path: polygon(${props => polygons[props.direction]});
   }
 
-  ${props => props.container}:hover > & {
+  ${props => props.container}:hover > &.useHover {
     opacity: .34;  // #ddd on a white bg
 
     &:hover {
@@ -97,7 +97,7 @@ const ArrowComponent = styled.button.attrs(props => {
   }
 `;
 
-const ArrowButton = React.forwardRef(({ containerRef, ...props }, ref) => {
+const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) => {
   if (!ref) {
     ref = useRef(null);
   }
@@ -114,14 +114,53 @@ const ArrowButton = React.forwardRef(({ containerRef, ...props }, ref) => {
       }
     }
   }, [containerRef, ref]);
+  const [useHover, setUseHover] = useState(true);
+  useEffect(() => {
+    // thanks https://stackoverflow.com/a/30303898
+    // lastTouchTime is used for ignoring emulated mousemove events
+    // that are fired after touchstart events. Since they're
+    // indistinguishable from real events, we use the fact that they're
+    // fired a few milliseconds after touchstart to filter them.
+    let lastTouchTime = 0, nonNullContainer;
+    const updateLastTouchTime = () => { lastTouchTime = new Date(); }
+    const disableHover = () => { setUseHover(false); }
+    const enableHover = () => {
+      if (new Date() - lastTouchTime < 500) {
+        return;
+      }
+      setUseHover(true);
+    }
+
+    if (containerRef && containerRef.current) {
+      nonNullContainer = containerRef.current;
+      nonNullContainer.addEventListener(`touchstart`, updateLastTouchTime, true);
+      nonNullContainer.addEventListener(`touchstart`, disableHover, true);
+      nonNullContainer.addEventListener(`mousemove`, enableHover, true);
+    }
+
+    return () => {
+      if (nonNullContainer) {
+        nonNullContainer.addEventListener('touchstart', updateLastTouchTime, true);
+        nonNullContainer.addEventListener('touchstart', disableHover, true);
+        nonNullContainer.addEventListener('mousemove', enableHover, true);
+      }
+    }
+  }, [containerRef]);
+
   return <ArrowComponent
     ref={ref}
+    className={useHover ? `useHover` : ``}
     {...props}
   />;
 });
 
 ArrowButton.propTypes = {
-  containerRef: PropTypes.shape({current: PropTypes.object}).isRequired
+  containerRef: PropTypes.shape({current: PropTypes.object}).isRequired,
+  noTouch: PropTypes.bool
+}
+
+ArrowButton.defaultProps = {
+  noTouch: false
 }
 
 export const FlankingArrows = React.forwardRef(({ children, directions, handlers, ...props }, refs) => {

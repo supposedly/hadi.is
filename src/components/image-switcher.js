@@ -27,21 +27,29 @@ const ImgContainer = styled.section`
 `;
 
 const Dot = styled.span`
-  opacity: ${props => props.isCurrent ? 0.3 : 0.1};
+  opacity: ${props => props.isCurrent ? 0.4 : 0.1};
   display: inline-block;
   height: 20px;
-  width: 20px;
+  width: 18px;
   cursor: pointer;
   user-select: none;
   transition: opacity 100ms;
+  position: relative;
 
   &::after {
     content: '';
     display: inline-block;
     border-radius: 50%;
     background-color: black;
-    height: 50%;
-    width: 50%;
+    height: 6px;
+    width: 6px;
+
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 5px;
   }
 `
 
@@ -105,6 +113,7 @@ export default class ImageSwitcher extends React.Component {
           containerRef={this.containerRef}
           container={ImgContainer}
           jumpDuration={jumpDuration}
+          noTouch={true}
           handlers={{
             onClick: [
               () => this.switch(`left`),
