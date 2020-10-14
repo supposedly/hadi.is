@@ -76,6 +76,10 @@ const ArrowComponent = styled.button.attrs(props => {
   ${props => rfs[props.marginBackward](`1.5rem`)}
   background-color: transparent;
 
+  &.hide {
+    visibility: hidden;
+  }
+
   &::after {
     content: '';
     width: 100%;
@@ -84,7 +88,7 @@ const ArrowComponent = styled.button.attrs(props => {
     clip-path: polygon(${props => polygons[props.direction]});
   }
 
-  ${props => props.alwaysShow ? `&` : `${props.container}:hover > &.useHover`} {
+  ${props => props.alwaysShow ? `` : `${props.container}:hover > &.useHover {`}
     opacity: .34;  // #ddd on a white bg
 
     &:hover {
@@ -94,7 +98,7 @@ const ArrowComponent = styled.button.attrs(props => {
     &:focus:not(:active), &.jump {
       animation: ${props => props.changeDOMWidth ? jump : cosmeticJump} ${props => props.jumpDuration}ms;
     }
-  }
+  ${props => props.alwaysShow ? `` : `}`}
 `;
 
 const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) => {
@@ -149,7 +153,7 @@ const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) 
 
   return <ArrowComponent
     ref={ref}
-    className={useHover ? `useHover` : ``}
+    className={useHover ? `useHover` : noTouch ? `hide` : ``}
     {...props}
   />;
 });
