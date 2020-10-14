@@ -26,6 +26,25 @@ const ImgContainer = styled.section`
   }
 `;
 
+const Dot = styled.span`
+  opacity: ${props => props.isCurrent ? 0.3 : 0.1};
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 100ms;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    border-radius: 50%;
+    background-color: black;
+    height: 50%;
+    width: 50%;
+  }
+`
+
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
     super();
@@ -43,7 +62,12 @@ export default class ImageSwitcher extends React.Component {
     // continued HIDEOUSness
     this.isFirefox = navigator.userAgent.match(/Gecko\/\S+/) !== null;
     document.addEventListener(`touchstart`, () => { this.touchActive = true; });
-    document.addEventListener(`mousedown`, () => { if (!this.touchActive) this.arrowTouched = false; this.touchActive = false; });
+    document.addEventListener(`mousedown`, () => {
+      if (!this.touchActive) {
+        this.arrowTouched = false;
+      }
+      this.touchActive = false;
+    });
   }
 
   switch(refName, ignoreArrowTouched = false) {
@@ -69,24 +93,10 @@ export default class ImageSwitcher extends React.Component {
     this.setState({currentImg: newImg});
   }
 
-  jumpArrow(refName) {
-    const el = this.arrowRefs[refName].current;
-    if (el === undefined || el === null || el.classList.contains(`jump`)) {
-      return;
-    }
-    this.arrowTouched = true;
-    el.classList.add(`.jump`);
-    el.classList.remove(`.jump`);
-    setTimeout(() => {
-      this.switch(refName, true);
-    }, this.isFirefox ? 75 : jumpDuration);
-  }
-
   render() {
-    return (
+    return <div class="center-children">
       <ImgContainer
         ref={this.containerRef}
-        role="presentation"  // for no-noninteractive-element-interactions :/
         style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
       >
         <FlankingArrows
@@ -99,10 +109,6 @@ export default class ImageSwitcher extends React.Component {
             onClick: [
               () => this.switch(`left`),
               () => this.switch(`right`)
-            ],
-            onTouchStart: [
-              () => this.jumpArrow.bind(this, `left`),
-              () => this.jumpArrow.bind(this, `right`)
             ]
           }}
         >
@@ -113,7 +119,12 @@ export default class ImageSwitcher extends React.Component {
           />
         </FlankingArrows>
       </ImgContainer>
-    );
+      <div style={{marginBottom: `0.5em`}}>
+        {Array.from({ length: this.maxImg + 1 }, (_, i) => (
+          <Dot onClick={() => { this.setState({currentImg: i}); }} isCurrent={this.state.currentImg === i} />
+        ))}
+      </div>
+    </div>
   }
 }
 

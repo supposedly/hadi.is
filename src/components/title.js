@@ -20,7 +20,7 @@ export default function Title ({
   style
 }) {
   return (
-    <Header className="big" inline={inline} style={style}>
+    <Header className="big" inline={inline} style={{marginTop: 0, ...style}}>
       hadi is
       {` `}
       {adverb
