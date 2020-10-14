@@ -15,13 +15,9 @@ const ImgContainer = styled.section`
   align-items: center;
   justify-content: space-between;
 
-  picture, .gatsby-image-wrapper {
-    ${rfs(`50px`, `width`)}
-  }
-
   .gatsby-image-wrapper {
-    ${rfs(`75px`, `width`)}
-    ${rfs(`75px`, `height`)}
+    ${rfs(`55px`, `width`)}
+    ${rfs(`55px`, `height`)}
     cursor: pointer;
     border: 4px solid black;
   }
@@ -42,8 +38,13 @@ const ImgContainer = styled.section`
     border-radius: 0 5px 5px 0;
   }
 
-  .highlighted .gatsby-image-wrapper {
-    border: 8px solid white;
+  &.current .gatsby-image-wrapper {
+    border-bottom-style: dashed;
+    border-top-style: dashed;
+  }
+
+  &.not-current .gatsby-image-wrapper {
+    border-style: solid;
   }
 `;
 
@@ -52,7 +53,7 @@ export default function Gallery({ articles }) {
   const [current, setCurrent] = useState(articleEntries.length - 1);
   const containerRef = useRef(null);
   return <>
-    <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p>
+    {/* <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p> */}
     <section className="center-children">
       <section style={{ marginTop: `2rem` }} ref={containerRef} className="center-vertically">
         <FlankingArrows
@@ -70,7 +71,11 @@ export default function Gallery({ articles }) {
           <nav style={{ display: `inline-block` }}>
             {articleEntries.map(([name, assets], i) =>
               // should find a way to make the onClick be on a button element idk
-              <ImgContainer onClick={() => { setCurrent(i); }} key={name}>
+              <ImgContainer
+                onClick={() => { setCurrent(i); }}
+                className={current === i ? `current` : `not-current`}
+                key={name}
+              >
                 <Image
                   fluid={assets.png.thumb.childImageSharp.thumb}
                 />
@@ -82,7 +87,7 @@ export default function Gallery({ articles }) {
       {articleEntries.map(([name, assets], i) =>
         <GalleryArticle
           key={name}
-          className={current === i ? `highlighted` : `hidden`}
+          focused={current === i}
           name={name}
           assets={assets}
         />
@@ -105,7 +110,7 @@ export const fragment = graphql`
           thumb: fluid(maxWidth: 100) {
             ...GatsbyImageSharpFluid
           }
-          main: fluid(maxWidth: 300) {
+          main: fluid(maxWidth: 500, quality: 100) {
             ...GatsbyImageSharpFluid
           }
         }

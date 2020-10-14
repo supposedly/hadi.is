@@ -149,7 +149,7 @@ export const FlankingArrows = React.forwardRef(({ children, directions, handlers
 FlankingArrows.propTypes = {
   children: PropTypes.node.isRequired,
   directions: PropTypes.string,
-  handlers: PropTypes.objectOf(PropTypes.func)
+  handlers: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.func))
 }
 
 FlankingArrows.defaultProps = {

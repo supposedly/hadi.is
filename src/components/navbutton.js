@@ -20,7 +20,7 @@ const NavButton = React.forwardRef(({ className, id, text, onClick }, ref) => {
 NavButton.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
-  text: PropTypes.string
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.elementType])
 };
 
 export default NavButton;
