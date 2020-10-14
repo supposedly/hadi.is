@@ -84,7 +84,7 @@ const ArrowComponent = styled.button.attrs(props => {
     clip-path: polygon(${props => polygons[props.direction]});
   }
 
-  ${props => props.container}:hover > &.useHover {
+  ${props => props.alwaysShow ? `&` : `${props.container}:hover > &.useHover`} {
     opacity: .34;  // #ddd on a white bg
 
     &:hover {

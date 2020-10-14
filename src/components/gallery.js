@@ -60,6 +60,7 @@ export default function Gallery({ articles }) {
           directions="left right"
           containerRef={containerRef}
           container="section"
+          alwaysShow={true}
           handlers={{
             onClick: [
               () => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); } },
