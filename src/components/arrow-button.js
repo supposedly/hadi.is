@@ -121,7 +121,7 @@ const ArrowButton = React.forwardRef(({ containerRef, ...props }, ref) => {
 });
 
 ArrowButton.propTypes = {
-  containerRef: PropTypes.shape({current: PropTypes.instanceOf(Element)}).isRequired
+  containerRef: PropTypes.shape({current: PropTypes.object}).isRequired
 }
 
 export const FlankingArrows = React.forwardRef(({ children, directions, handlers, ...props }, refs) => {

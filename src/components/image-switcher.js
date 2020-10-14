@@ -94,7 +94,7 @@ export default class ImageSwitcher extends React.Component {
   }
 
   render() {
-    return <div class="center-children">
+    return <div className="center-children">
       <ImgContainer
         ref={this.containerRef}
         style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
@@ -121,7 +121,11 @@ export default class ImageSwitcher extends React.Component {
       </ImgContainer>
       <div style={{marginBottom: `0.5em`}}>
         {Array.from({ length: this.maxImg + 1 }, (_, i) => (
-          <Dot onClick={() => { this.setState({currentImg: i}); }} isCurrent={this.state.currentImg === i} />
+          <Dot
+            key={i}  // dis cool because the array is never mutating
+            onClick={() => { this.setState({currentImg: i}); }}
+            isCurrent={this.state.currentImg === i}
+          />
         ))}
       </div>
     </div>
