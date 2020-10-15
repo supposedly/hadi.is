@@ -13,7 +13,11 @@ const MainArticle = styled.article`
   font-family: 'Epilogue', sans-serif;
   font-variation-settings: "wght" 250;
   font-weight: 250; // for firefox, idk why
-  ${rfs(`19px`)}
+  ${rfs(`16px`)}
+
+  @media only screen and (min-width: 700px) {
+    ${rfs(`19px`)}
+  }
   
   strong {
     font-variation-settings: "wght" 500;

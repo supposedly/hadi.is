@@ -1,8 +1,5 @@
 @import "rfs-scss";
 
-$icon-nav-height: 39.33px;
-$icon-nav-width: 48px;
-
 // wish there were a parent selector so i could just say "<main></main> and all its parents"
 html, body, #___gatsby, #gatsby-focus-wrapper, main {
   height: 100%;
@@ -62,10 +59,6 @@ h2, .big {
   align-items: center;
 }
 
-.red {
-  color: red;
-}
-
 .black-underline {
   box-shadow: 0px 4px black;
 }
@@ -92,67 +85,4 @@ h2, .big {
 
 .full-height {
   height: 100%;
-}
-
-#icon-spaceholder {
-  top: 0;
-  height: $icon-nav-height;
-
-  // @media only screen and (max-width: 700px) {
-  //   left: 0;
-  //   width: $icon-nav-width;
-  //   margin: 0;
-  //   height: 100%;
-  // }
-}
-
-#quicc-icons {
-  position: fixed;
-  top: 0;  // https://stackoverflow.com/a/38679996
-  z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
-  @include margin-top(.5rem);
-  @include margin-left(.5rem);
-  height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-  @media only screen and (min-width: 700px) {
-    display: block;
-    height: auto; // $icon-nav-height
-  }
-
-  // weird redundancy idk
-  &.invariable {
-    display: block;
-    height: auto; // $icon-nav-height
-  }
-
-  a {
-    margin-right: 1em;
-    color: #000;
-    opacity: 0.25;
-    transition: opacity 75ms;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    &:not(.no-skew) {
-      // pseudo-pseudo-random rotation
-      &:nth-child(3n+1) svg, &:nth-child(3n) svg {
-        transform: rotate(10deg);
-      }
-      &:nth-child(3n-1) svg {
-        transform: rotate(0);
-      }
-      &:nth-child(4n-2) svg {
-        transform: rotate(-20deg);
-      }
-      &:nth-child(4n) svg {
-        transform:rotate(-10deg);
-      }
-    }
-  }
 }

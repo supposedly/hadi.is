@@ -25,10 +25,10 @@ export default function Title ({
       {` `}
       {adverb
         ? <>
-            <span className="red">{adverb}</span>
+            <span style={{color: `red`}}>{adverb}</span>
             <span className="input">{text}</span>
           </>
-        : <span className="red input">{text}</span>
+        : <span style={{color: `red`}} className="input">{text}</span>
       }
       {punctuation}{space}{after}
     </Header>

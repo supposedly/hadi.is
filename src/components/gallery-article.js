@@ -14,9 +14,13 @@ const Article = styled.article`
   font-family: 'Epilogue', sans-serif;
   font-variation-settings: "wght" 250;
   font-weight: 250; // for firefox, idk why
-  ${rfs(`19px`)}
+  ${rfs(`16px`)}
   transition: height 0ms 300ms, opacity 300ms;
   overflow: hidden;
+
+  @media only screen and (min-width: 700px) {
+    ${rfs(`19px`)}
+  }
 
   &.invisible {
     opacity: 0;
@@ -41,9 +45,11 @@ const Article = styled.article`
   }
 `
 
-const ImgContainer = styled(Image)`
+const ImgContainer = styled(Image).attrs(props => ({
+  width: `${500 * (props.scale || 1)}px`
+}))`
   ${rfs.marginTop(`1rem`)}
-  ${rfs(`500px`, `width`)}
+  ${props => rfs(props.width, `width`)}
   border: 2px solid black;
   border-radius: 5px;
 
@@ -58,8 +64,9 @@ export default function GalleryArticle({ assets, focused }) {
     [assets]
   );
   const components = useMemo(() => ({
-    Image: ({ n, float, margin, marginLeft, marginRight, style, ...props }) => (
+    Image: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
       <ImgContainer
+        scale={scale}
         style={{float, margin, marginLeft, marginRight, ...style}}
         fluid={images[`img_${n}`].childImageSharp.main}
         {...props}

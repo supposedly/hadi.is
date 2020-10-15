@@ -49,7 +49,7 @@ const Dot = styled.span`
     margin-right: auto;
     left: 0;
     right: 0;
-    top: 5px;
+    top: 50%;
   }
 `
 

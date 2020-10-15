@@ -7,13 +7,77 @@
 
 import React from "react";
 import Helmet from "react-helmet";
-import { FaHome, FaLinkedin, FaGithub, FaRegAddressBook, FaAt, FaTwitter } from "react-icons/fa";
+import { FaHome, FaLinkedin, FaGithub, FaFolderOpen, FaEnvelope, FaTwitter } from "react-icons/fa";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
+import rfs from "../utils/rfs.js";
 import SEO from "./seo";
 import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
 import "../styles/global.scss";
+
+const iconNavHeight = `39.33px`;
+
+const IconSpaceholder = styled.div`
+  top: 0;
+  height: ${iconNavHeight};
+`;
+
+const QuiccIcons = styled.nav`
+  position: fixed;
+  top: 0;  // https://stackoverflow.com/a/38679996
+  z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
+  ${rfs.marginTop(`.5rem`)}
+  ${rfs.marginLeft(`.5rem`)}
+  height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens when vertical
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  @media only screen and (min-width: 700px) {
+    display: block;
+    height: auto;  // iconNavHeight
+  }
+
+  // weird redundancy idk
+  &.invariable {
+    display: block;
+    height: auto;  // iconNavHeight
+  }
+
+  a {
+    margin-right: 1em;
+    color: black;
+    opacity: 0.25;
+    transition: opacity 75ms;
+
+    &.local {
+      color: red;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:not(.no-skew) {
+      // pseudo-pseudo-random rotation
+      &:nth-child(3n+1) svg, &:nth-child(3n-1) svg {
+        transform: rotate(-10deg);
+      }
+      &:nth-child(3n) svg {
+        transform: rotate(3deg);
+      }
+      &:nth-child(4n-2) svg {
+        transform: rotate(10deg);
+      }
+      &:nth-child(4n+1) svg {
+        transform:rotate(-8deg);
+      }
+    }
+  }
+`
 
 export default function Layout({ children, title, literalTitle }) {
   const data = useStaticQuery(graphql`
@@ -52,19 +116,20 @@ export default function Layout({ children, title, literalTitle }) {
         `}</style>
       </Helmet>
       <main>
-        <div id="icon-spaceholder"></div>
-        <nav id="quicc-icons" className={onHomepage ? `` : `invariable`}>
+        <IconSpaceholder />
+        <QuiccIcons className={onHomepage ? `` : `invariable`}>
           { onHomepage ?
             <>
               {/* <Link title="blog" to="/blog">
                 <FaPencilAlt size={32} />
               </Link> */}
-              <Link title="portfolio" to="/stuff">
-                <FaRegAddressBook size={32} />
+              <Link title="portfolio" to="/stuff" className="local">
+                <FaFolderOpen size={32} />
               </Link>
               {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
+              {/* TODO: maybe url-encode the href */}
               <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
-                <FaAt size={32} />
+                <FaEnvelope size={32} />
               </a>
               <a title="twitter" href="https://twitter.com/tarxini">
                 <FaTwitter size={32} />
@@ -77,11 +142,11 @@ export default function Layout({ children, title, literalTitle }) {
               </a>
             </>
           :
-            <Link title="main page" to="/" className="no-skew" style={{ color: 'red' }}>
+            <Link title="main page" to="/" className="no-skew local">
               <FaHome size={34} />
             </Link>
           }
-        </nav>
+        </QuiccIcons>
         {children}
       </main>
       {/* <footer>
