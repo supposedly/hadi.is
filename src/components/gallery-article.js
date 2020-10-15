@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 
 import Image from "gatsby-image";
+import { Video } from "gatsby-video";
 
 import rfs from "../utils/rfs.js";
 
@@ -58,9 +59,25 @@ const ImgContainer = styled(Image).attrs(props => ({
   }
 `;
 
+const VidContainer = styled(Video).attrs(props => ({
+  width: `${500 * (props.scale || 1)}px`
+}))`
+  ${rfs.marginTop(`1rem`)}
+  ${props => rfs(props.width, `width`)}
+  border: 2px solid black;
+  border-radius: 5px;
+
+  video {
+    float: left;
+  }
+`;
+
 export default function GalleryArticle({ assets, focused }) {
-  const images = useMemo(
-    () => ({...assets.png, ...assets.jpg}),
+  const [images, videos] = useMemo(
+    () => [
+      {...assets.png, ...assets.jpg},
+      {...assets.mp4, ...assets.webm}
+    ],
     [assets]
   );
   const components = useMemo(() => ({
@@ -72,6 +89,14 @@ export default function GalleryArticle({ assets, focused }) {
         {...props}
       />
     ),
+    Video: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => {
+      const sources = videos[`vid_${n}`].childVideoFfmpeg;
+      return <VidContainer
+        scale={scale}
+        style={{float, margin, marginLeft, marginRight, ...style}}
+        sources={[sources.mp4]}
+      />
+    },
     h2: ({ className, children, ...props }) => (
       <h2 className={`center-children ${className}`} {...props}>{children}</h2>
     )

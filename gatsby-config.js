@@ -1,3 +1,9 @@
+const ffprobe = require(`ffprobe-static`);
+const ffmpeg = require(`ffmpeg-static`);
+
+process.env[`FFMPEG_PATH`] = ffmpeg.path;
+process.env[`FFPROBE_PATH`] = ffprobe.path;
+
 module.exports = {
   siteMetadata: {
     titleTemplate: `%s`,

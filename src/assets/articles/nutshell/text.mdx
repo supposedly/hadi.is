@@ -1,13 +1,13 @@
 ## nutshell
 
-<Image n={0} float="left" marginRight="1em" />
-
-[Conwaylife](https://conwaylife.com/forums) is a community of enthusiasts that use programs like [Golly](https://golly.sourceforge.net) to explore *cellular automata:* simulations that put cells on a grid and make them interact with neighboring cells according to specific rules.
+There's a community of enthusiasts, mostly congregated at [Conwaylife](https://conwaylife.com/forums), that use programs like [Golly](https://golly.sourceforge.net) to explore *cellular automata:* simulations that put cells on a grid and make them interact with neighboring cells according to specific rules.
 
 That's all there is to it, really, but the appeal is that even simple rules can give rise to hosts of crazy-complex interactions. The most-famous cellular automaton in this respect is Conway's Game of Life, devised by mathematician John Conway (RIP 2020) in the 1960s.
 
-Among the information you might find on Conway's Game of Life if you look it up is that cells can team up to produce things like "oscillators" (arrangements of cells that repeat the exact same births/deaths over and over again, periodically), "spaceships" (oscillators, but with an offset each time they start over, making the pattern move across the grid over time), and a whole bunch of other interesting mechanisms. The possibilities are endless from there. So some people like to spend their time enumerating spaceships or oscillators matching specific criteria, kind of like stamp or figurine collectors; some people like to work on synthesizing patterns, like spaceships or oscillators, by colliding spaceships together strategically; some people like to use spaceships to simulate real-life electrical circuitry, building things like calculators and Turing machines; and so on.
+Conway's Game of Life is awesome, and you can look it up to find out more about how it works and why people like it. But there are a whole lot more CA out there to explore! So Golly, the software from earlier, actually lets you make up your own with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is surrounded by three yellow neighbors, it transitions into a yellow cell" and that translates into a whole cellular-automaton system for you to explore. But the problem's that this language is pretty primitive. It lets you describe any CA that Golly could possibly simulate, so it's definitely complete, but it's way lower-level than is helpful sometimes.
 
-It's awesome. But there are more CA out there to explore than Conway's Game of Life! So Golly, the software from earlier, implements a language that lets you describe a CA by enumerating all of the individual transition rules that you expect it to have: stuff like "if a blue cell is surrounded by three yellow neighbors, it transitions into a yellow cell". But the problem's that the language is pretty primitive. It lets you describe any CA that Golly could possibly simulate, so it's complete, but it's way lower-level than is helpful sometimes.
+<Image n={0} float="right" marginLeft="1em" />
 
-Personally, I had this idea one day that I wanted to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton. The only holdup was that Golly's CA language would have me writing about a thousand lines of text by hand in order to do that!
+Personally, I had this idea one day that I wanted to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton. But doing it in Golly's CA language would have me writing about a thousand lines of text by hand!
+
+[TODO: once i get the video working, finish explaining just that this let me make that etc]

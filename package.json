@@ -6,6 +6,8 @@
   "author": "github/supposedly",
   "dependencies": {
     "babel-plugin-styled-components": "^1.11.1",
+    "ffmpeg-static": "^4.2.7",
+    "ffprobe-static": "^3.0.0",
     "gatsby": "^2.23.10",
     "gatsby-disable-404": "^0.2.1",
     "gatsby-image": "^2.4.8",

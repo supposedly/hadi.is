@@ -118,6 +118,23 @@ export const fragment = graphql`
         childMdx {
           body
         }
+        childVideoFfmpeg {
+          mp4: transcode(
+            maxWidth: 900
+            maxHeight: 480
+            fileExtension: "mp4"
+            codec: "libx264"
+          ) {
+            width
+            src
+            presentationMaxWidth
+            presentationMaxHeight
+            originalName
+            height
+            fileExtension
+            aspectRatio
+          }
+        }
       }
     }
   }
