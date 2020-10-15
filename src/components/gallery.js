@@ -119,6 +119,22 @@ export const fragment = graphql`
           body
         }
         childVideoFfmpeg {
+          webm: transcode(
+            outputOptions: ["-crf 20", "-b:v 0"]
+            maxWidth: 900
+            maxHeight: 480
+            fileExtension: "webm"
+            codec: "libvpx-vp9"
+          ) {
+            width
+            src
+            presentationMaxWidth
+            presentationMaxHeight
+            originalName
+            height
+            fileExtension
+            aspectRatio
+          }
           mp4: transcode(
             maxWidth: 900
             maxHeight: 480
