@@ -1,7 +1,7 @@
 const ffprobe = require(`ffprobe-static`);
 const ffmpeg = require(`ffmpeg-static`);
 
-process.env[`FFMPEG_PATH`] = ffmpeg.path;
+process.env[`FFMPEG_PATH`] = ffmpeg;
 process.env[`FFPROBE_PATH`] = ffprobe.path;
 
 module.exports = {
