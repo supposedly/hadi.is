@@ -113,6 +113,7 @@ export default function GalleryArticle({ assets, focused }) {
         {...props}
       />
     },
+    Comment: () => <></>,
     h2: ({ className, children, ...props }) => (
       <h2 className={`center-children ${className || ``}`} {...props}>{children}</h2>
     )

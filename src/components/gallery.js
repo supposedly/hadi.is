@@ -135,21 +135,6 @@ export const fragment = graphql`
             fileExtension
             aspectRatio
           }
-          mp4: transcode(
-            maxWidth: 900
-            maxHeight: 480
-            fileExtension: "mp4"
-            codec: "libx264"
-          ) {
-            width
-            src
-            presentationMaxWidth
-            presentationMaxHeight
-            originalName
-            height
-            fileExtension
-            aspectRatio
-          }
         }
       }
     }
