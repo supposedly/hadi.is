@@ -117,6 +117,13 @@ export const fragment = graphql`
         }
         childMdx {
           body
+          frontmatter {
+            year
+            builtwith {
+              name
+              libs
+            }
+          }
         }
         childVideoFfmpeg {
           webm: transcode(

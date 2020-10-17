@@ -55,10 +55,28 @@ export default ({ data }) => {
 // NOTE to future me: you can optionally specify sourceInstanceName to be "articles"
 export const query = graphql`
   query PortfolioQuery {
-    copy: allFile(filter: {relativeDirectory: {eq: "copy"}}) {
+    calcstuff: allFile(filter: {relativeDirectory: {eq: "calculator-stuff"}}) {
+      ...ArticleAssets
+    }
+    caterer: allFile(filter: {relativeDirectory: {eq: "caterer"}}) {
+      ...ArticleAssets
+    }
+    booksy: allFile(filter: {relativeDirectory: {eq: "booksy"}}) {
       ...ArticleAssets
     }
     nutshell: allFile(filter: {relativeDirectory: {eq: "nutshell"}}) {
+      ...ArticleAssets
+    }
+    joffrey: allFile(filter: {relativeDirectory: {eq: "joffrey"}}) {
+      ...ArticleAssets
+    }
+    wacomophone: allFile(filter: {relativeDirectory: {eq: "wacomophone"}}) {
+      ...ArticleAssets
+    }
+    copy: allFile(filter: {relativeDirectory: {eq: "copy"}}) {
+      ...ArticleAssets
+    }
+    minetactoe: allFile(filter: {relativeDirectory: {eq: "mine-tac-toe"}}) {
       ...ArticleAssets
     }
     lebnxyz: allFile(filter: {relativeDirectory: {eq: "lebnxyz"}}) {

@@ -88,9 +88,22 @@ const VidContainer = styled(({ sources, className, ...props }) => (
 
 export default function GalleryArticle({ assets, focused }) {
   // ignore all of the weird outer divs
-  const [images, videos] = useMemo(
+  const [article, images, gifs, videos] = useMemo(
     () => [
+      assets.mdx ? assets.mdx.text.childMdx : {
+        notDefined: true,
+        body: "undefined",
+        frontmatter: {
+          year: "undefined",
+          builtwith: [
+            {
+              name: "undefined"
+            }
+          ]
+        }
+      },
       {...assets.png, ...assets.jpg},
+      assets.gif,
       {...assets.mp4, ...assets.webm}
     ],
     [assets]
@@ -101,6 +114,14 @@ export default function GalleryArticle({ assets, focused }) {
         scale={scale}
         style={{float, margin, marginLeft, marginRight, ...style}}
         fluid={images[`img_${n}`].childImageSharp.main}
+        {...props}
+      />
+    ),
+    GIF: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
+      <StyledImage
+        scale={scale}
+        style={{float, margin, marginLeft, marginRight, ...style}}
+        fluid={gifs[`gif_${n}`].childImageSharp.main}
         {...props}
       />
     ),
@@ -115,15 +136,20 @@ export default function GalleryArticle({ assets, focused }) {
     },
     Comment: () => <></>,
     h2: ({ className, children, ...props }) => (
-      <h2 className={`center-children ${className || ``}`} {...props}>{children}</h2>
+      <header className="center-children">
+        <h2 className={className || ``} {...props}>{children}</h2>
+        <p style={{fontSize: `16px`, opacity: 0.4}}>
+          Built with{` `}{JSON.stringify(article.frontmatter.builtwith)}
+        </p>
+      </header>
     )
-  }), [images, videos]);
+  }), [article, images, gifs, videos]);
   return <Article className={focused ? `visible` : `invisible`}>
-    <MDXProvider components={components}>
+    {article.notDefined ? <span>undefined</span> : <MDXProvider components={components}>
       <MDXRenderer>
-        {assets.mdx.text.childMdx.body}
+        {article.body}
       </MDXRenderer>
-    </MDXProvider>
+    </MDXProvider>}
   </Article>
 }
 
