@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 import Image from "gatsby-image";
 
 import rfs from "../utils/rfs.js";
+
+const visibilityDelay = 300;
 
 const Article = styled.article`
   margin-left: 1rem;
@@ -15,7 +17,7 @@ const Article = styled.article`
   font-variation-settings: "wght" 250;
   font-weight: 250; // for firefox, idk why
   ${rfs(`16px`)}
-  transition: height 0ms 300ms, opacity 300ms;
+  transition: visibility 0ms ${visibilityDelay}ms, opacity ${visibilityDelay}ms;
   overflow: hidden;
 
   @media only screen and (min-width: 700px) {
@@ -45,26 +47,13 @@ const Article = styled.article`
   }
 `
 
-const StyledImage = styled(Image).attrs(props => ({
-  width: `${500 * (props.scale || 1)}px`
-}))`
-  ${rfs.marginTop(`1rem`)}
-  ${props => rfs(props.width, `width`)}
-  box-shadow: 0px 0px 10px #000000cc;
-  margin: 10px;
-  border-radius: 15px;
-
-  picture {
-    float: left;
-  }
-`;
-
-const VidContainer = styled(({ sources, className, ...props }) => (
+const Video = ({ sources, className, autoplay = true, ...props }) => (
   <video
     className={className}
     preload="true"
-    autoPlay
+    autoPlay={autoplay}
     muted
+    controls={!autoplay}
     loop
     {...props}
   >
@@ -76,7 +65,9 @@ const VidContainer = styled(({ sources, className, ...props }) => (
       />
     ))}
   </video>
-)).attrs(props => ({
+)
+
+const StyledMedia = styled(() => {}).attrs(props => ({
   width: `${500 * (props.scale || 1)}px`
 }))`
   ${rfs.marginTop(`1rem`)}
@@ -86,31 +77,69 @@ const VidContainer = styled(({ sources, className, ...props }) => (
   border-radius: 15px;
 `;
 
-export default function GalleryArticle({ assets, focused }) {
+const BuiltWithList = styled.ul`
+  display: inline;
+  list-style-type: none;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+`
+
+const BuiltWithItem = styled.li`
+  display: inline;
+
+  &::after {
+    content: ', ';
+  }
+
+  &:first-child:nth-last-child(2)::after {
+    content: ' ';
+  }
+
+  &:last-child {
+    &:not(:first-child)::before {
+      content: 'and ';
+    }
+
+    &::after {
+      content: '';
+    }
+  }
+
+  .specifically {
+    &::before {
+      content: '(using ';
+    }
+    &::after {
+      content: ')';
+    }
+  }
+
+  &:first-child:last-child .specifically {
+    &::before {
+      content: 'using ';
+    }
+    &::after {
+      content: '';
+    }
+  }
+`
+
+export default function GalleryArticle({ assets, name: nameForDebugging, focused }) {
   // ignore all of the weird outer divs
   const [article, images, gifs, videos] = useMemo(
     () => [
-      assets.mdx ? assets.mdx.text.childMdx : {
-        notDefined: true,
-        body: "undefined",
-        frontmatter: {
-          year: "undefined",
-          builtwith: [
-            {
-              name: "undefined"
-            }
-          ]
-        }
-      },
+      assets.mdx ? assets.mdx.text.childMdx : {body: nameForDebugging},
       {...assets.png, ...assets.jpg},
       assets.gif,
       {...assets.mp4, ...assets.webm}
     ],
-    [assets]
+    [assets, nameForDebugging]
   );
   const components = useMemo(() => ({
     Image: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
-      <StyledImage
+      <StyledMedia
+        as={Image}
         scale={scale}
         style={{float, margin, marginLeft, marginRight, ...style}}
         fluid={images[`img_${n}`].childImageSharp.main}
@@ -118,16 +147,18 @@ export default function GalleryArticle({ assets, focused }) {
       />
     ),
     GIF: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
-      <StyledImage
+      <StyledMedia
+        as="img"
         scale={scale}
         style={{float, margin, marginLeft, marginRight, ...style}}
-        fluid={gifs[`gif_${n}`].childImageSharp.main}
+        src={gifs[`gif_${n}`].publicURL}
         {...props}
       />
     ),
     Video: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => {
       const sources = videos[`vid_${n}`].childVideoFfmpeg;
-      return <VidContainer
+      return <StyledMedia
+        as={Video}
         scale={scale}
         style={{float, margin, marginLeft, marginRight, ...style}}
         sources={sources}
@@ -135,21 +166,53 @@ export default function GalleryArticle({ assets, focused }) {
       />
     },
     Comment: () => <></>,
-    h2: ({ className, children, ...props }) => (
-      <header className="center-children">
-        <h2 className={className || ``} {...props}>{children}</h2>
-        <p style={{fontSize: `16px`, opacity: 0.4}}>
-          Built with{` `}{JSON.stringify(article.frontmatter.builtwith)}
-        </p>
+    h1: ({ className, children, ...props }) => (
+      <header className="center-children" style={{marginBottom: `1em`}}>
+        <h2 className={className || ``} style={{marginBottom: 0}} {...props}>{children}</h2>
+        <aside style={{opacity: 0.5, marginTop: `10px`, fontSize: `16px`}}>
+          <span>Built with{` `}</span>
+          <BuiltWithList>
+            {article.frontmatter.builtwith.map(({ name, libs }) => (
+              <BuiltWithItem key={name}>
+                {name}
+                {libs && <>
+                  {` `}
+                  <BuiltWithList className="specifically">
+                    {libs.map(name => (
+                      <BuiltWithItem style={{display: `inline`}}>
+                        {name}
+                      </BuiltWithItem>
+                    ))}
+                  </BuiltWithList>
+                </>}
+              </BuiltWithItem>
+            ))}
+          </BuiltWithList>
+          <span>.</span>
+        </aside>
       </header>
     )
   }), [article, images, gifs, videos]);
+  const [visible, setVisible] = useState(focused);
+  useEffect(() => {
+    let handle;
+    if (focused) {
+      setVisible(focused);
+    } else {
+      handle = setTimeout(() => setVisible(focused), visibilityDelay);
+    }
+    return () => clearTimeout(handle);
+  }, [focused]);
   return <Article className={focused ? `visible` : `invisible`}>
-    {article.notDefined ? <span>undefined</span> : <MDXProvider components={components}>
-      <MDXRenderer>
-        {article.body}
-      </MDXRenderer>
-    </MDXProvider>}
+    {visible ?
+      <MDXProvider components={components}>
+        <MDXRenderer>
+          {article.body}
+        </MDXRenderer>
+      </MDXProvider>
+      :
+      <></>
+    }
   </Article>
 }
 

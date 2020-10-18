@@ -107,6 +107,7 @@ export const fragment = graphql`
       extension: fieldValue
       nodes {
         name
+        publicURL
         childImageSharp {
           thumb: fluid(maxWidth: 100) {
             ...GatsbyImageSharpFluid
