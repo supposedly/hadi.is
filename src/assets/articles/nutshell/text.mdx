@@ -14,9 +14,6 @@ That's all there is to it, really, but the appeal is that even simple rules can 
 
 Conway's Game of Life is awesome, and you can look it up to find out more about how it works and why people like it. But there are a whole lot more CA out there to explore! So Golly, the software from earlier, actually lets you make up your own with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is surrounded by three yellow neighbors, it transitions into a yellow cell" and that translates into a whole cellular-automaton system for you to explore. But the problem's that this language is pretty primitive. It lets you describe any CA that Golly could possibly simulate, so it's definitely complete, but it's way lower-level than is helpful sometimes.
 
-<Comment>
-  <Image n={0} float="right" marginLeft="1em" />
-</Comment>
 <Video n={1} float="right" marginLeft="1em" />
 
 Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton. But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant... and, boy, does that sound exhausting. So I wrote 3,415 lines of code instead.

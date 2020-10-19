@@ -179,7 +179,7 @@ export default function GalleryArticle({ assets, name: nameForDebugging, focused
                   {` `}
                   <BuiltWithList className="specifically">
                     {libs.map(name => (
-                      <BuiltWithItem style={{display: `inline`}}>
+                      <BuiltWithItem key={name} style={{display: `inline`}}>
                         {name}
                       </BuiltWithItem>
                     ))}
