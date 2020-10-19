@@ -47,26 +47,6 @@ const Article = styled.article`
   }
 `
 
-const Video = ({ sources, className, autoplay = true, ...props }) => (
-  <video
-    className={className}
-    preload="true"
-    autoPlay={autoplay}
-    muted
-    controls={!autoplay}
-    loop
-    {...props}
-  >
-    {Object.values(sources).map(s => (
-      <source
-        key={s.src}
-        src={s.src}
-        type={`video/${s.fileExtension}`}
-      />
-    ))}
-  </video>
-)
-
 const StyledMedia = styled(() => {}).attrs(props => ({
   width: `${500 * (props.scale || 1)}px`
 }))`
@@ -124,6 +104,26 @@ const BuiltWithItem = styled.li`
     }
   }
 `
+
+const Video = ({ sources, className, autoplay = true, ...props }) => (
+  <video
+    className={className}
+    preload="true"
+    autoPlay={autoplay}
+    muted
+    controls={!autoplay}
+    loop
+    {...props}
+  >
+    {Object.values(sources).map(s => (
+      <source
+        key={s.src}
+        src={s.src}
+        type={`video/${s.fileExtension}`}
+      />
+    ))}
+  </video>
+);
 
 export default function GalleryArticle({ assets, name: nameForDebugging, focused }) {
   // ignore all of the weird outer divs

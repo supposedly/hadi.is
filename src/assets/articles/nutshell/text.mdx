@@ -8,14 +8,29 @@ builtwith:
 
 <Video n={0} float="left" marginRight="1em" />
 
-There's a community of enthusiasts, mostly over at [Conwaylife](https://conwaylife.com/forums), that use programs like [Golly](https://golly.sourceforge.net) to explore *cellular automata:* simulations that put cells on a grid and make them interact with neighboring cells according to specific rules.
+There's a community of enthusiasts, mostly over at [Conwaylife](https://conwaylife.com/forums), that use programs
+like [Golly](https://golly.sourceforge.net) to explore *cellular automata:* simulations that put cells on a grid and
+make them interact with neighboring cells according to specific rules.
 
-That's all there is to it, really, but the appeal is that even simple rules can give rise to hosts of crazy-complex interactions. The most-famous cellular automaton in this respect is Conway's Game of Life, devised by mathematician John Conway (RIP 2020) in the 1960s.
+That's all there is to it, really, but the appeal is that even simple rules can give rise to hosts of crazy-complex
+interactions. The most-famous cellular automaton in this respect is Conway's Game of Life, devised by mathematician
+John Conway (RIP 2020) in the 1960s.
 
-Conway's Game of Life is awesome, and you can look it up to find out more about how it works and why people like it. But there are a whole lot more CA out there to explore! So Golly, the software from earlier, actually lets you make up your own with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is surrounded by three yellow neighbors, it transitions into a yellow cell" and that translates into a whole cellular-automaton system for you to explore. But the problem's that this language is pretty primitive. It lets you describe any CA that Golly could possibly simulate, so it's definitely complete, but it's way lower-level than is helpful sometimes.
+Conway's Game of Life is awesome, and you can look it up to find out more about how it works and why people like it.
+But there are a whole lot more CA out there to explore! So Golly, the software from earlier, actually lets you make
+up your own with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is
+surrounded by three yellow neighbors, it transitions into a yellow cell" and that translates into a whole
+cellular-automaton system for you to explore. But the problem's that this language is pretty primitive. It lets you
+describe any CA that Golly could possibly simulate, so it's definitely complete, but it's way lower-level than is
+helpful sometimes.
 
 <Video n={1} float="right" marginLeft="1em" />
 
-Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton. But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant... and, boy, does that sound exhausting. So I wrote 3,415 lines of code instead.
+Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton.
+But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant...
+and, boy, does that not sound like a fun time! [So I wrote 3,415 lines of code instead.](https://xkcd.com/1319/)
 
-To the right is the very first rule ... [todo: complete]
+Over to the right is the
+[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model),
+the very first rule I ever compiled with Nutshell. It's pretty easy to model and it looks cool. I eventually worked my way
+up to Brainfuck, which is the video up top :)

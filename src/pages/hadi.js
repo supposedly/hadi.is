@@ -36,7 +36,7 @@ const MainImage = styled(Image)`
   ${rfs(`500px`, `width`)}
 `
 
-const birthTime = new Date(2001, 10, 18).getTime();
+const birthTime = new Date(2001, 9, 18).getTime();
 
 export default ({ data }) => {
   const age = new Date(Date.now() - birthTime).getUTCFullYear() - 1970;

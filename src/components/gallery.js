@@ -128,7 +128,7 @@ export const fragment = graphql`
         }
         childVideoFfmpeg {
           webm: transcode(
-            outputOptions: ["-crf 20", "-b:v 0"]
+            outputOptions: ["-crf 35", "-b:v 0", "-row-mt 1", "-deadline realtime", "-cpu-used 5"]
             maxWidth: 900
             maxHeight: 480
             fileExtension: "webm"
