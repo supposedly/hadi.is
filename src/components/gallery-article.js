@@ -47,16 +47,6 @@ const Article = styled.article`
   }
 `
 
-const StyledMedia = styled(() => {}).attrs(props => ({
-  width: `${500 * (props.scale || 1)}px`
-}))`
-  ${rfs.marginTop(`1rem`)}
-  ${props => rfs(props.width, `width`)}
-  box-shadow: 0px 0px 10px #000000cc;
-  margin: 10px;
-  border-radius: 15px;
-`;
-
 const BuiltWithList = styled.ul`
   display: inline;
   list-style-type: none;
@@ -105,6 +95,50 @@ const BuiltWithItem = styled.li`
   }
 `
 
+const StyledMediaComponent = styled(() => {}).attrs(props => ({
+  width: `${500 * (props.scale || 1)}px`
+}))`
+  ${props => rfs.marginTop(props.marginTop || `1rem`)}
+  ${props => rfs(props.width, `width`)}
+  float: ${props => props.$floatValue};
+  ${props => props.$marginLeft}
+  ${props => props.$marginRight}
+  box-shadow: 0px 0px 10px #000000cc;
+  border-radius: 15px;
+`;
+
+const getMarginsFromFloat = (float, marginLeft, marginRight) => {let left, right;
+  switch (float) {
+    case `left`:
+      right = marginRight || `1rem`;
+      left = marginLeft || `10px`;
+      break;
+    case `right`:
+      right = marginRight || `10px`;
+      left = marginLeft || `1rem`;
+      break;
+    default:
+      right = marginRight || `10px`;
+      left = marginLeft || `10px`;
+  }
+  return [rfs.marginLeft(left), rfs.marginRight(right)];
+}
+
+const StyledMedia = ({ as, float = `none`, marginLeft, marginRight, ...props }) => {
+  [marginLeft, marginRight] = useMemo(
+    () => getMarginsFromFloat(float, marginLeft, marginRight),
+    [float, marginLeft, marginRight]
+  );
+  
+  return <StyledMediaComponent
+    as={as}
+    $floatValue={float}
+    $marginLeft={marginLeft}
+    $marginRight={marginRight}
+    {...props}
+  />
+}
+
 const Video = ({ sources, className, autoplay = true, ...props }) => (
   <video
     className={className}
@@ -125,6 +159,8 @@ const Video = ({ sources, className, autoplay = true, ...props }) => (
   </video>
 );
 
+const Floater = `figure`;
+
 export default function GalleryArticle({ assets, name: nameForDebugging, focused }) {
   // ignore all of the weird outer divs
   const [article, images, gifs, videos] = useMemo(
@@ -137,39 +173,56 @@ export default function GalleryArticle({ assets, name: nameForDebugging, focused
     [assets, nameForDebugging]
   );
   const components = useMemo(() => ({
-    Image: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
+    Image: ({ n, ...props }) => (
       <StyledMedia
         as={Image}
-        scale={scale}
-        style={{float, margin, marginLeft, marginRight, ...style}}
         fluid={images[`img_${n}`].childImageSharp.main}
         {...props}
       />
     ),
-    GIF: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => (
+    GIF: ({ n, ...props }) => (
       <StyledMedia
         as="img"
-        scale={scale}
-        style={{float, margin, marginLeft, marginRight, ...style}}
         src={gifs[`gif_${n}`].publicURL}
         {...props}
       />
     ),
-    Video: ({ n, float, margin, marginLeft, marginRight, scale, style, ...props }) => {
+    Video: ({ n, ...props }) => {
       const sources = videos[`vid_${n}`].childVideoFfmpeg;
       return <StyledMedia
         as={Video}
-        scale={scale}
-        style={{float, margin, marginLeft, marginRight, ...style}}
         sources={sources}
         {...props}
       />
     },
-    Comment: () => <></>,
+    FloatLeft: ({ children, marginRight = `10px` }) => (
+      <Floater style={{
+        display: `flex`,
+        flexDirection: `column`,
+        alignItems: `center`, //`flex-start`,
+        float: `left`,
+        margin: `10px`,
+        marginRight
+      }}>
+        {children}
+      </Floater>
+    ),
+    FloatRight: ({ children, marginLeft = `10px` }) => (
+      <Floater style={{
+        display: `flex`,
+        flexDirection: `column`,
+        alignItems: `center`, //`flex-end`,
+        float: `right`,
+        margin: `10px`,
+        marginLeft
+      }}>
+        {children}
+      </Floater>
+    ),
     h1: ({ className, children, ...props }) => (
       <header className="center-children" style={{marginBottom: `1em`}}>
         <h2 className={className || ``} style={{marginBottom: 0}} {...props}>{children}</h2>
-        <aside style={{opacity: 0.5, marginTop: `10px`, fontSize: `16px`}}>
+        <aside style={{fontFamily: `'Noto Sans TC'`, opacity: 0.5, marginTop: `10px`, fontSize: `16px`}}>
           <span>Built with{` `}</span>
           <BuiltWithList>
             {article.frontmatter.builtwith.map(({ name, libs }) => (
