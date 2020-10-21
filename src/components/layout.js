@@ -7,7 +7,14 @@
 
 import React from "react";
 import Helmet from "react-helmet";
-import { FaHome, FaLinkedin, FaGithub, FaFolderOpen, FaEnvelope, FaTwitter } from "react-icons/fa";
+import {
+  FaHome,
+  FaLinkedin,
+  FaGithub,
+  FaFolderOpen,
+  FaEnvelope,
+  FaTwitter,
+} from "react-icons/fa";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -26,11 +33,13 @@ const IconSpaceholder = styled.div`
 
 const QuiccIcons = styled.nav`
   position: fixed;
-  top: 0;  // https://stackoverflow.com/a/38679996
+  top: 0; // https://stackoverflow.com/a/38679996
   z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
   ${rfs.marginTop(`.5rem`)}
-  ${rfs.marginLeft(`.5rem`)}
-  height: calc(100% - 5vh);  // idk helps the bottom icon not run off shorter screens when vertical
+  ${rfs.marginLeft(
+    `.5rem`
+  )}
+  height: calc(100% - 5vh); // idk helps the bottom icon not run off shorter screens when vertical
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -38,13 +47,13 @@ const QuiccIcons = styled.nav`
 
   @media only screen and (min-width: 700px) {
     display: block;
-    height: auto;  // iconNavHeight
+    height: auto; // iconNavHeight
   }
 
   // weird redundancy idk
   &.invariable {
     display: block;
-    height: auto;  // iconNavHeight
+    height: auto; // iconNavHeight
   }
 
   a {
@@ -63,7 +72,8 @@ const QuiccIcons = styled.nav`
 
     &:not(.no-skew) {
       // pseudo-pseudo-random rotation
-      &:nth-child(3n+1) svg, &:nth-child(3n-1) svg {
+      &:nth-child(3n + 1) svg,
+      &:nth-child(3n-1) svg {
         transform: rotate(-10deg);
       }
       &:nth-child(3n) svg {
@@ -72,12 +82,12 @@ const QuiccIcons = styled.nav`
       &:nth-child(4n-2) svg {
         transform: rotate(10deg);
       }
-      &:nth-child(4n+1) svg {
-        transform:rotate(-8deg);
+      &:nth-child(4n + 1) svg {
+        transform: rotate(-8deg);
       }
     }
   }
-`
+`;
 
 export default function Layout({ children, title, literalTitle }) {
   const data = useStaticQuery(graphql`
@@ -118,7 +128,7 @@ export default function Layout({ children, title, literalTitle }) {
       <main>
         <IconSpaceholder />
         <QuiccIcons className={onHomepage ? `` : `invariable`}>
-          { onHomepage ?
+          {onHomepage ? (
             <>
               {/* <Link title="blog" to="/blog">
                 <FaPencilAlt size={32} />
@@ -128,7 +138,10 @@ export default function Layout({ children, title, literalTitle }) {
               </Link>
               {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
               {/* TODO: maybe url-encode the href */}
-              <a title="hі＠hоw.hadі.іs" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;">
+              <a
+                title="hі＠hоw.hadі.іs"
+                href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
+              >
                 <FaEnvelope size={32} />
               </a>
               <a title="twitter" href="https://twitter.com/tarxini">
@@ -141,11 +154,11 @@ export default function Layout({ children, title, literalTitle }) {
                 <FaGithub size={32} />
               </a>
             </>
-          :
+          ) : (
             <Link title="main page" to="/" className="no-skew local">
               <FaHome size={34} />
             </Link>
-          }
+          )}
         </QuiccIcons>
         {children}
       </main>
@@ -155,17 +168,17 @@ export default function Layout({ children, title, literalTitle }) {
         <a href="https://www.gatsbyjs.org">Gatsby</a>
       </footer> */}
     </>
-  )
+  );
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
-  literalTitle: PropTypes.bool
+  literalTitle: PropTypes.bool,
 };
 
 Layout.defaultProps = {
   children: undefined,
   title: ``,
-  literalTitle: false
+  literalTitle: false,
 };

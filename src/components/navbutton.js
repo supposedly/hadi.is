@@ -10,9 +10,7 @@ const NavButton = React.forwardRef(({ className, id, text, onClick }, ref) => {
       onClick={onClick}
       style={{ position: `sticky`, bottom: `0` }}
     >
-      <span className="yuge">
-        {text}
-      </span>
+      <span className="yuge">{text}</span>
     </button>
   );
 });
@@ -20,7 +18,11 @@ const NavButton = React.forwardRef(({ className, id, text, onClick }, ref) => {
 NavButton.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.elementType])
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.elementType,
+  ]),
 };
 
 export default NavButton;

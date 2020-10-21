@@ -5,6 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 import Image from "gatsby-image";
+import DevIconComponent from "../components/devicon";
 
 import rfs from "../utils/rfs.js";
 
@@ -45,7 +46,7 @@ const Article = styled.article`
   .center-self {
     align-self: center;
   }
-`
+`;
 
 const BuiltWithList = styled.ul`
   display: inline;
@@ -53,50 +54,54 @@ const BuiltWithList = styled.ul`
   font-size: 16px;
   margin: 0;
   padding: 0;
-`
+`;
 
 const BuiltWithItem = styled.li`
   display: inline;
 
   &::after {
-    content: ', ';
+    content: ", ";
   }
 
   &:first-child:nth-last-child(2)::after {
-    content: ' ';
+    content: " ";
   }
 
   &:last-child {
     &:not(:first-child)::before {
-      content: 'and ';
+      content: "and ";
     }
 
     &::after {
-      content: '';
+      content: "";
     }
   }
 
   .specifically {
     &::before {
-      content: '(using ';
+      content: "(using ";
     }
     &::after {
-      content: ')';
+      content: ")";
     }
   }
 
   &:first-child:last-child .specifically {
     &::before {
-      content: 'using ';
+      content: "using ";
     }
     &::after {
-      content: '';
+      content: "";
     }
   }
-`
+`;
+
+const DevIcon = styled(DevIconComponent)`
+  ${props => rfs(props.width, `width`)}
+`;
 
 const StyledMediaComponent = styled(() => {}).attrs(props => ({
-  width: `${500 * (props.scale || 1)}px`
+  width: `${500 * (props.scale || 1)}px`,
 }))`
   ${props => rfs.marginTop(props.marginTop || `1rem`)}
   ${props => rfs(props.width, `width`)}
@@ -107,7 +112,8 @@ const StyledMediaComponent = styled(() => {}).attrs(props => ({
   border-radius: 15px;
 `;
 
-const getMarginsFromFloat = (float, marginLeft, marginRight) => {let left, right;
+const getMarginsFromFloat = (float, marginLeft, marginRight) => {
+  let left, right;
   switch (float) {
     case `left`:
       right = marginRight || `1rem`;
@@ -122,22 +128,30 @@ const getMarginsFromFloat = (float, marginLeft, marginRight) => {let left, right
       left = marginLeft || `10px`;
   }
   return [rfs.marginLeft(left), rfs.marginRight(right)];
-}
+};
 
-const StyledMedia = ({ as, float = `none`, marginLeft, marginRight, ...props }) => {
+const StyledMedia = ({
+  as,
+  float = `none`,
+  marginLeft,
+  marginRight,
+  ...props
+}) => {
   [marginLeft, marginRight] = useMemo(
     () => getMarginsFromFloat(float, marginLeft, marginRight),
     [float, marginLeft, marginRight]
   );
-  
-  return <StyledMediaComponent
-    as={as}
-    $floatValue={float}
-    $marginLeft={marginLeft}
-    $marginRight={marginRight}
-    {...props}
-  />
-}
+
+  return (
+    <StyledMediaComponent
+      as={as}
+      $floatValue={float}
+      $marginLeft={marginLeft}
+      $marginRight={marginRight}
+      {...props}
+    />
+  );
+};
 
 const Video = ({ sources, className, autoplay = true, ...props }) => (
   <video
@@ -150,102 +164,128 @@ const Video = ({ sources, className, autoplay = true, ...props }) => (
     {...props}
   >
     {Object.values(sources).map(s => (
-      <source
-        key={s.src}
-        src={s.src}
-        type={`video/${s.fileExtension}`}
-      />
+      <source key={s.src} src={s.src} type={`video/${s.fileExtension}`} />
     ))}
   </video>
 );
 
 const Floater = `figure`;
 
-export default function GalleryArticle({ assets, name: nameForDebugging, focused }) {
+export default function GalleryArticle({
+  assets,
+  name: nameForDebugging,
+  focused,
+}) {
   // ignore all of the weird outer divs
   const [article, images, gifs, videos] = useMemo(
     () => [
-      assets.mdx ? assets.mdx.text.childMdx : {body: nameForDebugging},
-      {...assets.png, ...assets.jpg},
+      assets.mdx ? assets.mdx.text.childMdx : { body: nameForDebugging },
+      { ...assets.png, ...assets.jpg },
       assets.gif,
-      {...assets.mp4, ...assets.webm}
+      { ...assets.mp4, ...assets.webm },
     ],
     [assets, nameForDebugging]
   );
-  const components = useMemo(() => ({
-    Image: ({ n, ...props }) => (
-      <StyledMedia
-        as={Image}
-        fluid={images[`img_${n}`].childImageSharp.main}
-        {...props}
-      />
-    ),
-    GIF: ({ n, ...props }) => (
-      <StyledMedia
-        as="img"
-        src={gifs[`gif_${n}`].publicURL}
-        {...props}
-      />
-    ),
-    Video: ({ n, ...props }) => {
-      const sources = videos[`vid_${n}`].childVideoFfmpeg;
-      return <StyledMedia
-        as={Video}
-        sources={sources}
-        {...props}
-      />
-    },
-    FloatLeft: ({ children, marginRight = `10px` }) => (
-      <Floater style={{
-        display: `flex`,
-        flexDirection: `column`,
-        alignItems: `center`, //`flex-start`,
-        float: `left`,
-        margin: `10px`,
-        marginRight
-      }}>
-        {children}
-      </Floater>
-    ),
-    FloatRight: ({ children, marginLeft = `10px` }) => (
-      <Floater style={{
-        display: `flex`,
-        flexDirection: `column`,
-        alignItems: `center`, //`flex-end`,
-        float: `right`,
-        margin: `10px`,
-        marginLeft
-      }}>
-        {children}
-      </Floater>
-    ),
-    h1: ({ className, children, ...props }) => (
-      <header className="center-children" style={{marginBottom: `1em`}}>
-        <h2 className={className || ``} style={{marginBottom: 0}} {...props}>{children}</h2>
-        <aside style={{fontFamily: `'Noto Sans TC'`, opacity: 0.5, marginTop: `10px`, fontSize: `16px`}}>
-          <span>Built with{` `}</span>
-          <BuiltWithList>
-            {article.frontmatter.builtwith.map(({ name, libs }) => (
-              <BuiltWithItem key={name}>
-                {name}
-                {libs && <>
-                  {` `}
-                  <BuiltWithList className="specifically">
-                    {libs.map(name => (
-                      <BuiltWithItem key={name} style={{display: `inline`}}>
-                        {name}
-                      </BuiltWithItem>
-                    ))}
-                  </BuiltWithList>
-                </>}
-              </BuiltWithItem>
+  const components = useMemo(
+    () => ({
+      Image: ({ n, ...props }) => (
+        <StyledMedia
+          as={Image}
+          fluid={images[`img_${n}`].childImageSharp.main}
+          {...props}
+        />
+      ),
+      GIF: ({ n, ...props }) => (
+        <StyledMedia as="img" src={gifs[`gif_${n}`].publicURL} {...props} />
+      ),
+      Video: ({ n, ...props }) => {
+        const sources = videos[`vid_${n}`].childVideoFfmpeg;
+        return <StyledMedia as={Video} sources={sources} {...props} />;
+      },
+      FloatLeft: ({ children, marginRight = `10px` }) => (
+        <Floater
+          style={{
+            display: `flex`,
+            flexDirection: `column`,
+            alignItems: `center`, //`flex-start`,
+            float: `left`,
+            margin: `10px`,
+            marginRight,
+          }}
+        >
+          {children}
+        </Floater>
+      ),
+      FloatRight: ({ children, marginLeft = `10px` }) => (
+        <Floater
+          style={{
+            display: `flex`,
+            flexDirection: `column`,
+            alignItems: `center`, //`flex-end`,
+            float: `right`,
+            margin: `10px`,
+            marginLeft,
+          }}
+        >
+          {children}
+        </Floater>
+      ),
+      h1: ({ className, children, ...props }) => (
+        <header className="center-children" style={{ marginBottom: `1em` }}>
+          <h2
+            className={className || ``}
+            style={{ marginBottom: 0 }}
+            {...props}
+          >
+            {children}
+            {` `}
+            {article.frontmatter.builtwith.map(({ name }) => (
+              <DevIcon
+                key={name}
+                style={{ opacity: 0.6, verticalAlign: `text-bottom` }}
+                width="35px"
+                name={name.toLowerCase()}
+              />
             ))}
-          </BuiltWithList>
-          <span>.</span>
-        </aside>
-      </header>
-    )
-  }), [article, images, gifs, videos]);
+          </h2>
+          <aside
+            style={{
+              fontFamily: `'Noto Sans TC'`,
+              opacity: 0.5,
+              marginTop: `10px`,
+              fontSize: `16px`,
+            }}
+          >
+            <span>Built with{` `}</span>
+            <BuiltWithList>
+              {article.frontmatter.builtwith.map(({ name, libs }) => (
+                <BuiltWithItem key={name}>
+                  <span style={{fontWeight: `bold`}}>{name}</span>
+                  {libs && (
+                    <>
+                      {` `}
+                      <BuiltWithList className="specifically">
+                        {libs.map(name => (
+                          <BuiltWithItem
+                            key={name}
+                            style={{ display: `inline` }}
+                          >
+                            {name}
+                          </BuiltWithItem>
+                        ))}
+                      </BuiltWithList>
+                    </>
+                  )}
+                </BuiltWithItem>
+              ))}
+            </BuiltWithList>
+            <span>.</span>
+          </aside>
+        </header>
+      ),
+    }),
+    [article, images, gifs, videos]
+  );
   const [visible, setVisible] = useState(focused);
   useEffect(() => {
     let handle;
@@ -256,25 +296,27 @@ export default function GalleryArticle({ assets, name: nameForDebugging, focused
     }
     return () => clearTimeout(handle);
   }, [focused]);
-  return <Article className={focused ? `visible` : `invisible`}>
-    {visible ?
-      <MDXProvider components={components}>
-        <MDXRenderer>
-          {article.body}
-        </MDXRenderer>
-      </MDXProvider>
-      :
-      <></>
-    }
-  </Article>
+  return (
+    <Article
+      className={focused ? `visible` : `invisible`}
+    >
+      {visible ? (
+        <MDXProvider components={components}>
+          <MDXRenderer>{article.body}</MDXRenderer>
+        </MDXProvider>
+      ) : (
+        <></>
+      )}
+    </Article>
+  );
 }
 
 GalleryArticle.propTypes = {
   assets: PropTypes.objectOf(PropTypes.object).isRequired,
   focused: PropTypes.bool,
-}
+};
 
 GalleryArticle.defaultProps = {
   assets: undefined,
   focused: false,
-}
+};

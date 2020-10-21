@@ -1,7 +1,7 @@
 /**
  * SEO component that queries for data with
  *  Gatsby's useStaticQuery React hook
- * 
+ *
  * (I updated this to the modern Helmet syntax)
  *
  * See: https://www.gatsbyjs.org/docs/use-static-query/
@@ -27,7 +27,7 @@ export default function SEO({ description, lang, meta, title }) {
         }
       }
     `
-  )
+  );
 
   const metaDescription = description || site.siteMetadata.description;
 
@@ -47,9 +47,16 @@ export default function SEO({ description, lang, meta, title }) {
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:creator" content={site.siteMetadata.author} />
       <meta name="twitter:description" content={metaDescription} />
-      {meta.map(o => <meta key={o.name | o.property} name={o.name} property={o.property} content={o.content} />)}
+      {meta.map(o => (
+        <meta
+          key={o.name | o.property}
+          name={o.name}
+          property={o.property}
+          content={o.content}
+        />
+      ))}
     </Helmet>
-  )
+  );
 }
 
 SEO.defaultProps = {

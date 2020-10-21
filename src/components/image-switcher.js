@@ -11,7 +11,7 @@ const jumpDuration = 200;
 
 const RoundedImage = styled(Image)`
   border-radius: 1em;
-  color: transparent;  // because Firefox displays alt-text while loading
+  color: transparent; // because Firefox displays alt-text while loading
 `;
 
 const ImgContainer = styled.section`
@@ -27,7 +27,7 @@ const ImgContainer = styled.section`
 `;
 
 const Dot = styled.span`
-  opacity: ${props => props.isCurrent ? 0.4 : 0.1};
+  opacity: ${props => (props.isCurrent ? 0.4 : 0.1)};
   display: inline-block;
   height: 20px;
   width: 18px;
@@ -37,7 +37,7 @@ const Dot = styled.span`
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     display: inline-block;
     border-radius: 50%;
     background-color: black;
@@ -51,15 +51,17 @@ const Dot = styled.span`
     right: 0;
     top: 50%;
   }
-`
+`;
 
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
     super();
-    this.state = {currentImg: 0};
-    this.arrowRefs = {left: React.createRef(), right: React.createRef()};
+    this.state = { currentImg: 0 };
+    this.arrowRefs = { left: React.createRef(), right: React.createRef() };
     this.containerRef = React.createRef();
-    this.maxImg = Object.keys(props.data).filter(k => k.startsWith(props.prefix)).length - 1;
+    this.maxImg =
+      Object.keys(props.data).filter(k => k.startsWith(props.prefix)).length -
+      1;
 
     // this is HIDEOUS i gotta make it less awful at some point
     this.arrowTouched = false;
@@ -69,7 +71,9 @@ export default class ImageSwitcher extends React.Component {
   componentDidMount() {
     // continued HIDEOUSness
     this.isFirefox = navigator.userAgent.match(/Gecko\/\S+/) !== null;
-    document.addEventListener(`touchstart`, () => { this.touchActive = true; });
+    document.addEventListener(`touchstart`, () => {
+      this.touchActive = true;
+    });
     document.addEventListener(`mousedown`, () => {
       if (!this.touchActive) {
         this.arrowTouched = false;
@@ -90,7 +94,7 @@ export default class ImageSwitcher extends React.Component {
     if (newImg < 0) {
       newImg = this.maxImg;
     }
-    this.setState({currentImg: newImg});
+    this.setState({ currentImg: newImg });
   }
 
   right() {
@@ -98,55 +102,59 @@ export default class ImageSwitcher extends React.Component {
     if (newImg > this.maxImg) {
       newImg = 0;
     }
-    this.setState({currentImg: newImg});
+    this.setState({ currentImg: newImg });
   }
 
   render() {
-    return <div className="center-children">
-      <ImgContainer
-        ref={this.containerRef}
-        style={{ maxHeight: '300px'/*, width: '500px', maxWidth: '500px'*/}}
-      >
-        <FlankingArrows
-          ref={[this.arrowRefs.left, this.arrowRefs.right]}
-          directions="left right"
-          containerRef={this.containerRef}
-          container={ImgContainer}
-          jumpDuration={jumpDuration}
-          noTouch={true}
-          handlers={{
-            onClick: [
-              () => this.switch(`left`),
-              () => this.switch(`right`)
-            ]
-          }}
+    return (
+      <div className="center-children">
+        <ImgContainer
+          ref={this.containerRef}
+          style={{ maxHeight: "300px" /*, width: '500px', maxWidth: '500px'*/ }}
         >
-          <RoundedImage
-            fluid={this.props.data[`${this.props.prefix}${this.state.currentImg}`].childImageSharp.fluid}
-            alt={this.props.alts[this.state.currentImg]}
-            style={{ maxHeight: '100%' }}
-          />
-        </FlankingArrows>
-      </ImgContainer>
-      <div style={{marginBottom: `0.5em`}}>
-        {Array.from({ length: this.maxImg + 1 }, (_, i) => (
-          <Dot
-            key={i}  // dis cool because the array is never mutating
-            onClick={() => { this.setState({currentImg: i}); }}
-            isCurrent={this.state.currentImg === i}
-          />
-        ))}
+          <FlankingArrows
+            ref={[this.arrowRefs.left, this.arrowRefs.right]}
+            directions="left right"
+            containerRef={this.containerRef}
+            container={ImgContainer}
+            jumpDuration={jumpDuration}
+            noTouch={true}
+            handlers={{
+              onClick: [() => this.switch(`left`), () => this.switch(`right`)],
+            }}
+          >
+            <RoundedImage
+              fluid={
+                this.props.data[`${this.props.prefix}${this.state.currentImg}`]
+                  .childImageSharp.fluid
+              }
+              alt={this.props.alts[this.state.currentImg]}
+              style={{ maxHeight: "100%" }}
+            />
+          </FlankingArrows>
+        </ImgContainer>
+        <div style={{ marginBottom: `0.5em` }}>
+          {Array.from({ length: this.maxImg + 1 }, (_, i) => (
+            <Dot
+              key={i} // dis cool because the array is never mutating
+              onClick={() => {
+                this.setState({ currentImg: i });
+              }}
+              isCurrent={this.state.currentImg === i}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    );
   }
 }
 
 ImageSwitcher.propTypes = {
   prefix: PropTypes.string,
-  alts: PropTypes.arrayOf(PropTypes.string)
+  alts: PropTypes.arrayOf(PropTypes.string),
 };
 
 ImageSwitcher.propDefaults = {
   prefix: `img`,
-  alts: []
+  alts: [],
 };

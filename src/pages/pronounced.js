@@ -1,5 +1,5 @@
 import React, { createRef, useState } from "react";
-import styled/*, { keyframes }*/ from "styled-components";
+import styled /*, { keyframes }*/ from "styled-components";
 import { FaSyncAlt } from "react-icons/fa";
 import useSound from "use-sound";
 
@@ -18,18 +18,20 @@ const FatSoundButton = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 15px;
-  background-color: rgba(0, 0, 0, .15);
+  background-color: rgba(0, 0, 0, 0.15);
   // background-image: radial-gradient(100% 50% at top left,
   //   rgba(255, 255, 255, .3) 50%,
   //   rgba(255, 255, 255, 0) 50%
   // );
   background-size: 210% 210%;
-  
-  transition: background-size 250ms, background-color 75ms, height 250ms, width 250ms;
+
+  transition: background-size 250ms, background-color 75ms, height 250ms,
+    width 250ms;
   background-repeat: no-repeat;
 
-  &:hover, &:active {
-    background-color: rgba(0, 0, 0, .25);
+  &:hover,
+  &:active {
+    background-color: rgba(0, 0, 0, 0.25);
   }
 
   &::after {
@@ -45,11 +47,11 @@ const FatSoundButton = styled.button`
       ${rfs(`8rem`)}
     }
   }
-`
+`;
 
 const P = styled.p`
   margin: 1rem;
-  font-family: 'Epilogue', sans-serif;
+  font-family: "Epilogue", sans-serif;
   font-variation-settings: "wght" 200, "slnt" 10;
   font-weight: 200;
   transform: skew(-10deg);
@@ -67,12 +69,13 @@ const P = styled.p`
     border-bottom: 1px solid black;
     transition: border 150ms;
 
-    &:focus, &:hover {
+    &:focus,
+    &:hover {
       outline: none;
       border-bottom: 3px solid black;
     }
   }
-`
+`;
 
 const buttonRef = createRef();
 
@@ -97,7 +100,7 @@ fatty
 ratty
 batty
 patty
-`
+`;
 const rhymeRef = createRef();
 
 function randRhyme() {
@@ -107,12 +110,18 @@ function randRhyme() {
 function replace(setWord, displayedWord, updatedWord, erasing = true) {
   if (erasing) {
     displayedWord = displayedWord.slice(0, -1);
-    setTimeout(() => replace(setWord, displayedWord, updatedWord, !!displayedWord), displayedWord.length * 2 + 10);
+    setTimeout(
+      () => replace(setWord, displayedWord, updatedWord, !!displayedWord),
+      displayedWord.length * 2 + 10
+    );
   } else {
     displayedWord = `${displayedWord || ``}${updatedWord[0]}`;
     updatedWord = updatedWord.slice(1);
     if (updatedWord) {
-      setTimeout(() => replace(setWord, displayedWord, updatedWord, false), displayedWord.length * 2 + 10);
+      setTimeout(
+        () => replace(setWord, displayedWord, updatedWord, false),
+        displayedWord.length * 2 + 10
+      );
     } else {
       rhymeRef.current.blur();
     }
@@ -123,7 +132,10 @@ function replace(setWord, displayedWord, updatedWord, erasing = true) {
 function wipe(setWord, displayedWord, updatedWord, i = 1) {
   if (i <= updatedWord.length + displayedWord.length) {
     setWord(`${updatedWord.slice(0, i)}${displayedWord.slice(i) || ``}`);
-    setTimeout(() => wipe(setWord, displayedWord, updatedWord, i + 1), displayedWord.length * 2 + 10);
+    setTimeout(
+      () => wipe(setWord, displayedWord, updatedWord, i + 1),
+      displayedWord.length * 2 + 10
+    );
   }
 }
 
@@ -131,9 +143,8 @@ export default () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [word, setWord] = useState(rhymes[0]);
   const [modifier, setModifier] = useState(``);
-  const wipeModifier = (kinda = word.includes(`t`)) => (
-    wipe(setModifier, modifier, kinda ? `kinda\u0020` : ``)
-  );
+  const wipeModifier = (kinda = word.includes(`t`)) =>
+    wipe(setModifier, modifier, kinda ? `kinda\u0020` : ``);
   const replaceWord = () => {
     const newWord = randRhyme();
     replace(setWord, word, newWord);
@@ -141,24 +152,41 @@ export default () => {
   };
 
   const [playName] = useSound(nameURL, {
-    onend() { buttonRef.current.blur(); }
+    onend() {
+      buttonRef.current.blur();
+    },
   });
 
-  return <Layout title="pronounced">
-    <article className="center-children">
-      <header>
-        <Title text="pronounced" punctuation="..." />
-      </header>
-      <FatSoundButton
-        ref={buttonRef}
-        pop={buttonClicked}
-        onClick={() => {
-          setButtonClicked(true);
-          setTimeout(() => { setButtonClicked(false); }, 250);
-          playName();
-        }}
-      />
-      <P>({modifier}like <button ref={rhymeRef} onClick={() => { replaceWord(); }}>{word} <FaSyncAlt size="16"/></button> with an H)</P>
-    </article>
-  </Layout>
-}
+  return (
+    <Layout title="pronounced">
+      <article className="center-children">
+        <header>
+          <Title text="pronounced" punctuation="..." />
+        </header>
+        <FatSoundButton
+          ref={buttonRef}
+          pop={buttonClicked}
+          onClick={() => {
+            setButtonClicked(true);
+            setTimeout(() => {
+              setButtonClicked(false);
+            }, 250);
+            playName();
+          }}
+        />
+        <P>
+          ({modifier}like{` `}
+          <button
+            ref={rhymeRef}
+            onClick={() => {
+              replaceWord();
+            }}
+          >
+            {word} <FaSyncAlt size="16" />
+          </button>{` `}
+          with an H)
+        </P>
+      </article>
+    </Layout>
+  );
+};

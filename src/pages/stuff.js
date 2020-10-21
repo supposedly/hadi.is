@@ -13,26 +13,26 @@ export default ({ data }) => {
     dataMap.current = {};
     Object.keys(data).forEach(k => {
       const extensions = {};
-      data[k].group.forEach(
-        ({extension, nodes}) => {
-          const assets = {};
-          nodes.forEach(({name, ...data}) => {
-            assets[name] = data;
-          });
-          extensions[extension] = assets;
-        }
-      );
+      data[k].group.forEach(({ extension, nodes }) => {
+        const assets = {};
+        nodes.forEach(({ name, ...data }) => {
+          assets[name] = data;
+        });
+        extensions[extension] = assets;
+      });
       dataMap.current[k] = extensions;
     });
   }, [data]);
 
-  return <Layout title="stuff">
-    <header className="center-children">
-      <Title text="stuff" />
-      <Gallery articles={dataMap.current} />
-    </header>
-  </Layout>
-}
+  return (
+    <Layout title="stuff">
+      <header className="center-children">
+        <Title text="stuff" />
+        <Gallery articles={dataMap.current} />
+      </header>
+    </Layout>
+  );
+};
 
 // childVideoFfmpeg {
 //   mp4: transcode(
@@ -55,31 +55,33 @@ export default ({ data }) => {
 // NOTE to future me: you can optionally specify sourceInstanceName to be "articles"
 export const query = graphql`
   query PortfolioQuery {
-    calcstuff: allFile(filter: {relativeDirectory: {eq: "calculator-stuff"}}) {
+    calcstuff: allFile(
+      filter: { relativeDirectory: { eq: "calculator-stuff" } }
+    ) {
       ...ArticleAssets
     }
-    caterer: allFile(filter: {relativeDirectory: {eq: "caterer"}}) {
+    caterer: allFile(filter: { relativeDirectory: { eq: "caterer" } }) {
       ...ArticleAssets
     }
-    booksy: allFile(filter: {relativeDirectory: {eq: "booksy"}}) {
+    booksy: allFile(filter: { relativeDirectory: { eq: "booksy" } }) {
       ...ArticleAssets
     }
-    nutshell: allFile(filter: {relativeDirectory: {eq: "nutshell"}}) {
+    nutshell: allFile(filter: { relativeDirectory: { eq: "nutshell" } }) {
       ...ArticleAssets
     }
-    joffrey: allFile(filter: {relativeDirectory: {eq: "joffrey"}}) {
+    joffrey: allFile(filter: { relativeDirectory: { eq: "joffrey" } }) {
       ...ArticleAssets
     }
-    wacomophone: allFile(filter: {relativeDirectory: {eq: "wacomophone"}}) {
+    wacomophone: allFile(filter: { relativeDirectory: { eq: "wacomophone" } }) {
       ...ArticleAssets
     }
-    copy: allFile(filter: {relativeDirectory: {eq: "copy"}}) {
+    copy: allFile(filter: { relativeDirectory: { eq: "copy" } }) {
       ...ArticleAssets
     }
-    minetactoe: allFile(filter: {relativeDirectory: {eq: "mine-tac-toe"}}) {
+    minetactoe: allFile(filter: { relativeDirectory: { eq: "mine-tac-toe" } }) {
       ...ArticleAssets
     }
-    lebnxyz: allFile(filter: {relativeDirectory: {eq: "lebnxyz"}}) {
+    lebnxyz: allFile(filter: { relativeDirectory: { eq: "lebnxyz" } }) {
       ...ArticleAssets
     }
   }

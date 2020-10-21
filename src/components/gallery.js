@@ -52,53 +52,71 @@ export default function Gallery({ articles }) {
   const articleEntries = Object.entries(articles);
   const [current, setCurrent] = useState(articleEntries.length - 1);
   const containerRef = useRef(null);
-  return <>
-    {/* <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p> */}
-    <section className="center-children">
-      <section style={{ marginTop: `2rem` }} ref={containerRef} className="center-vertically">
-        <FlankingArrows
-          directions="left right"
-          containerRef={containerRef}
-          container="section"
-          alwaysShow={true}
-          handlers={{
-            onClick: [
-              () => { if (current > 0) { setCurrent(current - 1); } else { setCurrent(articleEntries.length - 1); } },
-              () => { if (current < articleEntries.length - 1) { setCurrent(current + 1); } else { setCurrent(0); } }
-            ]
-          }}
-          changeDOMWidth={false}
+  return (
+    <>
+      {/* <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p> */}
+      <section className="center-children">
+        <section
+          style={{ marginTop: `2rem` }}
+          ref={containerRef}
+          className="center-vertically"
         >
-          <nav style={{ display: `inline-block` }}>
-            {articleEntries.map(([name, assets], i) =>
-              // should find a way to make the onClick be on a button element idk
-              <ImgContainer
-                onClick={() => { setCurrent(i); }}
-                className={current === i ? `current` : `not-current`}
-                key={name}
-              >
-                <Image
-                  fluid={assets.png.thumb.childImageSharp.thumb}
-                />
-              </ImgContainer>
-            )}
-          </nav>
-        </FlankingArrows>
+          <FlankingArrows
+            directions="left right"
+            containerRef={containerRef}
+            container="section"
+            alwaysShow={true}
+            handlers={{
+              onClick: [
+                () => {
+                  if (current > 0) {
+                    setCurrent(current - 1);
+                  } else {
+                    setCurrent(articleEntries.length - 1);
+                  }
+                },
+                () => {
+                  if (current < articleEntries.length - 1) {
+                    setCurrent(current + 1);
+                  } else {
+                    setCurrent(0);
+                  }
+                },
+              ],
+            }}
+            changeDOMWidth={false}
+          >
+            <nav style={{ display: `inline-block` }}>
+              {articleEntries.map(([name, assets], i) => (
+                // should find a way to make the onClick be on a button element idk
+                <ImgContainer
+                  onClick={() => {
+                    setCurrent(i);
+                  }}
+                  className={current === i ? `current` : `not-current`}
+                  key={name}
+                >
+                  <Image fluid={assets.png.thumb.childImageSharp.thumb} />
+                </ImgContainer>
+              ))}
+            </nav>
+          </FlankingArrows>
+        </section>
+        {articleEntries.map(([name, assets], i) => (
+          <GalleryArticle
+            key={name}
+            focused={current === i}
+            name={name}
+            assets={assets}
+          />
+        ))}
       </section>
-      {articleEntries.map(([name, assets], i) =>
-        <GalleryArticle
-          key={name}
-          focused={current === i}
-          name={name}
-          assets={assets}
-        />
-      )}
-    </section>
-  </>;
+    </>
+  );
 }
 
 Gallery.propTypes = {
-  articles: PropTypes.objectOf(PropTypes.object)
+  articles: PropTypes.objectOf(PropTypes.object),
 };
 
 export const fragment = graphql`
@@ -128,7 +146,13 @@ export const fragment = graphql`
         }
         childVideoFfmpeg {
           webm: transcode(
-            outputOptions: ["-crf 35", "-b:v 0", "-row-mt 1", "-deadline realtime", "-cpu-used 5"]
+            outputOptions: [
+              "-crf 35"
+              "-b:v 0"
+              "-row-mt 1"
+              "-deadline realtime"
+              "-cpu-used 5"
+            ]
             maxWidth: 900
             maxHeight: 480
             fileExtension: "webm"
@@ -147,4 +171,4 @@ export const fragment = graphql`
       }
     }
   }
-`
+`;

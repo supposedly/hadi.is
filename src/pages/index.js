@@ -1,14 +1,13 @@
 import React from "react";
-import { Link, graphql } from "gatsby"
+import { Link, graphql } from "gatsby";
 import styled from "styled-components";
-
 
 import Layout from "../components/layout";
 import Title from "../components/title";
 import NavButton from "../components/navbutton";
 import ImageSwitcher from "../components/image-switcher";
 
-import rfs from '../utils/rfs.js';
+import rfs from "../utils/rfs.js";
 
 const FatButton = styled.button`
   ${rfs.padding(`1rem`)}
@@ -69,7 +68,7 @@ const FatButton = styled.button`
   &#show-links {
     font-family: 'Arial', sans-serif;
   }
-`
+`;
 
 const LinksSection = styled.section`
   > div {
@@ -77,12 +76,14 @@ const LinksSection = styled.section`
     ${rfs.marginTop(`3rem`)}
     align-items: flex-start;
   }
-  nav, a {
+  nav,
+  a {
     color: black;
   }
   a {
-    opacity: .25;
-    &:hover, &.activate {
+    opacity: 0.25;
+    &:hover,
+    &.activate {
       opacity: 1;
     }
     text-decoration: none;
@@ -92,20 +93,20 @@ const LinksSection = styled.section`
     a {
       // comment these out for the no-list effect
       &::after {
-        content: ', ';
+        content: ", ";
       }
       &:first-child:nth-last-child(2)::after {
-        content: ' ';
+        content: " ";
       }
       &:last-child:not(:first-child)::before {
-        content: 'and ';
+        content: "and ";
       }
       &:last-child::after {
-        content: '.';
+        content: ".";
       }
     }
   }
-`
+`;
 
 const mainRef = React.createRef();
 const linksRef = React.createRef();
@@ -116,12 +117,16 @@ function blurSoon(delay = 350) {
 }
 
 function showLinks() {
-  linksRef.current.scrollIntoView({behavior: `smooth`, block: `start`, inline: `nearest`});
+  linksRef.current.scrollIntoView({
+    behavior: `smooth`,
+    block: `start`,
+    inline: `nearest`,
+  });
   blurSoon();
 }
 
 function showMain() {
-  window.scrollTo({top: 0, behavior: `smooth`});
+  window.scrollTo({ top: 0, behavior: `smooth` });
   blurSoon();
 }
 
@@ -138,49 +143,65 @@ function noSlash(path) {
   return path.replace(/\/$/, ``);
 }
 
-export default (props) => {
-  return (
-    <Layout>
-      <section ref={mainRef} style={{ height: `inherit` }} id="main" className="center-children">
-        <div className="flex-main center-children" style={{ width: `100%` }}>
-          <ImageSwitcher
-            data={props.data}
-            alts={[
-              `fancy fake signature`,
-              `hadi`
-            ]}
-            prefix="img"
-          />
-          <Title text="this guy" after="⤴" />
-        </div>
-        <FatButton as={NavButton} id="show-links" text="&amp;" onClick={showLinks} />
-      </section>
-      <LinksSection ref={linksRef} style={{ height: `inherit` }} id="links" className="center-children">
-        <div className="flex-main center-children">
-          <div className="big">
-            <Title punctuation space after="also" inline />
-            {` `}
-            <nav>
-              {
-                props.data.allSitePage.nodes
-                  .filter(e => checkPath(e.path))
-                  .map(e => (
-                    <Link key={e.id} to={noSlash(e.path)}>{fixPath(e.path)}</Link>
-                  ))
-              }
-            </nav>
-          </div>
-        </div>
-        <FatButton
-          as={NavButton}
-          id="show-main"
-          text={<span role="img" aria-label="go back up">👆</span>}
-          onClick={showMain}
+export default ({ data }) => (
+  <Layout>
+    <section
+      ref={mainRef}
+      style={{ height: `inherit` }}
+      id="main"
+      className="center-children"
+    >
+      <div className="flex-main center-children" style={{ width: `100%` }}>
+        <ImageSwitcher
+          data={data}
+          alts={[`fancy fake signature`, `hadi`]}
+          prefix="img"
         />
-      </LinksSection>
-    </Layout>
-  );
-}
+        <Title text="this guy" after="⤴" />
+      </div>
+      <FatButton
+        as={NavButton}
+        id="show-links"
+        text="&amp;"
+        onClick={showLinks}
+      />
+    </section>
+    <LinksSection
+      ref={linksRef}
+      style={{ height: `inherit` }}
+      id="links"
+      className="center-children"
+    >
+      <div className="flex-main center-children">
+        <div className="big">
+          <Title punctuation space after="also" inline />
+          {` `}
+          <nav>
+            {
+              data.allSitePage.nodes
+                .filter(e => checkPath(e.path))
+                .map(e => (
+                  <Link key={e.id} to={noSlash(e.path)}>
+                    {fixPath(e.path)}
+                  </Link>
+                ))
+            }
+          </nav>
+        </div>
+      </div>
+      <FatButton
+        as={NavButton}
+        id="show-main"
+        text={
+          <span role="img" aria-label="go back up">
+            👆
+          </span>
+        }
+        onClick={showMain}
+      />
+    </LinksSection>
+  </Layout>
+);
 
 export const query = graphql`
   query IndexQuery {

@@ -63,8 +63,8 @@ function abs(val) {
 function dd(strings, ...keys) {
   let str = strings;
   if (Array.isArray(str)) {
-    str = str.reduce(
-      (acc, cur, idx) => acc ? `${acc}${keys[idx-1]}${cur}` : `${cur}${keys[idx-1]}`
+    str = str.reduce((acc, cur, idx) =>
+      acc ? `${acc}${keys[idx - 1]}${cur}` : `${cur}${keys[idx - 1]}`
     );
   }
   const lines = str.split(`\n`);
@@ -94,27 +94,35 @@ const defaultArgs = {
   rfsClass: false,
   rfsRemValue: 16,
   rfsSafariIframeResizeBugFix: false,
-  enableRfs: true
-}
+  enableRfs: true,
+};
 
 export class RFS {
   // Configuration
   constructor(args) {
-    args = {...defaultArgs, ...args};
+    args = { ...defaultArgs, ...args };
     // Base value
     this.rfsBaseValue = args.rfsBaseValue;
     this.rfsUnit = args.rfsUnit;
 
     if (this.rfsUnit !== `rem` && this.rfsUnit !== `px`) {
-      throw new Error(`\`${args.rfsUnit}\` is not a valid unit for rfsUnit. Use \`px\` or \`rem\`.`);
+      throw new Error(
+        `\`${args.rfsUnit}\` is not a valid unit for rfsUnit. Use \`px\` or \`rem\`.`
+      );
     }
 
     // Breakpoint at where value-s start decreasing if screen width is smaller
     this.rfsBreakpoint = args.rfsBreakpoint;
     this.rfsBreakpointUnit = args.rfsBreakpointUnit;
 
-    if (this.rfsBreakpointUnit !== `px` && this.rfsBreakpointUnit !== `em` && this.rfsBreakpointUnit !== `rem`) {     
-      throw new Error(`\`${this.rfsBreakpointUnit}\` is not a valid unit for rfsBreakpointUnit. Use \`px\`, \`em\` or \`rem\`.`);
+    if (
+      this.rfsBreakpointUnit !== `px` &&
+      this.rfsBreakpointUnit !== `em` &&
+      this.rfsBreakpointUnit !== `rem`
+    ) {
+      throw new Error(
+        `\`${this.rfsBreakpointUnit}\` is not a valid unit for rfsBreakpointUnit. Use \`px\`, \`em\` or \`rem\`.`
+      );
     }
 
     // Resize values based on screen height and width
@@ -124,7 +132,9 @@ export class RFS {
     this.rfsFactor = args.rfsFactor;
 
     if (typeOf(this.rfsFactor) !== `number` || this.rfsFactor <= 1) {
-      throw new Error(`\`${this.rfsFactor}\` is not a valid  rfsFactor, it must be greater than 1.`);
+      throw new Error(
+        `\`${this.rfsFactor}\` is not a valid  rfsFactor, it must be greater than 1.`
+      );
     }
 
     // Mode. Possibilities: `min-media-query`, `max-media-query`
@@ -161,9 +171,14 @@ export class RFS {
     }
 
     // Calculate the media query value
-    this.rfsMqValue = this.rfsBreakpointUnit === `px` ? `${this.rfsBreakpoint}px` : `${this.rfsBreakpoint / this.rfsRemValue}${this.rfsBreakpointUnit}`;
-    this.rfsMqPropertyWidth = this.rfsMode === `max-media-query` ? `max-width` : `min-width`;
-    this.rfsMqPropertyHeight = this.rfsMode === `max-media-query` ? `max-height` : `min-height`;
+    this.rfsMqValue =
+      this.rfsBreakpointUnit === `px`
+        ? `${this.rfsBreakpoint}px`
+        : `${this.rfsBreakpoint / this.rfsRemValue}${this.rfsBreakpointUnit}`;
+    this.rfsMqPropertyWidth =
+      this.rfsMode === `max-media-query` ? `max-width` : `min-width`;
+    this.rfsMqPropertyHeight =
+      this.rfsMode === `max-media-query` ? `max-height` : `min-height`;
   }
 
   // Internal mixin used to determine which media query needs to be used
@@ -174,22 +189,20 @@ export class RFS {
           @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}), (${this.rfsMqPropertyHeight} = ${this.rfsMqValue}) {
             ${content}
           }
-        `
-      }
-      else {
+        `;
+      } else {
         return dd`
           @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}) and (${this.rfsMqPropertyHeight} = ${this.rfsMqValue}) {
             ${content}
           }
-        `
+        `;
       }
-    }
-    else {
+    } else {
       return dd`
         @media (${this.rfsMqPropertyWidth} = ${this.rfsMqValue}) {
           ${content}
         }
-      `
+      `;
     }
   }
 
@@ -203,17 +216,18 @@ export class RFS {
         &.disable-rfs {
           ${content}
         }
-      `
-    }
-    else if (this.rfsClass === `enable` && this.rfsMode === `min-media-query`) {
+      `;
+    } else if (
+      this.rfsClass === `enable` &&
+      this.rfsMode === `min-media-query`
+    ) {
       return dd`
         .enable-rfs &,
         &.enable-rfs {
           ${content}
         }
-      `
-    }
-    else {
+      `;
+    } else {
       return content;
     }
   }
@@ -227,16 +241,17 @@ export class RFS {
         ret.push(content);
       }
 
-      ret.push(this._rfsMediaQuery(dd`
+      ret.push(
+        this._rfsMediaQuery(dd`
         {
           .enable-rfs &,
           &.enable-rfs {
             ${content}
           }
         }
-      `));
-    }
-    else {
+      `)
+      );
+    } else {
       if (this.rfsClass === `disable` && this.rfsMode === `min-media-query`) {
         ret.push(dd`
           .disable-rfs &,
@@ -262,20 +277,25 @@ export class RFS {
     values.forEach(value => {
       if (value === 0) {
         val = `${val} 0`;
-      }
-      else {
+      } else {
         // Cache value unit
         let unit = typeOf(value) === `number` ? unitOf(value) : false;
 
         if (unit === `px`) {
           // Convert to `rem` if needed
-          val = `${val}  ${this.rfsUnit === `rem` ? `${(unitless(value) + this.rfsRemValue)}rem` : value}`;
-        }
-        else if (unit === `rem`) {
+          val = `${val}  ${
+            this.rfsUnit === `rem`
+              ? `${unitless(value) + this.rfsRemValue}rem`
+              : value
+          }`;
+        } else if (unit === `rem`) {
           // Convert to `px` if needed
-          val = `${val} ${this.rfsUnit === `px` ? `${unitless(value) * this.rfsRemValue}px` : value}`;
-        }
-        else {
+          val = `${val} ${
+            this.rfsUnit === `px`
+              ? `${unitless(value) * this.rfsRemValue}px`
+              : value
+          }`;
+        } else {
           // If value isn't a number (like inherit) or value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
           val = `${val} ${value}`;
         }
@@ -297,17 +317,14 @@ export class RFS {
     values.forEach(value => {
       if (value === 0) {
         val = val + ` 0`;
-      }
-
-      else {
+      } else {
         // Cache value unit
         let unit = typeOf(value) === `number` ? unitOf(value) : false;
 
         // If value isn't a number (like inherit) or value has a unit (not `px` or `rem`, like 1.5em) or $ is 0, just print the value
         if (!unit || (unit !== `px` && unit !== `rem`)) {
           val = `${val} ${value}`;
-        }
-        else {
+        } else {
           // Remove unit from value for calculations
           value = unitless(value);
           if (unit !== `px`) {
@@ -316,17 +333,25 @@ export class RFS {
 
           // Only add the media query if the value is greater than the minimum value
           if (abs(value) <= this.rfsBaseValue || !this.enableRfs) {
-            val = `${val} ${this.rfsUnit === `rem` ? `${value / this.rfsRemValue}rem` : `${value}px`}`;
-          }
-          else {
+            val = `${val} ${
+              this.rfsUnit === `rem`
+                ? `${value / this.rfsRemValue}rem`
+                : `${value}px`
+            }`;
+          } else {
             // Calculate the minimum value
-            let valueMin = this.rfsBaseValue + (abs(value) - this.rfsBaseValue) / this.rfsFactor;
+            let valueMin =
+              this.rfsBaseValue +
+              (abs(value) - this.rfsBaseValue) / this.rfsFactor;
 
             // Calculate difference between value and the minimum value
             let valueDiff = abs(value) - valueMin;
 
             // Base value formatting
-            let minWidth = this.rfsUnit === `rem` ? `${valueMin / this.rfsRemValue}rem` : `${valueMin}px`;
+            let minWidth =
+              this.rfsUnit === `rem`
+                ? `${valueMin / this.rfsRemValue}rem`
+                : `${valueMin}px`;
             // Use negative value if needed
             minWidth = value < 0 ? `-${minWidth}` : minWidth;
             if (minWidth.startsWith(`--`)) {
@@ -337,10 +362,14 @@ export class RFS {
             let variableUnit = this.rfsTwoDimensional ? `vmin` : `vw`;
 
             // Calculate the variable width between 0 and rfsBreakpoint
-            let variableWidth = `${valueDiff * 100 / this.rfsBreakpoint}${variableUnit}`;
+            let variableWidth = `${
+              (valueDiff * 100) / this.rfsBreakpoint
+            }${variableUnit}`;
 
             // Return the calculated value
-            val = `${val} calc(${minWidth} ${value < 0 ? `-` : `+`} ${variableWidth})`;
+            val = `${val} calc(${minWidth} ${
+              value < 0 ? `-` : `+`
+            } ${variableWidth})`;
           }
         }
       }
@@ -359,11 +388,10 @@ export class RFS {
       let val = this.rfsValue(values);
       let fluidVal = this.rfsFluidValue(values);
 
-      // Do not print the media query if responsive & non-responsive values are the same        
+      // Do not print the media query if responsive & non-responsive values are the same
       if (val === fluidVal) {
         return `${property}: ${val};`;
-      }
-      else {
+      } else {
         return dd`
         ${this._rfsRule(dd`
           ${property}: ${this.rfsMode === `max-media-query` ? val : fluidVal};
@@ -373,7 +401,7 @@ export class RFS {
         ${this._rfsMediaQueryRule(dd`
           ${property}: ${this.rfsMode === `max-media-query` ? fluidVal : val};
         `)}
-      `
+      `;
       }
     } else {
       throw new Error(`No arguments given to RFS`);
@@ -438,7 +466,10 @@ export function createRFS(args) {
   }
 
   Object.getOwnPropertyNames(Object.getPrototypeOf(rfsInstance))
-    .filter(prop => typeof rfsInstance[prop] === `function` && !/^(?:_|rfs)/.test(prop))
+    .filter(
+      prop =>
+        typeof rfsInstance[prop] === `function` && !/^(?:_|rfs)/.test(prop)
+    )
     .forEach(prop => {
       const boundFunction = rfsInstance[prop].bind(rfsInstance);
       rfs[prop] = boundFunction;

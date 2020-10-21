@@ -4,33 +4,38 @@ import styled from "styled-components";
 
 const Header = styled.h1`
   cursor: default;
-  font-family: 'Noto Sans TC', sans-serif;
-  display: ${props => props.inline ? `inline-block` : `block`};
+  font-family: "Noto Sans TC", sans-serif;
+  display: ${props => (props.inline ? `inline-block` : `block`)};
   margin: 0;
-  ${props => props.inline ? `` : `margin-top: 1em`}
-`
+  ${props => (props.inline ? `` : `margin-top: 1em`)}
+`;
 
-export default function Title ({
+export default function Title({
   inline = false,
   adverb,
   punctuation = `!`,
   space = `\u00A0`,
   text,
   after,
-  style
+  style,
 }) {
   return (
-    <Header className="big" inline={inline} style={{marginTop: 0, ...style}}>
+    <Header className="big" inline={inline} style={{ marginTop: 0, ...style }}>
       hadi is
       {` `}
-      {adverb
-        ? <>
-            <span style={{color: `red`}}>{adverb}</span>
-            <span className="input">{text}</span>
-          </>
-        : <span style={{color: `red`}} className="input">{text}</span>
-      }
-      {punctuation}{space}{after}
+      {adverb ? (
+        <>
+          <span style={{ color: `red` }}>{adverb}</span>
+          <span className="input">{text}</span>
+        </>
+      ) : (
+        <span style={{ color: `red` }} className="input">
+          {text}
+        </span>
+      )}
+      {punctuation}
+      {space}
+      {after}
     </Header>
   );
 }
@@ -40,7 +45,7 @@ Title.propTypes = {
   adverb: PropTypes.string,
   text: PropTypes.string,
   after: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 Title.defaultProps = {
@@ -48,5 +53,5 @@ Title.defaultProps = {
   adverb: ``,
   text: ``,
   after: ``,
-  style: {}
+  style: {},
 };
