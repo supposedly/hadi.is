@@ -125,41 +125,42 @@ export default function Layout({ children, title, literalTitle }) {
           }
         `}</style>
       </Helmet>
-      <main>
-        <IconSpaceholder />
-        <QuiccIcons className={onHomepage ? `` : `invariable`}>
-          {onHomepage ? (
-            <>
-              {/* <Link title="blog" to="/blog">
-                <FaPencilAlt size={32} />
-              </Link> */}
-              <Link title="portfolio" to="/stuff" className="local">
-                <FaFolderOpen size={32} />
-              </Link>
-              {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
-              {/* TODO: maybe url-encode the href */}
-              <a
-                title="hі＠hоw.hadі.іs"
-                href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
-              >
-                <FaEnvelope size={32} />
-              </a>
-              <a title="twitter" href="https://twitter.com/tarxini">
-                <FaTwitter size={32} />
-              </a>
-              <a title="linkedin" href="https://linkedin.com/in/hat">
-                <FaLinkedin size={32} />
-              </a>
-              <a title="github" href="https://github.com/supposedly">
-                <FaGithub size={32} />
-              </a>
-            </>
-          ) : (
-            <Link title="main page" to="/" className="no-skew local">
-              <FaHome size={34} />
+      <IconSpaceholder />
+      <QuiccIcons className={onHomepage ? `` : `invariable`}>
+        {onHomepage ? (
+          <>
+            {/* <Link title="blog" to="/blog">
+              <FaPencilAlt size={32} />
+            </Link> */}
+            <Link title="portfolio" to="/stuff" className="local">
+              <FaFolderOpen size={32} />
             </Link>
-          )}
-        </QuiccIcons>
+            {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
+            {/* TODO: maybe url-encode the href */}
+            <a
+              title="hі＠hоw.hadі.іs"
+              href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
+            >
+              <FaEnvelope size={32} />
+            </a>
+            <a title="twitter" href="https://twitter.com/tarxini">
+              <FaTwitter size={32} />
+            </a>
+            <a title="linkedin" href="https://linkedin.com/in/hat">
+              <FaLinkedin size={32} />
+            </a>
+            <a title="github" href="https://github.com/supposedly">
+              <FaGithub size={32} />
+            </a>
+          </>
+        ) : (
+          <Link title="main page" to="/" className="no-skew local">
+            <FaHome size={34} />
+          </Link>
+        )}
+      </QuiccIcons>
+      {/* thanks Rapti, https://stackoverflow.com/a/7607206 */}
+      <main style={{ paddingLeft: `calc(100vw - 100%)` }}>
         {children}
       </main>
       {/* <footer>
