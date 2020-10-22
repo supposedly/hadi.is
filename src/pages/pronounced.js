@@ -8,7 +8,7 @@ import rfs from "../utils/rfs.js";
 import Layout from "../components/layout";
 import Title from "../components/title";
 
-import nameURL from "../assets/name-pronunciation.mp3";
+import nameSpriteURL from "../assets/name-pronunciation.mp3";
 
 const FatSoundButton = styled.button`
   margin-top: 3em;
@@ -107,6 +107,10 @@ function randRhyme() {
   return rhymes[Math.floor(Math.random() * rhymes.length)];
 }
 
+function isRhymeExact(word) {
+  return !word.includes(`t`);
+}
+
 function replace(setWord, displayedWord, updatedWord, erasing = true) {
   if (erasing) {
     displayedWord = displayedWord.slice(0, -1);
@@ -143,19 +147,34 @@ export default () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [word, setWord] = useState(rhymes[0]);
   const [modifier, setModifier] = useState(``);
-  const wipeModifier = (kinda = word.includes(`t`)) =>
-    wipe(setModifier, modifier, kinda ? `kinda\u0020` : ``);
+  const wipeModifier = (exact = isRhymeExact(word)) =>
+    wipe(setModifier, modifier, exact ? `` : `kinda `);
   const replaceWord = () => {
     const newWord = randRhyme();
     replace(setWord, word, newWord);
-    wipeModifier(newWord.includes(`t`));
+    wipeModifier(isRhymeExact(word));
   };
 
-  const [playName] = useSound(nameURL, {
+  // use-sound relies on a useEffect() hook with the url as a dependency,
+  // so this could be done with separate audio files too, but a
+  // single spritesheet is easier to deal with (if harder to make lol)
+  // and more extensible
+  const [playName] = useSound(nameSpriteURL, {
     onend() {
       buttonRef.current.blur();
     },
+    sprite: {
+      0: [0, 550],
+      1: [1000, 550],
+      2: [2000, 550],
+      3: [3000, 550],
+      4: [4000, 550],
+      5: [5000, 550],
+      6: [6000, 550],
+      7: [7000, 550],
+    }
   });
+  const [sprite, setSprite] = useState(0);
 
   return (
     <Layout title="pronounced">
@@ -171,7 +190,9 @@ export default () => {
             setTimeout(() => {
               setButtonClicked(false);
             }, 250);
-            playName();
+            // overcomplicated parity-alternating randomness lul
+            playName({ id: `${(sprite + Math.floor(Math.random() * 4) * 2) % 8}` });
+            setSprite(n => (n + 1) % 8);
           }}
         />
         <P>
