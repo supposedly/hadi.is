@@ -14,6 +14,7 @@ const ImgContainer = styled.section`
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
+  user-select: none;
 
   .gatsby-image-wrapper {
     ${rfs(`55px`, `width`)}
@@ -157,6 +158,7 @@ export const fragment = graphql`
             maxHeight: 480
             fileExtension: "webm"
             codec: "libvpx-vp9"
+            audioCodec: "libvorbis"
           ) {
             width
             src

@@ -91,19 +91,16 @@ const ArrowComponent = styled.button.attrs(props => {
     clip-path: polygon(${props => polygons[props.direction]});
   }
 
-  ${props =>
-    props.alwaysShow ? `` : `${props.container}:hover > &.useHover {`}
-  opacity: .34; // #ddd on a white bg
+  ${props => props.alwaysShow ? `` : `${props.container}:hover > &.useHover {`}
+      opacity: .34; // #ddd on a white bg
 
-  &:hover {
-    opacity: 1;
-  }
+      &:hover {
+        opacity: 1;
+      }
 
-  &:focus:not(:active),
-  &.jump {
-    animation: ${props => (props.changeDOMWidth ? jump : cosmeticJump)}
-      ${props => props.jumpDuration}ms;
-  }
+      &:focus:not(:active), &.jump {
+        animation: ${props => (props.changeDOMWidth ? jump : cosmeticJump)} ${props => props.jumpDuration}ms;
+      }
   ${props => (props.alwaysShow ? `` : `}`)}
 `;
 

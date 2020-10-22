@@ -1,3 +1,5 @@
+// XXX: too much going on in this one file lol
+
 import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
@@ -6,6 +8,7 @@ import styled from "styled-components";
 
 import Image from "gatsby-image";
 import DevIconComponent from "../components/devicon";
+import Video from "../components/video";
 
 import rfs from "../utils/rfs.js";
 
@@ -103,11 +106,11 @@ const DevIcon = styled(DevIconComponent)`
 const StyledMediaComponent = styled(() => {}).attrs(props => ({
   width: `${500 * (props.scale || 1)}px`,
 }))`
-  ${props => rfs.marginTop(props.marginTop || `1rem`)}
   ${props => rfs(props.width, `width`)}
-  float: ${props => props.$floatValue};
-  ${props => props.$marginLeft}
-  ${props => props.$marginRight}
+  float: ${props => props.float};
+  ${props => props.marginLeftCSS}
+  ${props => props.marginRightCSS}
+  ${props => props.marginTopCSS}
   box-shadow: 0px 0px 10px #000000cc;
   border-radius: 15px;
 `;
@@ -127,7 +130,7 @@ const getMarginsFromFloat = (float, marginLeft, marginRight) => {
       right = marginRight || `10px`;
       left = marginLeft || `10px`;
   }
-  return [rfs.marginLeft(left), rfs.marginRight(right)];
+  return [left, right];
 };
 
 const StyledMedia = ({
@@ -135,39 +138,36 @@ const StyledMedia = ({
   float = `none`,
   marginLeft,
   marginRight,
+  marginTop = `1rem`,
   ...props
 }) => {
-  [marginLeft, marginRight] = useMemo(
-    () => getMarginsFromFloat(float, marginLeft, marginRight),
-    [float, marginLeft, marginRight]
+  const [
+    marginLeftCSS,
+    marginRightCSS,
+    marginTopCSS
+  ] = useMemo(
+    () => {
+      const [left, right] = getMarginsFromFloat(float, marginLeft, marginRight);
+      return [
+        rfs.marginLeft(left),
+        rfs.marginRight(right),
+        rfs.marginTop(marginTop)
+      ];
+    },
+    [float, marginLeft, marginRight, marginTop]
   );
 
   return (
     <StyledMediaComponent
       as={as}
-      $floatValue={float}
-      $marginLeft={marginLeft}
-      $marginRight={marginRight}
+      float={float}
+      marginLeftCSS={marginLeftCSS}
+      marginRightCSS={marginRightCSS}
+      marginTopCSS={marginTopCSS}
       {...props}
     />
   );
 };
-
-const Video = ({ sources, className, autoplay = true, ...props }) => (
-  <video
-    className={className}
-    preload="true"
-    autoPlay={autoplay}
-    muted
-    controls={!autoplay}
-    loop
-    {...props}
-  >
-    {Object.values(sources).map(s => (
-      <source key={s.src} src={s.src} type={`video/${s.fileExtension}`} />
-    ))}
-  </video>
-);
 
 const Floater = `figure`;
 
@@ -176,7 +176,6 @@ export default function GalleryArticle({
   name: nameForDebugging,
   focused,
 }) {
-  // ignore all of the weird outer divs
   const [article, images, gifs, videos] = useMemo(
     () => [
       assets.mdx ? assets.mdx.text.childMdx : { body: nameForDebugging },
@@ -200,7 +199,7 @@ export default function GalleryArticle({
       ),
       Video: ({ n, ...props }) => {
         const sources = videos[`vid_${n}`].childVideoFfmpeg;
-        return <StyledMedia as={Video} sources={sources} {...props} />;
+        return <StyledMedia as={Video} sources={sources} playSound={focused} {...props} />;
       },
       FloatLeft: ({ children, marginRight = `10px` }) => (
         <Floater
@@ -284,7 +283,7 @@ export default function GalleryArticle({
         </header>
       ),
     }),
-    [article, images, gifs, videos]
+    [article, images, gifs, videos, focused]
   );
   const [visible, setVisible] = useState(focused);
   useEffect(() => {
@@ -296,6 +295,7 @@ export default function GalleryArticle({
     }
     return () => clearTimeout(handle);
   }, [focused]);
+
   return (
     <Article
       className={focused ? `visible` : `invisible`}
