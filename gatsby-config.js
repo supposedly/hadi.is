@@ -1,8 +1,5 @@
-const ffprobe = require(`ffprobe-static`);
-const ffmpeg = require(`ffmpeg-static`);
-
-process.env[`FFMPEG_PATH`] = ffmpeg;
-process.env[`FFPROBE_PATH`] = ffprobe.path;
+process.env[`FFMPEG_PATH`] = require(`ffmpeg-static`);
+process.env[`FFPROBE_PATH`] = require(`ffprobe-static`).path;
 
 module.exports = {
   siteMetadata: {
@@ -13,6 +10,23 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-styled-components`,
+    {
+      resolve: `gatsby-plugin-ultimate-dark-mode`,
+      options: {
+        customProvider: require(`styled-components`).ThemeProvider,
+        themes: {
+          light: {
+            bg: `white`,
+            content: `black`
+          },
+          dark: {
+            bg: `#403533`,
+            content: `#fdd`
+          }
+        },
+        transitionDuration: `200ms`
+      },
+    },
     `gatsby-disable-404`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-remove-trailing-slashes`,

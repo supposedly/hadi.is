@@ -14,7 +14,7 @@ const Jump = keyframes`
   100% {
     transform: none;
   }
-`
+`;
 
 const Button = styled.button`
   position: absolute;

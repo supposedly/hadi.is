@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import Helmet from "react-helmet";
 import {
   FaHome,
@@ -14,10 +14,13 @@ import {
   FaFolderOpen,
   FaEnvelope,
   FaTwitter,
+  FaMoon,
 } from "react-icons/fa";
+import { FiSun } from "react-icons/fi";
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { ThemeToggler, ThemeContext } from "gatsby-plugin-ultimate-dark-mode";
 
 import rfs from "../utils/rfs.js";
 import SEO from "./seo";
@@ -34,11 +37,10 @@ const IconSpaceholder = styled.div`
 const QuiccIcons = styled.nav`
   position: fixed;
   top: 0; // https://stackoverflow.com/a/38679996
+  left: 0;
   z-index: 2; // so they don't get covered by a main-image being funky (z0) or by the nav-btn (z1)
   ${rfs.marginTop(`.5rem`)}
-  ${rfs.marginLeft(
-    `.5rem`
-  )}
+  ${rfs.marginLeft(`.5rem`)}
   height: calc(100% - 5vh); // idk helps the bottom icon not run off shorter screens when vertical
   padding: 0;
   display: flex;
@@ -58,15 +60,16 @@ const QuiccIcons = styled.nav`
 
   a {
     margin-right: 1em;
-    color: black;
-    opacity: 0.25;
-    transition: opacity 75ms;
+    color: var(--content-color);
+    opacity: ${({ theme }) => theme.Map({light: 0.25, dark: 0.5})};
+    transition: color --theme-transition-duration, opacity --theme-transition-duration;
 
     &.local {
       color: red;
     }
 
     &:hover {
+      transition: opacity 75ms;
       opacity: 1;
     }
 
@@ -89,7 +92,64 @@ const QuiccIcons = styled.nav`
   }
 `;
 
+const Jump = keyframes`
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: none;
+  }
+`;
+
+const DarkModeButtonComponent = styled.button`
+  position: fixed;
+  top: 0;
+  right: 0;
+  ${rfs(`48px`, `width`)}
+  ${rfs(`48px`, `height`)}
+  ${rfs.marginTop(`.5rem`)}
+  ${rfs.marginRight(`.5rem`)}
+  z-index: 2;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--content-color);
+  transition: color --theme-transition-duration, opacity --theme-transition-duration;
+
+  @media only screen and (min-width: 700px) {
+    // something weird going on with the margin and quicc-icons
+    margin-top: 0;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus:not(:active) svg {
+    animation: ${Jump} 200ms;
+  }
+
+  &:not(:focus):not(:active) svg {
+    animation: ${Jump} 200ms;
+  }
+`;
+
+const DarkModeButton = ({ theme, themeTransitionDuration, setTheme }) => (
+  <DarkModeButtonComponent
+    theme={theme}
+    themeTransitionDuration={themeTransitionDuration}
+    onClick={() => setTheme(theme.Name === `light` ? `dark` : `light`)}
+  >
+    {theme.Name === `light` ? (
+      <FaMoon size={32} />
+    ) : (
+      <FiSun size={32} />
+    )}
+  </DarkModeButtonComponent>
+);
+
 export default function Layout({ children, title, literalTitle }) {
+  const themeContext = useContext(ThemeContext);
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -126,7 +186,7 @@ export default function Layout({ children, title, literalTitle }) {
         `}</style>
       </Helmet>
       <IconSpaceholder />
-      <QuiccIcons className={onHomepage ? `` : `invariable`}>
+      <QuiccIcons theme={themeContext.theme} className={onHomepage ? `` : `invariable`}>
         {onHomepage ? (
           <>
             {/* <Link title="blog" to="/blog">
@@ -159,6 +219,7 @@ export default function Layout({ children, title, literalTitle }) {
           </Link>
         )}
       </QuiccIcons>
+      <ThemeToggler as={DarkModeButton} />
       {/* thanks Rapti, https://stackoverflow.com/a/7607206 */}
       <main style={{ paddingLeft: `calc(100vw - 100%)` }}>
         {children}
@@ -170,7 +231,7 @@ export default function Layout({ children, title, literalTitle }) {
       </footer> */}
     </>
   );
-}
+};
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

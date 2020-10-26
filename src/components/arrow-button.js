@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import React, { useMemo, useEffect, useRef, useState } from "react";
+import React, { useMemo, useEffect, useRef, useState, useContext } from "react";
 import styled, { keyframes } from "styled-components";
+import { ThemeContext } from "gatsby-plugin-ultimate-dark-mode";
 
 import rfs from "../utils/rfs.js";
 
@@ -104,81 +105,82 @@ const ArrowComponent = styled.button.attrs(props => {
   ${props => (props.alwaysShow ? `` : `}`)}
 `;
 
-const ArrowButton = React.forwardRef(
-  ({ containerRef, noTouch, ...props }, ref) => {
-    if (!ref) {
-      ref = useRef(null);
+const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) => {
+  if (!ref) {
+    ref = useRef(null);
+  }
+  const themeContext = useContext(ThemeContext);
+  useEffect(() => {
+    let nonNullContainer;
+    const blurArrow = () => {
+      if (ref.current) ref.current.blur();
+    };
+    if (containerRef && containerRef.current && ref) {
+      nonNullContainer = containerRef.current;
+      containerRef.current.addEventListener(`mouseleave`, blurArrow);
     }
-    useEffect(() => {
-      let nonNullContainer;
-      const blurArrow = () => {
-        if (ref.current) ref.current.blur();
-      };
-      if (containerRef && containerRef.current && ref) {
-        nonNullContainer = containerRef.current;
-        containerRef.current.addEventListener(`mouseleave`, blurArrow);
+    return () => {
+      if (nonNullContainer) {
+        nonNullContainer.removeEventListener(`mouseleave`, blurArrow);
       }
-      return () => {
-        if (nonNullContainer) {
-          nonNullContainer.removeEventListener(`mouseleave`, blurArrow);
-        }
-      };
-    }, [containerRef, ref]);
-    const [useHover, setUseHover] = useState(true);
-    useEffect(() => {
-      // thanks https://stackoverflow.com/a/30303898
-      // lastTouchTime is used for ignoring emulated mousemove events
-      // that are fired after touchstart events. Since they're
-      // indistinguishable from real events, we use the fact that they're
-      // fired a few milliseconds after touchstart to filter them.
-      let lastTouchTime = 0,
-        nonNullContainer;
-      const updateLastTouchTime = () => {
-        lastTouchTime = new Date();
-      };
-      const disableHover = () => {
-        setUseHover(false);
-      };
-      const enableHover = () => {
-        if (new Date() - lastTouchTime < 500) {
-          return;
-        }
-        setUseHover(true);
-      };
+    };
+  }, [containerRef, ref]);
+  const [useHover, setUseHover] = useState(true);
+  useEffect(() => {
+    // thanks https://stackoverflow.com/a/30303898
+    // lastTouchTime is used for ignoring emulated mousemove events
+    // that are fired after touchstart events. Since they're
+    // indistinguishable from real events, we use the fact that they're
+    // fired a few milliseconds after touchstart to filter them.
+    let lastTouchTime = 0,
+      nonNullContainer;
+    const updateLastTouchTime = () => {
+      lastTouchTime = new Date();
+    };
+    const disableHover = () => {
+      setUseHover(false);
+    };
+    const enableHover = () => {
+      if (new Date() - lastTouchTime < 500) {
+        return;
+      }
+      setUseHover(true);
+    };
 
-      if (containerRef && containerRef.current) {
-        nonNullContainer = containerRef.current;
+    if (containerRef && containerRef.current) {
+      nonNullContainer = containerRef.current;
+      nonNullContainer.addEventListener(
+        `touchstart`,
+        updateLastTouchTime,
+        true
+      );
+      nonNullContainer.addEventListener(`touchstart`, disableHover, true);
+      nonNullContainer.addEventListener(`mousemove`, enableHover, true);
+    }
+
+    return () => {
+      if (nonNullContainer) {
         nonNullContainer.addEventListener(
-          `touchstart`,
+          "touchstart",
           updateLastTouchTime,
           true
         );
-        nonNullContainer.addEventListener(`touchstart`, disableHover, true);
-        nonNullContainer.addEventListener(`mousemove`, enableHover, true);
+        nonNullContainer.addEventListener("touchstart", disableHover, true);
+        nonNullContainer.addEventListener("mousemove", enableHover, true);
       }
+    };
+  }, [containerRef]);
 
-      return () => {
-        if (nonNullContainer) {
-          nonNullContainer.addEventListener(
-            "touchstart",
-            updateLastTouchTime,
-            true
-          );
-          nonNullContainer.addEventListener("touchstart", disableHover, true);
-          nonNullContainer.addEventListener("mousemove", enableHover, true);
-        }
-      };
-    }, [containerRef]);
-
-    return (
-      <ArrowComponent
-        ref={ref}
-        className={useHover ? `useHover` : noTouch ? `hide` : ``}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <ArrowComponent
+      ref={ref}
+      theme={themeContext.theme}
+      backgroundColor={themeContext.theme.contentColor}
+      className={useHover ? `useHover` : noTouch ? `hide` : ``}
+      {...props}
+    />
+  );
+});
 
 ArrowButton.propTypes = {
   containerRef: PropTypes.shape({ current: PropTypes.object }).isRequired,
