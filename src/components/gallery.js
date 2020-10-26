@@ -20,7 +20,7 @@ const ImgContainer = styled.section`
     ${rfs(`55px`, `width`)}
     ${rfs(`55px`, `height`)}
     cursor: pointer;
-    border: 4px solid black;
+    border: 4px solid var(--content-color);
   }
 
   &:not(:last-child) .gatsby-image-wrapper {

@@ -10,23 +10,6 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-styled-components`,
-    {
-      resolve: `gatsby-plugin-ultimate-dark-mode`,
-      options: {
-        customProvider: require(`styled-components`).ThemeProvider,
-        themes: {
-          light: {
-            bg: `white`,
-            content: `black`
-          },
-          dark: {
-            bg: `#403533`,
-            content: `#fdd`
-          }
-        },
-        transitionDuration: `200ms`
-      },
-    },
     `gatsby-disable-404`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-remove-trailing-slashes`,

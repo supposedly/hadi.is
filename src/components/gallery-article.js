@@ -49,6 +49,16 @@ const Article = styled.article`
   .center-self {
     align-self: center;
   }
+
+  ${props => props.theme.Is(`dark`) &&
+    `a {
+        color: cornflowerblue;
+
+      &:visited {
+        color: mediumpurple;
+      }
+    }`
+  }
 `;
 
 const BuiltWithList = styled.ul`

@@ -5,7 +5,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import Helmet from "react-helmet";
 import {
   FaHome,
@@ -16,13 +16,13 @@ import {
   FaTwitter,
   FaMoon,
 } from "react-icons/fa";
-import { FiSun } from "react-icons/fi";
+import { FiSun } from "react-icons/fi"; // the fontawesome sun is ugly
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
 import styled, { keyframes } from "styled-components";
-import { ThemeToggler, ThemeContext } from "gatsby-plugin-ultimate-dark-mode";
 
 import rfs from "../utils/rfs.js";
+import { ThemeToggler } from "../utils/dark-mode/ThemeToggler";
 import SEO from "./seo";
 import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
 import "../styles/global.scss";
@@ -61,15 +61,15 @@ const QuiccIcons = styled.nav`
   a {
     margin-right: 1em;
     color: var(--content-color);
-    opacity: ${({ theme }) => theme.Map({light: 0.25, dark: 0.5})};
-    transition: color --theme-transition-duration, opacity --theme-transition-duration;
+    opacity: ${({ theme }) => theme.Map({ dark: 0.5 }, 0.25)};
+    transition: color var(--theme-transition-duration), opacity var(--theme-transition-duration);
 
     &.local {
       color: red;
     }
 
     &:hover {
-      transition: opacity 75ms;
+      transition: opacity 0ms;
       opacity: 1;
     }
 
@@ -107,7 +107,7 @@ const DarkModeButtonComponent = styled.button`
   right: 0;
   ${rfs(`48px`, `width`)}
   ${rfs(`48px`, `height`)}
-  ${rfs.marginTop(`.5rem`)}
+  margin-top: .5em;
   ${rfs.marginRight(`.5rem`)}
   z-index: 2;
   border: none;
@@ -134,22 +134,20 @@ const DarkModeButtonComponent = styled.button`
   }
 `;
 
-const DarkModeButton = ({ theme, themeTransitionDuration, setTheme }) => (
+const DarkModeButton = ({ theme, setTheme }) => (
   <DarkModeButtonComponent
     theme={theme}
-    themeTransitionDuration={themeTransitionDuration}
     onClick={() => setTheme(theme.Name === `light` ? `dark` : `light`)}
   >
     {theme.Name === `light` ? (
-      <FaMoon size={32} />
+      <FaMoon size={30} />
     ) : (
-      <FiSun size={32} />
+      <FiSun size={30} />
     )}
   </DarkModeButtonComponent>
 );
 
 export default function Layout({ children, title, literalTitle }) {
-  const themeContext = useContext(ThemeContext);
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -186,7 +184,7 @@ export default function Layout({ children, title, literalTitle }) {
         `}</style>
       </Helmet>
       <IconSpaceholder />
-      <QuiccIcons theme={themeContext.theme} className={onHomepage ? `` : `invariable`}>
+      <QuiccIcons className={onHomepage ? `` : `invariable`}>
         {onHomepage ? (
           <>
             {/* <Link title="blog" to="/blog">
@@ -220,7 +218,7 @@ export default function Layout({ children, title, literalTitle }) {
         )}
       </QuiccIcons>
       <ThemeToggler as={DarkModeButton} />
-      {/* thanks Rapti, https://stackoverflow.com/a/7607206 */}
+      {/* thanks Rapti for this paddingLeft solution, https://stackoverflow.com/a/7607206 */}
       <main style={{ paddingLeft: `calc(100vw - 100%)` }}>
         {children}
       </main>

@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useMemo, useEffect, useRef, useState, useContext } from "react";
 import styled, { keyframes } from "styled-components";
-import { ThemeContext } from "gatsby-plugin-ultimate-dark-mode";
 
 import rfs from "../utils/rfs.js";
 
@@ -56,7 +55,7 @@ const ArrowComponent = styled.button.attrs(props => {
     changeDOMWidth:
       props.changeDOMWidth === undefined ? true : props.changeDOMWidth,
     useRFS: props.useRFS === undefined ? true : props.useRFS,
-    backgroundColor: props.backgroundColor || `#999`,
+    backgroundColor: props.backgroundColor || props.theme.content,
     height: props.height || props.dims || `50px`,
     width: props.width || props.dims || `50px`,
     [marginForward]: props.margin || `1.5rem`,
@@ -109,7 +108,6 @@ const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) 
   if (!ref) {
     ref = useRef(null);
   }
-  const themeContext = useContext(ThemeContext);
   useEffect(() => {
     let nonNullContainer;
     const blurArrow = () => {
@@ -174,8 +172,6 @@ const ArrowButton = React.forwardRef(({ containerRef, noTouch, ...props }, ref) 
   return (
     <ArrowComponent
       ref={ref}
-      theme={themeContext.theme}
-      backgroundColor={themeContext.theme.contentColor}
       className={useHover ? `useHover` : noTouch ? `hide` : ``}
       {...props}
     />

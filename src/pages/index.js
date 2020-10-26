@@ -19,7 +19,6 @@ const FatButton = styled.button`
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0);
   color: black;
-  transition: background-color 450ms, color 140ms;
   box-shadow: none;
   border: none;
   border-radius: 5px;
@@ -33,7 +32,8 @@ const FatButton = styled.button`
   }
 
   .yuge {
-    background-color: rgba(255, 191, 191, 0.8);
+    background-color: rgba(255, 191, 191, ${({ theme }) => theme.Map({ dark: 0.5 }, 0.8)});
+    color: var(--content-color);
     border-radius: 50%;
     ${rfs(`6rem`, `height`)}
     ${rfs(`6rem`, `width`)}
@@ -43,7 +43,10 @@ const FatButton = styled.button`
     justify-content: center;
     align-items: center;
 
-    transition: background-color 700ms, width 700ms, height 700ms, line-height 700ms, margin 700ms;
+    transition:
+      background-color var(--theme-transition-duration),
+      color var(--theme-transition-duration),
+      width 700ms, height 700ms, line-height 700ms, margin 700ms;
 
     &:hover {
       transition-duration: 450ms;
@@ -78,12 +81,14 @@ const LinksSection = styled.section`
   }
   nav,
   a {
-    color: black;
+    color: var(--content-color);
+    transition: color var(--theme-transition-duration), opacity var(--theme-transition-duration);
   }
   a {
-    opacity: 0.25;
+    opacity: ${({ theme }) => theme.Map({ dark: 0.5 }, 0.25)};
     &:hover,
     &.activate {
+      transition: opacity 0ms;
       opacity: 1;
     }
     text-decoration: none;

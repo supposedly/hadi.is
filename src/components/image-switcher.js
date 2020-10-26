@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 import Image from "gatsby-image";
 import styled from "styled-components";
-import { ThemeContext } from "gatsby-plugin-ultimate-dark-mode";
 
 import { FlankingArrows } from "../components/arrow-button";
 
@@ -41,7 +40,8 @@ const Dot = styled.span`
     content: "";
     display: inline-block;
     border-radius: 50%;
-    background-color: ${({ theme }) => theme.contentColor};
+    background-color: var(--content-color);
+    transition: background-color var(--theme-transition-duration);
     height: 6px;
     width: 6px;
 
@@ -55,8 +55,6 @@ const Dot = styled.span`
 `;
 
 export default class ImageSwitcher extends React.Component {
-  static contextType = ThemeContext;
-
   constructor(props) {
     super();
     this.state = { currentImg: 0 };
@@ -139,8 +137,7 @@ export default class ImageSwitcher extends React.Component {
         <div style={{ marginBottom: `0.5em` }}>
           {Array.from({ length: this.maxImg + 1 }, (_, i) => (
             <Dot
-              key={i} // dis cool because the array is never mutating
-              theme={this.context.theme}
+              key={i} // this is cool because the array is never mutating
               onClick={() => {
                 this.setState({ currentImg: i });
               }}

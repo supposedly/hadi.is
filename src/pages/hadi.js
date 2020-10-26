@@ -23,10 +23,21 @@ const MainArticle = styled.article`
     font-variation-settings: "wght" 500;
     font-weight: 500; // for firefox, idk why
   }
+
+  ${props => props.theme.Is(`dark`) &&
+    `a {
+        color: cornflowerblue;
+
+      &:visited {
+        color: mediumpurple;
+      }
+    }`
+  }
 `;
 
 const P = styled.p`
   line-height: 2;
+  color: var(--content-color);
 `;
 
 const MainImage = styled(Image)`
