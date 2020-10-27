@@ -6,15 +6,71 @@ export const ThemeContext = createContext();
 
 export const ThemeConsumer = ThemeContext.Consumer;
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
+function localStorageAvailable() {
+  let storage;
+  try {
+    storage = window.localStorage;
+    let x = '__storage_test__';
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  }
+  catch(e) {
+      return e instanceof DOMException && (
+        // everything except Firefox
+        e.code === 22 ||
+        // Firefox
+        e.code === 1014 ||
+        // test name field too, because code might not be present
+        // everything except Firefox
+        e.name === 'QuotaExceededError' ||
+        // Firefox
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+      // acknowledge QuotaExceededError only if there's something already stored
+      ) && (
+        storage && storage.length !== 0
+      );
+  }
+}
+
 export const ThemeProvider = ({ children, themes, transitionDuration }) => {
   const [theme, rawSetTheme] = useState(undefined);
+  let [storageType, setStorageType] = useState(undefined);
   
   useEffect(() => {
     const root = window.document.documentElement;
+    setStorageType(localStorageAvailable());
     rawSetTheme(
       root.style.getPropertyValue(`--initial-theme`)
     );
   }, []);
+
+  const storage = {
+    local: storageType,
+    set: (key, value) => {
+      if (storage.local === undefined) {
+        return;
+      }
+      else if (storage.local) {
+        localStorage.setItem(key, value);
+      } else {
+        document.cookie = `lasttheme=${encodeURIComponent(value)};max-age=31536000;path=/`;  // expire in one year
+      }
+    },
+    get: key => {
+      if (storage.local === undefined) {
+        return undefined;
+      } else if (storage.local) {
+        return localStorage.getItem(key);
+      } else {
+        const result = document.cookie.split(';').find(
+          cookie => cookie.startsWith('lasttheme=')
+        );
+        return result && decodeURIComponent(result.split('=')[1]);
+      }
+    }
+  };
 
   // TODO: these should probably be in the useEffect thing
   const contextProps = useMemo(() => ({
@@ -33,14 +89,14 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
     },
     setTheme(newTheme) {
       const root = window.document.documentElement;
-      localStorage.setItem(`last-theme`, newTheme);
+      storage.set(`lasttheme`, newTheme);
       Object.entries(themes[newTheme])
         .forEach(([color, variant]) => {
           root.style.setProperty(`--${kebabCase(color)}-color`, variant);
         });
       rawSetTheme(newTheme);
     }
-  }), [theme, themes, transitionDuration]);
+  }), [theme, themes, transitionDuration, storage.local]);
 
   return (
     <ThemeContext.Provider value={contextProps}>

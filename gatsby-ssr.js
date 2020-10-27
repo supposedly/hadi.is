@@ -44,9 +44,58 @@ const StyleInjector = ({ themes, transitionDuration }) => {
   const setters = generateSettersJS(themes);
   const injectedFunc = `
     (function() {
+      // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
+      function localStorageAvailable() {
+        let storage;
+        try {
+          storage = window.localStorage;
+          let x = '__storage_test__';
+          storage.setItem(x, x);
+          storage.removeItem(x);
+          return true;
+        }
+        catch(e) {
+            return e instanceof DOMException && (
+              // everything except Firefox
+              e.code === 22 ||
+              // Firefox
+              e.code === 1014 ||
+              // test name field too, because code might not be present
+              // everything except Firefox
+              e.name === 'QuotaExceededError' ||
+              // Firefox
+              e.name === 'NS_ERROR_DOM_QUOTA_REACHED'
+            // acknowledge QuotaExceededError only if there's something already stored
+            ) && (
+              storage && storage.length !== 0
+            );
+        }
+      }
+      
+      const storage = {
+        local: localStorageAvailable(),
+        set: (key, value) => {
+          if (storage.local) {
+            localStorage.setItem(key, value);
+          } else {
+            document.cookie = 'lasttheme='+encodeURIComponent(value)+';max-age=31536000;path=/';  // expire in one year
+          }
+        },
+        get: key => {
+          if (storage.local) {
+            return localStorage.getItem(key);
+          } else {
+            const result = document.cookie.split(';').find(
+              cookie => cookie.startsWith('lasttheme=')
+            );
+            return result && decodeURIComponent(result.split('=')[1]);
+          }
+        }
+      };
+
       function getInitialTheme() {
-        const persistedColorPreference = window.localStorage.getItem(
-          'last-theme'
+        const persistedColorPreference = storage.get(
+          'lasttheme'
         );
         const hasPersistedPreference = (
           typeof persistedColorPreference === 'string'

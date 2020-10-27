@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/not-found.py": {
-      "excludeFiles": "{.cache,node_modules,src,public}/**"
+      "includeFiles": "api/not-found.py"
     }
   },
   "routes": [

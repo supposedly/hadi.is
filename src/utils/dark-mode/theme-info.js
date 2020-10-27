@@ -4,7 +4,7 @@ export const themes = {
     content: `black`
   },
   dark: {
-    bg: `#403533`,
+    bg: `#2a2525`,
     content: `#fdd`
   }
 };
