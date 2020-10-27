@@ -117,12 +117,56 @@ const StyledMediaComponent = styled(() => {}).attrs(props => ({
   width: `${500 * (props.scale || 1)}px`,
 }))`
   ${props => rfs(props.width, `width`)}
+  box-shadow: 0px 0px 10px #000000cc;
+  border-radius: 15px;
+
+  &.expanded {
+    position: fixed;
+    float: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 90vw;
+    z-index: 3;
+  }
+`;
+
+// semantics be damned, making this a div instead of a button is the
+// only reasonable way to allow for StyledMedia components with buttons
+// of their own (e.g. the mute button on <Video />)
+const ModalButton = styled.div`
+  background-color: transparent;
+  border: none;
   float: ${props => props.float};
   ${props => props.marginLeftCSS}
   ${props => props.marginRightCSS}
   ${props => props.marginTopCSS}
-  box-shadow: 0px 0px 10px #000000cc;
-  border-radius: 15px;
+
+  &::after {
+    content: '';
+    opacity: 0;
+    background-color: black;
+    transition: opacity 100ms;
+  }
+
+  &.expanded::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: 100vh;
+    width: 100vw;
+    opacity: .6;
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const getMarginsFromFloat = (float, marginLeft, marginRight) => {
@@ -166,16 +210,24 @@ const StyledMedia = ({
     },
     [float, marginLeft, marginRight, marginTop]
   );
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <StyledMediaComponent
-      as={as}
+    <ModalButton
+      className={expanded ? `expanded` : ``}
+      onClick={() => setExpanded(v => !v)}
       float={float}
       marginLeftCSS={marginLeftCSS}
       marginRightCSS={marginRightCSS}
       marginTopCSS={marginTopCSS}
-      {...props}
-    />
+    >
+        <StyledMediaComponent
+          as={as}
+          modalExpanded={expanded}
+          className={expanded ? `expanded` : ``}
+          {...props}
+        />
+    </ModalButton>
   );
 };
 
