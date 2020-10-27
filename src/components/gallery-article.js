@@ -117,12 +117,13 @@ const DevIcon = styled(DevIconComponent)`
 const StyledMediaComponent = styled(() => {}).attrs(props => ({
   width: `${(props.modalExpanded ? props.$expandedWidth : 500 * props.scale)}px`,
 }))`
-  ${props => console.log(props.width) || rfs(props.width, `width`)}
-  max-height: ${props => props.expandedHeight};
-  box-shadow: 0px 0px 10px #000000cc;
+  ${props => rfs(props.width, `width`)}
+  height: ${props => props.expandedHeight};
   border-radius: 15px;
+  box-shadow: 0px 0px 10px #000000cc;
 
   &.expanded {
+    transition: height 200ms, width 200ms, max-height 200ms;
     position: fixed;
     float: none;
     top: 50%;
@@ -145,12 +146,13 @@ const ModalButton = styled.div`
   ${props => props.marginLeftCSS}
   ${props => props.marginRightCSS}
   ${props => props.marginTopCSS}
+  transition: opacity 200ms;
 
   &::after {
     content: '';
     opacity: 0;
     background-color: black;
-    transition: opacity 100ms;
+    transition: opacity 200ms;
   }
 
   &.expanded::after {
@@ -227,8 +229,8 @@ const StyledMedia = ({
         height: viewportCoefficient * Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
       });
     };
-    window.addEventListener(`resize`, f);
     f();
+    window.addEventListener(`resize`, f);
     return () => {
       window.removeEventListener(`resize`, f);
     };
@@ -236,7 +238,7 @@ const StyledMedia = ({
 
   useEffect(() => {
     let el = mediaRef.current;
-    if (!el || !scaledViewport || expanded) {
+    if (!el || !scaledViewport) {
       return;
     }
     if (!el.clientWidth) {
@@ -246,7 +248,7 @@ const StyledMedia = ({
     const ratio = el.clientHeight / el.clientWidth;
     const viewportRatio = scaledViewport.height / scaledViewport.width;
     if (viewportRatio < 1) {
-      // landscape
+      // LANDSCAPE
       let newHeight = scaledViewport.height;
       let newWidth = scaledViewport.height / ratio;
 
@@ -260,13 +262,13 @@ const StyledMedia = ({
       setExpandedHeight(newHeight);
       setExpandedWidth(newWidth);
     } else {
-      // portrait or square
+      // PORTRAIT or SQUARE
       let newWidth = scaledViewport.width;
       let newHeight = scaledViewport.width * ratio;
 
       if (newHeight > scaledViewport.height) {
         newHeight = scaledViewport.height;
-        newHeight = scaledViewport.height / ratio;
+        newWidth = scaledViewport.height / ratio;
       }
 
       setExpandedWidth(newWidth);

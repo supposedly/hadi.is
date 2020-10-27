@@ -34,6 +34,31 @@ function localStorageAvailable() {
   }
 }
 
+const storage = local => ({
+  set: (key, value) => {
+    if (local === undefined) {
+      return;
+    }
+    else if (local) {
+      localStorage.setItem(key, value);
+    } else {
+      document.cookie = `lasttheme=${encodeURIComponent(value)};max-age=31536000;path=/`;  // expire in one year
+    }
+  },
+  get: key => {
+    if (local === undefined) {
+      return undefined;
+    } else if (local) {
+      return localStorage.getItem(key);
+    } else {
+      const result = document.cookie.split(';').find(
+        cookie => cookie.startsWith('lasttheme=')
+      );
+      return result && decodeURIComponent(result.split('=')[1]);
+    }
+  }
+});
+
 export const ThemeProvider = ({ children, themes, transitionDuration }) => {
   const [theme, rawSetTheme] = useState(undefined);
   let [storageType, setStorageType] = useState(undefined);
@@ -45,32 +70,6 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
       root.style.getPropertyValue(`--initial-theme`)
     );
   }, []);
-
-  const storage = {
-    local: storageType,
-    set: (key, value) => {
-      if (storage.local === undefined) {
-        return;
-      }
-      else if (storage.local) {
-        localStorage.setItem(key, value);
-      } else {
-        document.cookie = `lasttheme=${encodeURIComponent(value)};max-age=31536000;path=/`;  // expire in one year
-      }
-    },
-    get: key => {
-      if (storage.local === undefined) {
-        return undefined;
-      } else if (storage.local) {
-        return localStorage.getItem(key);
-      } else {
-        const result = document.cookie.split(';').find(
-          cookie => cookie.startsWith('lasttheme=')
-        );
-        return result && decodeURIComponent(result.split('=')[1]);
-      }
-    }
-  };
 
   // TODO: these should probably be in the useEffect thing
   const contextProps = useMemo(() => ({
@@ -89,14 +88,14 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
     },
     setTheme(newTheme) {
       const root = window.document.documentElement;
-      storage.set(`lasttheme`, newTheme);
+      storage(storageType).set(`lasttheme`, newTheme);
       Object.entries(themes[newTheme])
         .forEach(([color, variant]) => {
           root.style.setProperty(`--${kebabCase(color)}-color`, variant);
         });
       rawSetTheme(newTheme);
     }
-  }), [theme, themes, transitionDuration, storage.local]);
+  }), [theme, themes, transitionDuration, storageType]);
 
   return (
     <ThemeContext.Provider value={contextProps}>

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useMemo, useEffect, useRef, useState, useContext } from "react";
+import React, { useMemo, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 import rfs from "../utils/rfs.js";
