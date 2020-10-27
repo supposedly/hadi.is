@@ -1,9 +1,9 @@
 // XXX: too much going on in this one file lol
 
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
-import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 import Image from "gatsby-image";
@@ -13,6 +13,7 @@ import Video from "../components/video";
 import rfs from "../utils/rfs.js";
 
 const visibilityDelay = 300;
+const viewportCoefficient = .8;
 
 const Article = styled.article`
   margin-left: 1rem;
@@ -114,9 +115,10 @@ const DevIcon = styled(DevIconComponent)`
 `;
 
 const StyledMediaComponent = styled(() => {}).attrs(props => ({
-  width: `${500 * (props.scale || 1)}px`,
+  width: `${(props.modalExpanded ? props.$expandedWidth : 500 * props.scale)}px`,
 }))`
-  ${props => rfs(props.width, `width`)}
+  ${props => console.log(props.width) || rfs(props.width, `width`)}
+  max-height: ${props => props.expandedHeight};
   box-shadow: 0px 0px 10px #000000cc;
   border-radius: 15px;
 
@@ -127,6 +129,7 @@ const StyledMediaComponent = styled(() => {}).attrs(props => ({
     left: 0;
     right: 0;
     margin: auto;
+    width: ${props => props.width};
     transform: translateY(-50%);
     z-index: 3;
   }
@@ -193,6 +196,7 @@ const StyledMedia = ({
   marginLeft,
   marginRight,
   marginTop = `1rem`,
+  scale,
   ...props
 }) => {
   const [
@@ -211,6 +215,68 @@ const StyledMedia = ({
     [float, marginLeft, marginRight, marginTop]
   );
   const [expanded, setExpanded] = useState(false);
+  const [expandedWidth, setExpandedWidth] = useState(null);
+  const [expandedHeight, setExpandedHeight] = useState(null);
+  const [scaledViewport, setScaledViewport] = useState(null);
+  const mediaRef = useRef(null);
+
+  useEffect(() => {
+    const f = () => {
+      setScaledViewport({
+        width: viewportCoefficient * Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
+        height: viewportCoefficient * Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+      });
+    };
+    window.addEventListener(`resize`, f);
+    f();
+    return () => {
+      window.removeEventListener(`resize`, f);
+    };
+  }, []);
+
+  useEffect(() => {
+    let el = mediaRef.current;
+    if (!el || !scaledViewport || expanded) {
+      return;
+    }
+    if (!el.clientWidth) {
+      // lol
+      el = el.imageRef.current;
+    }
+    const ratio = el.clientHeight / el.clientWidth;
+    const viewportRatio = scaledViewport.height / scaledViewport.width;
+    if (viewportRatio < 1) {
+      // landscape
+      let newHeight = scaledViewport.height;
+      let newWidth = scaledViewport.height / ratio;
+
+      // could be "expandedWidth * viewportCoefficient" but actually we don't
+      // want it to be greater than even 80% of the width
+      if (newWidth > scaledViewport.width) {
+        newWidth = scaledViewport.width;
+        newHeight = scaledViewport.width * ratio;
+      }
+
+      setExpandedHeight(newHeight);
+      setExpandedWidth(newWidth);
+    } else {
+      // portrait or square
+      let newWidth = scaledViewport.width;
+      let newHeight = scaledViewport.width * ratio;
+
+      if (newHeight > scaledViewport.height) {
+        newHeight = scaledViewport.height;
+        newHeight = scaledViewport.height / ratio;
+      }
+
+      setExpandedWidth(newWidth);
+      setExpandedHeight(newHeight);
+    }
+  }, [
+    mediaRef,
+    scaledViewport,
+    expanded
+  ]);
 
   return (
     <ModalButton
@@ -221,13 +287,17 @@ const StyledMedia = ({
       marginRightCSS={marginRightCSS}
       marginTopCSS={marginTopCSS}
     >
-        <StyledMediaComponent
-          as={as}
-          modalExpanded={expanded}
-          className={expanded ? `expanded` : ``}
-          style={expanded ? { position: `fixed` } : undefined}
-          {...props}
-        />
+      <StyledMediaComponent
+        as={as}
+        ref={mediaRef}
+        modalExpanded={expanded}
+        className={expanded ? `expanded` : ``}
+        style={expanded ? { position: `fixed` } : undefined}
+        scale={scale || 1}
+        $expandedWidth={expandedWidth}
+        $expandedHeight={expandedHeight}
+        {...props}
+      />
     </ModalButton>
   );
 };

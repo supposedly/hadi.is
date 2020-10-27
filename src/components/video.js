@@ -46,7 +46,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-export default ({
+export default React.forwardRef(({
   sources,
   className,
   style,
@@ -57,7 +57,7 @@ export default ({
   marginTopCSS = `margin-top: 10px;`,
   modalExpanded,
   ...props
-}) => {
+}, ref) => {
   const [muted, setMuted] = useState(true);
   const SpeakerIcon = muted  ? FaVolumeOff : FaVolumeUp;
   return (
@@ -84,6 +84,7 @@ export default ({
             // idfk man
             marginBottom: `-5px`,
           }}
+          ref={ref}
           autoPlay
           muted={muted}
           preload="true"
@@ -96,4 +97,4 @@ export default ({
         </video>
     </Container>
   );
-};
+});
