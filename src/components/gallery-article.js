@@ -123,12 +123,11 @@ const StyledMediaComponent = styled(() => {}).attrs(props => ({
   &.expanded {
     position: fixed;
     float: none;
-    top: 0;
+    top: 50%;
     left: 0;
     right: 0;
-    bottom: 0;
     margin: auto;
-    max-width: 90vw;
+    transform: translateY(-50%);
     z-index: 3;
   }
 `;
@@ -162,6 +161,7 @@ const ModalButton = styled.div`
     height: 100vh;
     width: 100vw;
     opacity: .6;
+    z-index: 2;
   }
 
   &:focus {
@@ -225,6 +225,7 @@ const StyledMedia = ({
           as={as}
           modalExpanded={expanded}
           className={expanded ? `expanded` : ``}
+          style={expanded ? { position: `fixed` } : undefined}
           {...props}
         />
     </ModalButton>
