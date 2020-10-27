@@ -4,10 +4,12 @@ import React from "react";
 
 import { themes, defaultTheme, transitionDuration } from "./src/utils/dark-mode/theme-info";
 
-// Heavily informed by Josh W. Comeau's "The Quest for the Perfect Dark mode"
-// getInitialTheme() copied verbatim (albeit renamed)
+/*
+ * Heavily informed by Josh W. Comeau's "The Quest for the Perfect Dark mode"
+ * getInitialTheme() copied verbatim (albeit renamed)
+ */
 
-const kebabCase = s => s.replace(/^\K(?=[A-Z])/g, `-`).toLowerCase();
+const kebabCase = s => s.replace(/(?!^)(?=[A-Z])/g, `-`).toLowerCase();
 
 const StyleInjector = ({ themes, transitionDuration }) => {
   const injectedFunc = `

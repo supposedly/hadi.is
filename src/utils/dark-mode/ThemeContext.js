@@ -1,6 +1,6 @@
 import React, { createContext, useMemo, useEffect, useState } from 'react';
 
-const kebabCase = s => s.replace(/(?<!^)(?=[A-Z])/g, `-`).toLowerCase();
+const kebabCase = s => s.replace(/(?!^)(?=[A-Z])/g, `-`).toLowerCase();
 
 export const ThemeContext = createContext();
 
