@@ -20,32 +20,45 @@ const ImgContainer = styled.section`
     ${rfs(`55px`, `width`)}
     ${rfs(`55px`, `height`)}
     cursor: pointer;
-    border: 4px solid var(--content-color);
-  }
+    border-radius: 5px;
+    margin: 4px;
+    --box-shadow-color: black;
+    transition:
+      box-shadow var(--theme-transition-duration),
+      margin-bottom 50ms,
+      margin-top 50ms;
+    box-shadow: var(--box-shadow-color) 0 0 1.5vmin;
 
-  &:not(:last-child) .gatsby-image-wrapper {
-    border-right-width: 2px;
-  }
-
-  &:first-child .gatsby-image-wrapper {
-    border-radius: 5px 0 0 5px;
-  }
-
-  &:not(:first-child) .gatsby-image-wrapper {
-    border-left-width: 2px;
-  }
-
-  &:last-child .gatsby-image-wrapper {
-    border-radius: 0 5px 5px 0;
+    &::after {
+      content: '';
+      color: transparent;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border: 0px solid var(--content-color);
+      border-radius: 5px;
+      transition: border-color var(--theme-transition-duration);
+    }
   }
 
   &.current .gatsby-image-wrapper {
-    border-bottom-style: dashed;
-    border-top-style: dashed;
-  }
+    ${({ theme }) => theme.Map({ dark: `--box-shadow-color: var(--content-color);` })}
+    margin-bottom: 6px;
+    margin-top: 2px;
 
-  &.not-current .gatsby-image-wrapper {
-    border-style: solid;
+    &::after {
+      content: '';
+      color: transparent;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border: 2px solid var(--content-color);
+      border-radius: 5px;
+    }
   }
 `;
 
@@ -87,7 +100,7 @@ export default function Gallery({ articles }) {
             }}
             changeDOMWidth={false}
           >
-            <nav style={{ display: `inline-block` }}>
+            <nav style={{ display: `inline-flex`, flexWrap: `wrap` }}>
               {articleEntries.map(([name, assets], i) => (
                 // should find a way to make the onClick be on a button element idk
                 <ImgContainer

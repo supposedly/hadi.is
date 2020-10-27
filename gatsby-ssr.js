@@ -9,39 +9,7 @@ import { themes, defaultTheme, transitionDuration } from "./src/utils/dark-mode/
 
 const kebabCase = s => s.replace(/^\K(?=[A-Z])/g, `-`).toLowerCase();
 
-const generateSettersJS = themes => (
-  Object.entries(themes)
-    .map(([theme, colors], i, arr) => (
-      `${i === arr.length - 1 ? (
-        `{`
-      ) : (
-        `if (initialTheme === '${theme}') {`
-      )}
-        ${
-          Object.entries(colors)
-            .map(([color, variant]) => (
-              `root.style.setProperty(
-                '--${kebabCase(color)}-color',
-                '${variant}'
-              );`
-            ))
-            .join(`\n`)
-        }
-      }`
-    ))
-    .join(` else `)
-);
-
-const generateSettersCSS = theme => (
-  Object.entries(theme)
-    .map(([color, variant]) => (
-      `--${kebabCase(color)}-color: ${variant};`
-    ))
-    .join(`\n`)
-);
-
 const StyleInjector = ({ themes, transitionDuration }) => {
-  const setters = generateSettersJS(themes);
   const injectedFunc = `
     (function() {
       // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
@@ -121,7 +89,28 @@ const StyleInjector = ({ themes, transitionDuration }) => {
 
       const root = document.documentElement;
       
-      ${setters}
+      ${
+        Object.entries(themes)
+        .map(([theme, colors], i, arr) => (
+          `${i === arr.length - 1 ? (
+            `{`
+          ) : (
+            `if (initialTheme === '${theme}') {`
+          )}
+            ${
+              Object.entries(colors)
+                .map(([color, variant]) => (
+                  `root.style.setProperty(
+                    '--${kebabCase(color)}-color',
+                    '${variant}'
+                  );`
+                ))
+                .join(`\n`)
+            }
+          }`
+        ))
+        .join(` else `)
+      }
       root.style.setProperty('--theme-transition-duration', '${transitionDuration}');
       root.style.setProperty('--initial-theme', initialTheme);
 
@@ -134,12 +123,17 @@ const StyleInjector = ({ themes, transitionDuration }) => {
 };
 
 const DefaultStyles = ({ themes, defaultTheme, transitionDuration }) => {
-  const setters = generateSettersCSS(themes[defaultTheme]);
   return (
     <style>
       {`
         :root {
-          ${setters}
+          ${
+            Object.entries(themes[defaultTheme])
+              .map(([color, variant]) => (
+                `--${kebabCase(color)}-color: ${variant};`
+              ))
+              .join(`\n`)
+          }
           --theme-transition-duration: ${transitionDuration};
         }
       `}
