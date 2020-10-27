@@ -71,7 +71,7 @@ export default ({
       style={{ margin: modalExpanded ? `auto` : 0, padding: 0 }}
     >
         {hasSound && 
-          <Button onClick={() => setMuted(muted => !muted)}>
+          <Button onClick={e => { setMuted(muted => !muted); e.stopPropagation(); }}>
             <SpeakerIcon color={muted ? `red` : `white`} size={32}/>
           </Button>
         }
