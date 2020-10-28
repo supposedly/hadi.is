@@ -93,6 +93,8 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
         .forEach(([color, variant]) => {
           root.style.setProperty(`--${kebabCase(color)}-color`, variant);
         });
+      root.classList.remove(theme);
+      root.classList.add(newTheme);
       rawSetTheme(newTheme);
     }
   }), [theme, themes, transitionDuration, storageType]);

@@ -5,8 +5,7 @@ import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import styled from "styled-components";
-import Highlight, { defaultProps } from 'prism-react-renderer';
-import paleNight from "prism-react-renderer/themes/palenight";
+import Highlight from "react-highlight.js";
 
 import Image from "gatsby-image";
 import DevIconComponent from "../components/devicon";
@@ -407,23 +406,8 @@ export default function GalleryArticle({
         </Floater>
       ),
       code: ({ children, className }) => (
-        <Highlight
-          {...defaultProps}
-          theme={paleNight}
-          code={children}
-          language={(className || ``).replace(/language-/, '')}
-        >
-          {({className, style, tokens, getLineProps, getTokenProps}) => (
-            <pre className={className} style={{...style, padding: '20px'}}>
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({line, key: i})}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({token, key})} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
+        <Highlight language={(className || ``).replace(/language-/, '')}>
+          {children}
         </Highlight>
       ),
       h1: ({ className, children, ...props }) => (

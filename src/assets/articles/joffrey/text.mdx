@@ -43,28 +43,27 @@ def add(a: int = 4, *b: int):  # can also provide default args and a type-coerci
     return a + sum(b)
 ```
 
-
 All there is to it, really. `AND` is "this flag/argument (flargument) needs these other flarguments",
 `OR` is "this flargument is cool with having these other ones, but it doesn't need them", and `XOR` is
 "this flargument isn't on speaking terms with these other ones."
 
 ```py
->>> cli.parse('foo -S "test test" -vvvv')  # input will be shlex.split if given as a string (defaults to sys.argv though)
+>>> cli.parse('foo -S "test test" -vvvv')
 JoffreyNamespace(name='foo', scream='TEST TEST', verbosity=3)
 >>> 
 >>> cli.parse('foo -v')
-# <help/usage info...>
+# <prints help/usage info...>
 Expected all of the following flags/arguments: 'scream', 'verbosity'
 (Got 'verbosity')
 >>> 
 >>> cli.parse('foo --add 1 6')
 JoffreyNamespace(addition=7, name='foo')
 >>> 
->>> cli.parse('foo -a')  # same as `foo --add`; default short alias is first letter of name (`short=None` removes entirely)
+>>> cli.parse('foo -a')  # same as `foo --add`
 JoffreyNamespace(addition=4, name='foo')
 >>> 
 >>> cli.parse('foo -a 1 2 -S "this is gonna error" -v')
-# <help/usage info...>
+# <prints help/usage info...>
 Expected no more than one of the following flags/arguments: 'addition', ['scream', 'verbosity']
 (Got 'addition', ['scream', 'verbosity'])
 >>> 
@@ -72,4 +71,5 @@ Expected no more than one of the following flags/arguments: 'addition', ['scream
 ```
 
 I'm not the first to come up with that by a long shot, but it turns out it's a pretty useful way of thinking about a lot
-of things. An iteration of the same idea is informing a huge part of the dictionary at <ArticleLink n="lebnxyz">lebn.xyz</ArticleLink>!
+of things. An iteration of the same idea is informing a huge part of the dictionary at
+<ArticleLink n="lebnxyz">lebn.xyz</ArticleLink>!

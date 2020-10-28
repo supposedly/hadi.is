@@ -115,8 +115,8 @@ const StyleInjector = ({ themes, transitionDuration }) => {
       }
       root.style.setProperty('--theme-transition-duration', '${transitionDuration}');
       root.style.setProperty('--initial-theme', initialTheme);
-
-    })()
+      root.classList.add(initialTheme);
+    })();
   `;
   return (
     // eslint-disable-next-line react/no-danger

@@ -1,4 +1,18 @@
 @import "rfs-scss";
+@import "codeblock-themes";
+
+:root {
+  // codeblock themes
+  @include hljs(var(--theme-transition-duration));
+
+  &.dark {
+    @include atom-one-dark;
+  }
+
+  &.light {
+    @include github-gist;
+  }
+}
 
 // wish there were a parent selector so i could just say "<main></main> and all its parents"
 html, body, #___gatsby, #gatsby-focus-wrapper, main {
@@ -11,10 +25,10 @@ body {
   @include font-size(1rem);
   background-color: var(--bg-color);
   color: var(--content-color);
+
   transition:
     background-color var(--theme-transition-duration),
-    color var(--theme-transition-duration)
-  ;
+    color var(--theme-transition-duration);
 }
 
 pre {
