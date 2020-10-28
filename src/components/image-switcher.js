@@ -19,6 +19,7 @@ const ImgContainer = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  z-index: 0;
   ${rfs.marginTop(`1rem`)}
 
   picture, .gatsby-image-wrapper {
@@ -35,6 +36,7 @@ const Dot = styled.span`
   user-select: none;
   transition: opacity 100ms;
   position: relative;
+  z-index: 1;
 
   &::after {
     content: "";
@@ -53,6 +55,13 @@ const Dot = styled.span`
     top: 50%;
   }
 `;
+
+const DotDiv = styled.div`
+  background-color: var(--bg-color);
+  transition: background-color var(--theme-transition-duration);
+  border-radius: 5px;
+  z-index: 1;
+`
 
 export default class ImageSwitcher extends React.Component {
   constructor(props) {
@@ -134,7 +143,7 @@ export default class ImageSwitcher extends React.Component {
             />
           </FlankingArrows>
         </ImgContainer>
-        <div style={{ marginBottom: `0.5em` }}>
+        <DotDiv style={{ marginBottom: `0.5em` }}>
           {Array.from({ length: this.maxImg + 1 }, (_, i) => (
             <Dot
               key={i} // this is cool because the array is never mutating
@@ -144,7 +153,7 @@ export default class ImageSwitcher extends React.Component {
               isCurrent={this.state.currentImg === i}
             />
           ))}
-        </div>
+        </DotDiv>
       </div>
     );
   }

@@ -173,14 +173,8 @@ export const fragment = graphql`
             codec: "libvpx-vp9"
             audioCodec: "libvorbis"
           ) {
-            width
             src
-            presentationMaxWidth
-            presentationMaxHeight
-            originalName
-            height
             fileExtension
-            aspectRatio
           }
         }
       }

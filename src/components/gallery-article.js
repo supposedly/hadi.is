@@ -224,9 +224,10 @@ const StyledMedia = ({
 
   useEffect(() => {
     const f = () => {
+      const root = document.documentElement || {};
       setScaledViewport({
-        width: viewportCoefficient * Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0),
-        height: viewportCoefficient * Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+        width: viewportCoefficient * Math.max(root.clientWidth || 0, window.innerWidth || 0),
+        height: viewportCoefficient * Math.max(root.clientHeight || 0, window.innerHeight || 0)
       });
     };
     f();
