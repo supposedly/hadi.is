@@ -71,7 +71,10 @@ export default React.forwardRef(({
       style={{ margin: modalExpanded ? `auto` : 0, padding: 0 }}
     >
         {hasSound && 
-          <Button onClick={e => { setMuted(muted => !muted); e.stopPropagation(); }}>
+          <Button
+            style={{ zIndex: 2 }}
+            onClick={e => { setMuted(muted => !muted); e.stopPropagation(); }}
+          >
             <SpeakerIcon color={muted ? `red` : `white`} size={32}/>
           </Button>
         }
@@ -83,6 +86,7 @@ export default React.forwardRef(({
             position: `relative`,
             // idfk man
             marginBottom: `-5px`,
+            zIndex: 0
           }}
           ref={ref}
           autoPlay
