@@ -176,6 +176,23 @@ export const fragment = graphql`
             src
             fileExtension
           }
+          mp4: transcode(
+            options: [
+              ["-pix_fmt", "yuv420p"]
+            ]
+            outputOptions: [
+              "-movflags +faststart"
+              "-crf 28"
+            ]
+            maxWidth: 900
+            maxHeight: 480
+            fileExtension: "mp4"
+            codec: "libx264"
+            audioCodec: "libvorbis"
+          ) {
+            src
+            fileExtension
+          }
         }
       }
     }
