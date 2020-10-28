@@ -6,7 +6,7 @@ import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import styled from "styled-components";
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import paleNight from "prism-react-renderer/themes/paleNight";
+import paleNight from "prism-react-renderer/themes/palenight";
 
 import Image from "gatsby-image";
 import DevIconComponent from "../components/devicon";
