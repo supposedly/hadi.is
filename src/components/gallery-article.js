@@ -315,9 +315,10 @@ const FakeLink = styled.button`
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
+  color: var(--content-color);
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--content-color);
   border-radius: 0;
   padding: 0;
   cursor: pointer;
@@ -326,7 +327,7 @@ const FakeLink = styled.button`
 
   &:hover, &:focus {
     outline: none;
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid var(--content-color);
   }
 
   &:active {
