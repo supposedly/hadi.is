@@ -16,13 +16,14 @@ That's all there is to it, really, but the appeal is that even simple rules can 
 interactions. The most-famous cellular automaton in this respect is Conway's Game of Life, devised by mathematician
 John Conway (RIP 2020) in the 1960s.
 
-Conway's Game of Life is awesome, and you can look it up to find out more about how it works and why people like it.
-But there are a whole lot more CA out there to explore! So Golly, the software from earlier, actually lets you make
-up your own with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is
-surrounded by three yellow neighbors, it transitions into a yellow cell" and that translates into a whole
-cellular-automaton system for you to explore. But the problem's that this language is pretty primitive. It lets you
-describe any CA that Golly could possibly simulate, so it's definitely complete, but it's way lower-level than is
-helpful sometimes.
+Conway's Game of Life is awesome, and you can [look it up](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
+to find out more about how it works and why people like it. But it's not even the only CA there is!
+So Golly, the software from earlier, actually lets you explore all sorts of different CA
+with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is
+surrounded by three yellow neighbors, it transitions into a yellow cell", which translates into a whole
+cellular-automaton system of your own definition. And it's a comprehensive, complete language, so it lets you
+describe any CA that Golly could possibly simulate... but it's pretty primitive. Just way lower-level than is
+helpful sometimes, and it loves making you repeat yourself.
 
 <Video n={1} float="right" marginLeft="1em" />
 
@@ -30,9 +31,24 @@ Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org
 But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant...
 and, boy, does that not sound like a fun time! [So I wrote over three thousand lines of code instead.](https://xkcd.com/1319/)
 
-Over to the right is the
-[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model),
-the very first rule I ever compiled with Nutshell. It's pretty easy to model and it looks cool.
+Long story short, it worked well enough, and over to the right is the very first rule I ever compiled with Nutshell: the
+[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model)...
+which I don't have any practical use for, but it's easy to model and it looks pretty cool. And then, after a good 4 months of
+stop-and-start work, I managed to finish my Brainfuck rule! There it is at the very top of this page, running the following
+program that outputs the text `Hello, world!`:
 
-And I eventually worked my way up to Brainfuck, which is the video up top :) It's showing a BF program that outputs
-the text `Hello, world!`... if you can allow for unary ASCII values.
+```brainfuck
+++++++++
+[
+  >++++
+  [
+    >++>+++>+++>+<<<<-
+  ]
+  >+>+>->>+
+  [
+    <
+  ]
+  <-
+]
+>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
+```

@@ -66,66 +66,71 @@ export default function Gallery({ articles }) {
   const articleEntries = Object.entries(articles);
   const [current, setCurrent] = useState(articleEntries.length - 1);
   const containerRef = useRef(null);
+  const setArticle = name => {
+    setCurrent(
+      // probably doesn't rly need a hashmap bc not that many articles
+      articleEntries.findIndex(nameAndAssets => nameAndAssets[0] === name)
+    );
+  }
+
   return (
-    <>
-      {/* <p>(this page is under construction <span role="img" aria-label="blushing face">😊</span>)</p> */}
-      <section className="center-children">
-        <section
-          style={{ marginTop: `2rem` }}
-          ref={containerRef}
-          className="center-vertically"
+    <section className="center-children">
+      <section
+        style={{ marginTop: `2rem` }}
+        ref={containerRef}
+        className="center-vertically"
+      >
+        <FlankingArrows
+          directions="left right"
+          containerRef={containerRef}
+          container="section"
+          alwaysShow={true}
+          handlers={{
+            onClick: [
+              () => {
+                if (current > 0) {
+                  setCurrent(current - 1);
+                } else {
+                  setCurrent(articleEntries.length - 1);
+                }
+              },
+              () => {
+                if (current < articleEntries.length - 1) {
+                  setCurrent(current + 1);
+                } else {
+                  setCurrent(0);
+                }
+              },
+            ],
+          }}
+          changeDOMWidth={false}
         >
-          <FlankingArrows
-            directions="left right"
-            containerRef={containerRef}
-            container="section"
-            alwaysShow={true}
-            handlers={{
-              onClick: [
-                () => {
-                  if (current > 0) {
-                    setCurrent(current - 1);
-                  } else {
-                    setCurrent(articleEntries.length - 1);
-                  }
-                },
-                () => {
-                  if (current < articleEntries.length - 1) {
-                    setCurrent(current + 1);
-                  } else {
-                    setCurrent(0);
-                  }
-                },
-              ],
-            }}
-            changeDOMWidth={false}
-          >
-            <nav style={{ display: `inline-flex`, flexWrap: `wrap` }}>
-              {articleEntries.map(([name, assets], i) => (
-                // should find a way to make the onClick be on a button element idk
-                <ImgContainer
-                  onClick={() => {
-                    setCurrent(i);
-                  }}
-                  className={current === i ? `current` : `not-current`}
-                  key={name}
-                >
-                  <Image fluid={assets.png.thumb.childImageSharp.thumb} />
-                </ImgContainer>
-              ))}
-            </nav>
-          </FlankingArrows>
-        </section>
-        {articleEntries.map(([name, assets], i) => (
-          <GalleryArticle
-            key={name}
-            focused={current === i}
-            name={name}
-            assets={assets}
-          />
-        ))}
+          <nav style={{ display: `inline-flex`, flexWrap: `wrap` }}>
+            {articleEntries.map(([name, assets], i) => (
+              // should find a way to make the onClick be on a button element idk
+              <ImgContainer
+                onClick={() => {
+                  setCurrent(i);
+                }}
+                className={current === i ? `current` : `not-current`}
+                key={name}
+              >
+                <Image fluid={assets.png.thumb.childImageSharp.thumb} />
+              </ImgContainer>
+            ))}
+          </nav>
+        </FlankingArrows>
       </section>
-    </>
+      {articleEntries.map(([name, assets], i) => (
+        <GalleryArticle
+          key={name}
+          focused={current === i}
+          name={name}
+          assets={assets}
+          setArticle={setArticle}
+        />
+      ))}
+    </section>
   );
 }
 

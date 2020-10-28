@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import styled from "styled-components";
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import paleNight from "prism-react-renderer/themes/paleNight";
 
 import Image from "gatsby-image";
 import DevIconComponent from "../components/devicon";
@@ -309,12 +311,38 @@ const StyledMedia = ({
   );
 };
 
+const FakeLink = styled.button`
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+
+  transition: border-width 150ms;
+
+  &:hover, &:focus {
+    outline: none;
+    border-bottom: 3px solid black;
+  }
+
+  &:active {
+    outline: none;
+    position: relative;
+    top: 2px;
+  }
+`
+
 const Floater = `figure`;
 
 export default function GalleryArticle({
   assets,
-  name: nameForDebugging,
   focused,
+  setArticle,
+  name: nameForDebugging
 }) {
   const [article, images, gifs, videos] = useMemo(
     () => [
@@ -327,6 +355,14 @@ export default function GalleryArticle({
   );
   const components = useMemo(
     () => ({
+      ArticleLink: ({ children, n: name, ...props }) => (
+        <FakeLink
+          onClick={() => { setArticle(name); }}
+          {...props}
+        >
+          {children}
+        </FakeLink>
+      ),
       Image: ({ n, ...props }) => (
         <StyledMedia
           as={Image}
@@ -368,6 +404,26 @@ export default function GalleryArticle({
         >
           {children}
         </Floater>
+      ),
+      code: ({ children, className }) => (
+        <Highlight
+          {...defaultProps}
+          theme={paleNight}
+          code={children}
+          language={(className || ``).replace(/language-/, '')}
+        >
+          {({className, style, tokens, getLineProps, getTokenProps}) => (
+            <pre className={className} style={{...style, padding: '20px'}}>
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({line, key: i})}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({token, key})} />
+                  ))}
+                </div>
+              ))}
+            </pre>
+          )}
+        </Highlight>
       ),
       h1: ({ className, children, ...props }) => (
         <header className="center-children" style={{ marginBottom: `1em` }}>
@@ -423,7 +479,7 @@ export default function GalleryArticle({
         </header>
       ),
     }),
-    [article, images, gifs, videos, focused]
+    [article, images, gifs, videos, focused, setArticle]
   );
   const [visible, setVisible] = useState(focused);
   useEffect(() => {
