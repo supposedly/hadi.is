@@ -22,8 +22,9 @@ So Golly, the software from earlier, actually lets you explore all sorts of diff
 with a sort of built-in programming language: you can feed it a bunch of rules like "if a blue cell is
 surrounded by three yellow neighbors, it transitions into a yellow cell", which translates into a whole
 cellular-automaton system of your own definition. And it's a comprehensive, complete language, so it lets you
-describe any CA that Golly could possibly simulate... but it's pretty primitive. Just way lower-level than is
-helpful sometimes, and it loves making you repeat yourself.
+describe any CA that Golly could possibly simulate. But! It's pretty primitive. It's just way lower-level than is
+helpful sometimes, and it really loves making you repeat yourself, which makes it hard to keep track of everything
+going on in a more-complex CA.
 
 <Video n={1} float="right" marginLeft="1em" />
 
@@ -32,8 +33,8 @@ But doing it in Golly's CA language would have me writing about a thousand lines
 and, boy, does that not sound like a fun time! [So I wrote over three thousand lines of code instead.](https://xkcd.com/1319/)
 
 Long story short, it worked well enough, and over to the right is the very first rule I ever compiled with Nutshell: the
-[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model)...
-which I don't have any practical use for, but it's easy to model and it looks pretty cool. And then, after a good 4 months of
+[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model) —
+which I don't have any practical use for, but it's easy to model and it looks pretty cool. And then, with a good 4 months of
 stop-and-start work, I managed to finish my Brainfuck rule! There it is at the very top of this page, running the following
 program that outputs the text `Hello, world!`:
 
