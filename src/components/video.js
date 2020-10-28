@@ -18,8 +18,6 @@ const Jump = keyframes`
 
 const Button = styled.button`
   position: absolute;
-  ${rfs(`48px`, `width`)}
-  ${rfs(`48px`, `height`)}
   z-index: 1;
   border: none;
   cursor: pointer;
