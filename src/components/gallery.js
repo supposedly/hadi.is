@@ -159,6 +159,23 @@ export const fragment = graphql`
           }
         }
         childVideoFfmpeg {
+          webm: transcode(
+            outputOptions: [
+              "-crf 35"
+              "-b:v 0"
+              "-row-mt 1"
+              "-deadline realtime"
+              "-cpu-used 5"
+            ]
+            maxWidth: 900
+            maxHeight: 480
+            fileExtension: "webm"
+            codec: "libvpx-vp9"
+            audioCodec: "libvorbis"
+          ) {
+            src
+            fileExtension
+          }
           mp4: transcode(
             codec: "libx264",
             audioCodec: "libvorbis",
@@ -166,7 +183,7 @@ export const fragment = graphql`
             maxHeight: 480,
             fileExtension: "mp4",
             options:[
-              ["-profile:v", "main"],
+              ["-profile:v", "baseline"],
               ["-pix_fmt", "yuv420p"]
             ],
             outputOptions: [

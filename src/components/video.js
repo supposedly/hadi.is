@@ -3,10 +3,6 @@ import styled, { keyframes } from "styled-components";
 
 import { FaVolumeOff, FaVolumeUp } from "react-icons/fa";
 
-import { createRFS } from "../utils/rfs.js";
-
-const rfs = createRFS({ rfsFactor: 30 });
-
 const Jump = keyframes`
   0% {
     transform: scale(0.5);
