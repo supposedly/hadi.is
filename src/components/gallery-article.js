@@ -246,6 +246,10 @@ const StyledMedia = ({
       // lol
       el = el.imageRef.current;
     }
+    if (!el) {
+      // again lol for Safari
+      return;
+    }
     const ratio = el.clientHeight / el.clientWidth;
     const viewportRatio = scaledViewport.height / scaledViewport.width;
     if (viewportRatio < 1) {
