@@ -19,7 +19,6 @@ const ImgContainer = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  z-index: -1;
   ${rfs.marginTop(`1rem`)}
 
   picture, .gatsby-image-wrapper {
