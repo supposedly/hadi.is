@@ -147,12 +147,13 @@ export default () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [word, setWord] = useState(rhymes[0]);
   const [modifier, setModifier] = useState(``);
-  const wipeModifier = (exact = isRhymeExact(word)) =>
-    wipe(setModifier, modifier, exact ? `` : `kinda `);
+  const wipeModifier = (exact = isRhymeExact(word)) => (
+    wipe(setModifier, modifier, exact ? `` : `kinda `)
+  );
   const replaceWord = () => {
     const newWord = randRhyme();
     replace(setWord, word, newWord);
-    wipeModifier(isRhymeExact(word));
+    wipeModifier(isRhymeExact(newWord));
   };
 
   // use-sound relies on a useEffect() hook with the url as a dependency,
