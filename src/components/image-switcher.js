@@ -20,6 +20,7 @@ const ImgContainer = styled.section`
   align-items: center;
   justify-content: space-between;
   ${rfs.marginTop(`1rem`)}
+  ${rfs(`300px`, `height`)};
 
   picture, .gatsby-image-wrapper {
     ${rfs(`500px`, `width`)}
@@ -117,7 +118,6 @@ export default class ImageSwitcher extends React.Component {
       <div className="center-children">
         <ImgContainer
           ref={this.containerRef}
-          style={{ maxHeight: "300px" /*, width: '500px', maxWidth: '500px'*/ }}
         >
           <FlankingArrows
             ref={[this.arrowRefs.left, this.arrowRefs.right]}
