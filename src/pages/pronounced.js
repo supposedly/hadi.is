@@ -18,7 +18,7 @@ const FatSoundButton = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 15px;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(${({ theme }) => theme.RGB.content || `0, 0, 0`}, 0.15);
   // background-image: radial-gradient(100% 50% at top left,
   //   rgba(255, 255, 255, .3) 50%,
   //   rgba(255, 255, 255, 0) 50%
@@ -31,7 +31,7 @@ const FatSoundButton = styled.button`
 
   &:hover,
   &:active {
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(${({ theme }) => theme.RGB.content || `0, 0, 0`}, 0.25);
   }
 
   &::after {
@@ -52,9 +52,8 @@ const FatSoundButton = styled.button`
 const P = styled.p`
   margin: 1rem;
   font-family: "Epilogue", sans-serif;
-  font-variation-settings: "wght" 200, "slnt" 10;
+  font-variation-settings: "wght" 200, "slnt" -12;
   font-weight: 200;
-  transform: skew(-10deg);
   ${rfs(`25px`)}
   line-height: 2;
 
@@ -62,17 +61,18 @@ const P = styled.p`
     background-color: transparent;
     font-size: inherit;
     font-family: inherit;
+    color: inherit;
     cursor: pointer;
     display: inline-block;
     padding: 0;
     border: none;
-    border-bottom: 1px solid black;
-    transition: border 150ms;
+    border-bottom: 1px solid var(--content-color);
+    transition: border-width 150ms, border-color var(--theme-transition-duration);
 
     &:focus,
     &:hover {
       outline: none;
-      border-bottom: 3px solid black;
+      border-bottom: 3px solid var(--content-color);
     }
   }
 `;

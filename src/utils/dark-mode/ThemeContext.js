@@ -59,6 +59,20 @@ const storage = local => ({
   }
 });
 
+function anyColorToRGB(document, color) {
+  if (document === undefined) {
+    return `0, 0, 0`;
+  }
+  const ctx = document.createElement(`canvas`).getContext(`2d`);
+  ctx.fillStyle = color;
+  const hex = ctx.fillStyle;
+  const num = parseInt(hex.slice(hex.startsWith(`#`)), 16);
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `${r}, ${g}, ${b}`;
+}
+
 export const ThemeProvider = ({ children, themes, transitionDuration }) => {
   const [theme, rawSetTheme] = useState(undefined);
   let [storageType, setStorageType] = useState(undefined);
@@ -71,14 +85,24 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
     );
   }, []);
 
+  const RGB = useMemo(() => {
+    const RGB = {};
+    Object.entries(themes[theme] || {}).forEach(([color, variant]) => {
+      RGB[color] = anyColorToRGB(document || undefined, variant);
+    });
+    return RGB;
+  }, [themes, theme]);
+
   // TODO: these should probably be in the useEffect thing
   const contextProps = useMemo(() => ({
     themeTransitionDuration: transitionDuration,
     theme: {
-      ...themes[theme],
       // not a huge fan of the capital initials,
       // but it'd be way grodier to pollute the color
       // namespace or (worse) add a namespacing level
+      // just for non-color stuff
+      ...themes[theme],
+      RGB,
       Name: theme,
       Is: name => name === theme,
       IsNot: name => name !== theme,
