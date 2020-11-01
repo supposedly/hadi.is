@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link, graphql } from "gatsby";
 import styled from "styled-components";
 
@@ -148,65 +148,72 @@ function noSlash(path) {
   return path.replace(/\/$/, ``);
 }
 
-export default ({ data }) => (
-  <Layout>
-    <section
-      ref={mainRef}
-      style={{ height: `inherit` }}
-      id="main"
-      className="center-children"
-    >
-      <div className="flex-main center-children" style={{ width: `100%` }}>
-        <ImageSwitcher
-          data={data}
-          alts={[`fancy fake signature`, `hadi`]}
-          prefix="img"
-        />
-        <Title text="this guy" after="⤴" />
-      </div>
-      <FatButton
-        as={NavButton}
-        id="show-links"
-        text="&amp;"
-        onClick={showLinks}
-      />
-    </section>
-    <LinksSection
-      ref={linksRef}
-      style={{ height: `inherit` }}
-      id="links"
-      className="center-children"
-    >
-      <div className="flex-main center-children">
-        <div className="big">
-          <Title punctuation space after="also" inline />
-          {` `}
-          <nav>
-            {
-              data.allSitePage.nodes
-                .filter(e => checkPath(e.path))
-                .map(e => (
-                  <Link key={e.id} to={noSlash(e.path)}>
-                    {fixPath(e.path)}
-                  </Link>
-                ))
-            }
-          </nav>
+export default ({ data }) => {
+  const sortedPageLinks = useMemo(() => (
+    [...data.allSitePage.nodes].sort(
+      // hardcoding the stuff-at-end thing why not
+      (a, b) => a.path > b.path && b.path !== `/stuff` ? 1 : -1
+    )
+      // may as well do everything else here too
+      .filter(e => checkPath(e.path))
+      .map(e => (
+        <Link key={e.id} to={noSlash(e.path)}>
+          {fixPath(e.path)}
+        </Link>
+      ))
+  ), [data.allSitePage.nodes]);
+  return (
+    <Layout>
+      <section
+        ref={mainRef}
+        style={{ height: `inherit` }}
+        id="main"
+        className="center-children"
+      >
+        <div className="flex-main center-children" style={{ width: `100%` }}>
+          <ImageSwitcher
+            data={data}
+            alts={[`fancy fake signature`, `hadi`]}
+            prefix="img"
+          />
+          <Title text="this guy" after="⤴" />
         </div>
-      </div>
-      <FatButton
-        as={NavButton}
-        id="show-main"
-        text={
-          <span role="img" aria-label="go back up">
-            👆
-          </span>
-        }
-        onClick={showMain}
-      />
-    </LinksSection>
-  </Layout>
-);
+        <FatButton
+          as={NavButton}
+          id="show-links"
+          text="&amp;"
+          onClick={showLinks}
+        />
+      </section>
+      <LinksSection
+        ref={linksRef}
+        style={{ height: `inherit` }}
+        id="links"
+        className="center-children"
+      >
+        <div className="flex-main center-children">
+          <div className="big">
+            <Title punctuation space after="also" inline />
+            {` `}
+            <nav>
+              {sortedPageLinks}
+            </nav>
+          </div>
+        </div>
+        <FatButton
+          as={NavButton}
+          id="show-main"
+          text={
+            <span role="img" aria-label="go back up">
+              👆
+            </span>
+          }
+          onClick={showMain}
+        />
+      </LinksSection>
+    </Layout>
+  );
+};
 
 export const query = graphql`
   query IndexQuery {
