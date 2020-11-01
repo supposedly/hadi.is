@@ -64,4 +64,4 @@ const DarkModeButton = ({ theme, setTheme, size }) => (
   </DarkModeButtonComponent>
 );
 
-export default ({ size = 30 }) => <ThemeToggler as={DarkModeButton} size={size} />;
+export default ({ size = 28 }) => <ThemeToggler as={DarkModeButton} size={size} />;

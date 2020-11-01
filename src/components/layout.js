@@ -97,7 +97,7 @@ const QuiccIcons = styled.nav`
   }
 `;
 
-export default function Layout({ children, title, literalTitle }) {
+export default function Layout({ children, title, literalTitle, iconSize = 30 }) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -138,10 +138,10 @@ export default function Layout({ children, title, literalTitle }) {
         {onHomepage ? (
           <>
             <Link title="portfolio" to="/stuff" className="local">
-              <FaFolderOpen size={32} />
+              <FaFolderOpen size={iconSize} />
             </Link>
             <Link title="blog" to="/writing" className="local">
-              <FaPen size={32} />
+              <FaPen size={iconSize} />
             </Link>
             {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
             {/* TODO: maybe url-encode the href */}
@@ -149,21 +149,21 @@ export default function Layout({ children, title, literalTitle }) {
               title="hі＠hоw.hadі.іs"
               href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
             >
-              <FaEnvelope size={32} />
+              <FaEnvelope size={iconSize} />
             </a>
             <a title="twitter" href="https://twitter.com/tarxini">
-              <FaTwitter size={32} />
+              <FaTwitter size={iconSize} />
             </a>
             <a title="linkedin" href="https://linkedin.com/in/hat">
-              <FaLinkedin size={32} />
+              <FaLinkedin size={iconSize} />
             </a>
             <a title="github" href="https://github.com/supposedly">
-              <FaGithub size={32} />
+              <FaGithub size={iconSize} />
             </a>
           </>
         ) : (
           <Link title="main page" to="/" className="no-skew local">
-            <FaHome size={34} />
+            <FaHome size={iconSize + 2} />
           </Link>
         )}
       </QuiccIcons>
