@@ -49,7 +49,7 @@ export default function SEO({ description, lang, meta, title }) {
       <meta name="twitter:description" content={metaDescription} />
       {meta.map(o => (
         <meta
-          key={o.name | o.property}
+          key={o.name || o.property}
           name={o.name}
           property={o.property}
           content={o.content}

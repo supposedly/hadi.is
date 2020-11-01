@@ -20,7 +20,7 @@ const ImgContainer = styled.section`
   align-items: center;
   justify-content: space-between;
   ${rfs.marginTop(`1rem`)}
-  ${rfs(`300px`, `height`)};
+  ${rfs(`300px`, `height`)}
 
   picture, .gatsby-image-wrapper {
     ${rfs(`500px`, `width`)}
