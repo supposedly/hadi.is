@@ -9,23 +9,25 @@ import React from "react";
 import Helmet from "react-helmet";
 import {
   FaHome,
+  FaPen,
   FaLinkedin,
   FaGithub,
   FaFolderOpen,
   FaEnvelope,
   FaTwitter,
-  FaMoon,
 } from "react-icons/fa";
-import { FiSun } from "react-icons/fi"; // the fontawesome sun is ugly
+
 import { useStaticQuery, graphql, Link } from "gatsby";
 import PropTypes from "prop-types";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-import rfs from "../utils/rfs.js";
-import { ThemeToggler } from "../utils/dark-mode/ThemeToggler";
+import DarkModeToggler from "./dark-mode-toggler";
 import SEO from "./seo";
+import rfs from "../utils/rfs.js";
+
 import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
 import "../styles/global.scss";
+
 
 const iconNavHeight = `39.33px`;
 
@@ -76,76 +78,24 @@ const QuiccIcons = styled.nav`
     &:not(.no-skew) {
       // pseudo-pseudo-random rotation
       &:nth-child(3n + 1) svg,
-      &:nth-child(3n-1) svg {
+      &:nth-child(3n - 1) svg {
         transform: rotate(-10deg);
       }
-      &:nth-child(3n) svg {
-        transform: rotate(3deg);
+      &:nth-child(2n) svg {
+        transform: rotate(5deg);
       }
-      &:nth-child(4n-2) svg {
+      &:nth-child(3n) svg {
+        transform: rotate(14deg);
+      }
+      &:nth-child(5n - 1) svg {
         transform: rotate(10deg);
       }
-      &:nth-child(4n + 1) svg {
-        transform: rotate(-8deg);
+      &:nth-child(5n + 1) svg {
+        transform: rotate(-12deg);
       }
     }
   }
 `;
-
-const Jump = keyframes`
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: none;
-  }
-`;
-
-const DarkModeButtonComponent = styled.button`
-  position: fixed;
-  top: 0;
-  right: 0;
-  ${rfs(`48px`, `width`)}
-  ${rfs(`48px`, `height`)}
-  margin-top: .5em;
-  ${rfs.marginRight(`.5rem`)}
-  z-index: 2;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-  color: var(--content-color);
-  transition: color --theme-transition-duration, opacity --theme-transition-duration;
-
-  @media only screen and (min-width: 700px) {
-    // something weird going on with the margin and quicc-icons
-    margin-top: 0;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus:not(:active) svg {
-    animation: ${Jump} 200ms;
-  }
-
-  &:not(:focus):not(:active) svg {
-    animation: ${Jump} 200ms;
-  }
-`;
-
-const DarkModeButton = ({ theme, setTheme }) => (
-  <DarkModeButtonComponent
-    theme={theme}
-    onClick={() => setTheme(theme.Name === `light` ? `dark` : `light`)}
-  >
-    {theme.Name === `light` ? (
-      <FaMoon size={30} />
-    ) : (
-      <FiSun size={30} />
-    )}
-  </DarkModeButtonComponent>
-);
 
 export default function Layout({ children, title, literalTitle }) {
   const data = useStaticQuery(graphql`
@@ -187,11 +137,11 @@ export default function Layout({ children, title, literalTitle }) {
       <QuiccIcons className={onHomepage ? `` : `invariable`}>
         {onHomepage ? (
           <>
-            {/* <Link title="blog" to="/blog">
-              <FaPencilAlt size={32} />
-            </Link> */}
             <Link title="portfolio" to="/stuff" className="local">
               <FaFolderOpen size={32} />
+            </Link>
+            <Link title="blog" to="/writing" className="local">
+              <FaPen size={32} />
             </Link>
             {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
             {/* TODO: maybe url-encode the href */}
@@ -217,7 +167,7 @@ export default function Layout({ children, title, literalTitle }) {
           </Link>
         )}
       </QuiccIcons>
-      <ThemeToggler as={DarkModeButton} />
+      <DarkModeToggler />
       {/* thanks Rapti for this paddingLeft solution, https://stackoverflow.com/a/7607206 */}
       <main style={{ paddingLeft: `calc(100vw - 100%)` }}>
         {children}
