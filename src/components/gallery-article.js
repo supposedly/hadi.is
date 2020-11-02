@@ -1,6 +1,7 @@
 // XXX: too much going on in this one file lol
 
 import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Link } from "gatsby";
 import PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
@@ -355,6 +356,7 @@ export default function GalleryArticle({
   );
   const components = useMemo(
     () => ({
+      Link,
       ArticleLink: ({ children, n: name, ...props }) => (
         <FakeLink
           onClick={() => { setArticle(name); }}

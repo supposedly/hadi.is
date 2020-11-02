@@ -25,7 +25,7 @@ export default ({ data }) => {
   }, [data]);
 
   return (
-    <Layout title="stuff">
+    <Layout title="stuff" /*showAllIcons*/>
       <header className="center-children">
         <Title text="stuff" />
         <Gallery articles={dataMap.current} />
@@ -82,6 +82,9 @@ export const query = graphql`
       ...ArticleAssets
     }
     lebnxyz: allFile(filter: { relativeDirectory: { eq: "lebnxyz" } }) {
+      ...ArticleAssets
+    }
+    hadiis: allFile(filter: { relativeDirectory: { eq: "hadi-is" }}) {
       ...ArticleAssets
     }
   }

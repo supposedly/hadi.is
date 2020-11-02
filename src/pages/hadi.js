@@ -52,7 +52,7 @@ const birthTime = new Date(2001, 9, 18).getTime();
 export default ({ data }) => {
   const age = new Date(Date.now() - birthTime).getUTCFullYear() - 1970;
   return (
-    <Layout title="Hadi">
+    <Layout title="Hadi" style={{ height: `unset` }}>
       {/* <MainImage as="div"></MainImage> */}
       <MainArticle>
         <Title inline text="hadi" />

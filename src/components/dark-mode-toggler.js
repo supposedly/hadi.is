@@ -43,11 +43,7 @@ const DarkModeButtonComponent = styled.button`
   }
 
   &:focus:not(:active) svg {
-    animation: ${Jump} 200ms;
-  }
-
-  &:not(:focus):not(:active) svg {
-    animation: ${Jump} 200ms;
+    animation: ${Jump} var(--theme-transition-duration);
   }
 `;
 

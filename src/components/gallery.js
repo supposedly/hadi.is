@@ -25,8 +25,8 @@ const ImgContainer = styled.section`
     --box-shadow-color: black;
     transition:
       box-shadow var(--theme-transition-duration),
-      margin-bottom 50ms,
-      margin-top 50ms;
+      margin-bottom 150ms,
+      margin-top 150ms;
     box-shadow: var(--box-shadow-color) 0 0 1.5vmin;
 
     &::after {
@@ -39,7 +39,7 @@ const ImgContainer = styled.section`
       bottom: 0;
       border: 0px solid var(--content-color);
       border-radius: 5px;
-      transition: border-color var(--theme-transition-duration);
+      transition: border-color var(--theme-transition-duration), border-width 50ms;
     }
   }
 

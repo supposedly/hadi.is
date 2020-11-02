@@ -29,6 +29,7 @@ import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
 import "../styles/global.scss";
 
 
+const HOME = ``;
 const iconNavHeight = `39.33px`;
 
 const IconSpaceholder = styled.div`
@@ -97,7 +98,7 @@ const QuiccIcons = styled.nav`
   }
 `;
 
-export default function Layout({ children, title, literalTitle, iconSize = 30 }) {
+export default function Layout({ children, title, literalTitle, style, showAllIcons = false, iconSize = 30 }) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -109,8 +110,10 @@ export default function Layout({ children, title, literalTitle, iconSize = 30 })
   `);
 
   let onHomepage = false;
-  if (title === ``) {
+  let originalTitle = title;
+  if (title === HOME) {
     onHomepage = true;
+    showAllIcons = true;
     title = data.site.siteMetadata.title;
   } else if (!literalTitle) {
     title = `Hadi is ${title}`.toLowerCase();
@@ -134,20 +137,29 @@ export default function Layout({ children, title, literalTitle, iconSize = 30 })
         `}</style>
       </Helmet>
       <IconSpaceholder />
-      <QuiccIcons className={onHomepage ? `` : `invariable`}>
-        {onHomepage ? (
+      <QuiccIcons className={showAllIcons ? `` : `invariable`}>
+        {!onHomepage && (
+          <Link title="main page" to="/" className="no-skew local">
+            <FaHome size={iconSize + 2} />
+          </Link>
+        )}
+        {showAllIcons && (
           <>
-            <Link title="portfolio" to="/stuff" className="local">
-              <FaFolderOpen size={iconSize} />
-            </Link>
-            <Link title="blog" to="/writing" className="local">
-              <FaPen size={iconSize} />
-            </Link>
+            {originalTitle !== `stuff` && (
+              <Link title="portfolio" to="/stuff" className="local">
+                <FaFolderOpen size={iconSize} />
+              </Link>
+            )}
+            {originalTitle !== `blog` && (
+              <Link title="blog" to="/writing" className="local">
+                <FaPen size={iconSize} />
+              </Link>
+            )}
             {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
             {/* TODO: maybe url-encode the href */}
             <a
               title="hі＠hоw.hadі.іs"
-              href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#105;&#64;&#104;&#111;&#119;&#46;&#104;&#97;&#100;&#105;&#46;&#105;&#115;"
+              href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;%68%69%40%68%6F%77%2E%68%61%64%69%2E%69%73"
             >
               <FaEnvelope size={iconSize} />
             </a>
@@ -161,15 +173,11 @@ export default function Layout({ children, title, literalTitle, iconSize = 30 })
               <FaGithub size={iconSize} />
             </a>
           </>
-        ) : (
-          <Link title="main page" to="/" className="no-skew local">
-            <FaHome size={iconSize + 2} />
-          </Link>
         )}
       </QuiccIcons>
       <DarkModeToggler />
       {/* thanks Rapti for this paddingLeft solution, https://stackoverflow.com/a/7607206 */}
-      <main style={{ paddingLeft: `calc(100vw - 100%)` }}>
+      <main style={{ paddingLeft: `calc(100vw - 100%)`, ...style }}>
         {children}
       </main>
       {/* <footer>
@@ -185,10 +193,14 @@ Layout.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.symbol]),
   literalTitle: PropTypes.bool,
+  style: PropTypes.object,
+  iconSize: PropTypes.number
 };
 
 Layout.defaultProps = {
   children: undefined,
   title: ``,
   literalTitle: false,
+  style: undefined,
+  iconSize: 30
 };
