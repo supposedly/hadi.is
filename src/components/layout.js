@@ -32,12 +32,12 @@ import "../styles/global.scss";
 const HOME = ``;
 const iconNavHeight = `39.33px`;
 
-const IconSpaceholder = styled.div`
+export const IconSpaceholder = styled.div`
   top: 0;
   height: ${iconNavHeight};
 `;
 
-const QuiccIcons = styled.nav`
+export const QuiccIcons = styled.nav`
   position: fixed;
   top: 0; // https://stackoverflow.com/a/38679996
   left: 0;
@@ -98,7 +98,14 @@ const QuiccIcons = styled.nav`
   }
 `;
 
-export default function Layout({ children, title, literalTitle, style, showAllIcons = false, iconSize = 30 }) {
+export default function Layout({
+  children,
+  title,
+  literalTitle,
+  style,
+  showAllIcons = false,
+  iconSize = 30
+}) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {

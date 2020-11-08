@@ -46,7 +46,7 @@ const Article = styled.article`
   }
 
   p {
-    line-height: 2;
+    line-height: 1.85;
   }
 
   .center-self {
@@ -64,10 +64,17 @@ const Article = styled.article`
   }
 `;
 
+const BuiltWith = styled.aside`
+  font-family: 'Noto Sans TC';
+  opacity: 0.5;
+  margin-top: 10px;
+  ${rfs(`16px`)}
+  text-align: center;
+`
+
 const BuiltWithList = styled.ul`
   display: inline;
   list-style-type: none;
-  font-size: 16px;
   margin: 0;
   padding: 0;
 `;
@@ -430,14 +437,7 @@ export default function GalleryArticle({
               />
             ))}
           </h2>
-          <aside
-            style={{
-              fontFamily: `'Noto Sans TC'`,
-              opacity: 0.5,
-              marginTop: `10px`,
-              fontSize: `16px`,
-            }}
-          >
+          <BuiltWith>
             <span>Built with{` `}</span>
             <BuiltWithList>
               {article.frontmatter.builtwith.map(({ name, libs }) => (
@@ -462,7 +462,7 @@ export default function GalleryArticle({
               ))}
             </BuiltWithList>
             <span>.</span>
-          </aside>
+          </BuiltWith>
         </header>
       ),
     }),
