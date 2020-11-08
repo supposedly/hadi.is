@@ -46,7 +46,7 @@ const Article = styled.article`
   }
 
   p {
-    line-height: 1.85;
+    line-height: 2;
   }
 
   .center-self {

@@ -157,11 +157,11 @@ export default function Layout({
                 <FaFolderOpen size={iconSize} />
               </Link>
             )}
-            {originalTitle !== `blog` && (
+            {/* {originalTitle !== `blog` && (
               <Link title="blog" to="/writing" className="local">
                 <FaPen size={iconSize} />
               </Link>
-            )}
+            )} */}
             {/* the title attr below has a fullwidth @ and a cyrillic o and i */}
             {/* TODO: maybe url-encode the href */}
             <a
