@@ -442,7 +442,7 @@ export default function GalleryArticle({
             <BuiltWithList>
               {article.frontmatter.builtwith.map(({ name, libs }) => (
                 <BuiltWithItem key={name}>
-                  <span style={{fontWeight: `bold`}}>{name}</span>
+                  <span style={{ fontWeight: 900 }}>{name}</span>
                   {libs && (
                     <>
                       {` `}

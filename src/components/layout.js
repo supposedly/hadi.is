@@ -25,7 +25,10 @@ import DarkModeToggler from "./dark-mode-toggler";
 import SEO from "./seo";
 import rfs from "../utils/rfs.js";
 
-import EpilogueWithSlant from "../assets/Epilogue[slnt,wght].woff2";
+import EpilogueWithSlant from "../assets/fonts/Epilogue[slnt,wght].woff2";
+import NotoSansTCLatin400 from "../assets/fonts/noto-sans-tc-v11-latin-regular.woff";
+import NotoSansTCLatin500 from "../assets/fonts/noto-sans-tc-v11-latin-500.woff";
+import NotoSansTCLatin900 from "../assets/fonts/noto-sans-tc-v11-latin-900.woff";
 import "../styles/global.scss";
 
 
@@ -133,13 +136,31 @@ export default function Layout({
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inconsolata:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
         <style>{`
           @font-face {
             font-family: Epilogue;
-            src: url(${EpilogueWithSlant}) format('woff2-variations');
+            src: url('${EpilogueWithSlant}') format('woff2-variations');
+          }
+          @font-face {
+            font-family: 'Noto Sans TC';
+            font-style: normal;
+            font-weight: 400;
+            src: url('${NotoSansTCLatin400}') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+          }
+          @font-face {
+            font-family: 'Noto Sans TC';
+            font-style: normal;
+            font-weight: 500;
+            src: url('${NotoSansTCLatin500}') format('woff');
+          }
+          @font-face {
+            font-family: 'Noto Sans TC';
+            font-style: normal;
+            font-weight: 900;
+            src: url('${NotoSansTCLatin900}') format('woff');
           }
         `}</style>
       </Helmet>
