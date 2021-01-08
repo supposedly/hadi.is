@@ -29,7 +29,13 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
-    `gatsby-transformer-ffmpeg`,
+    // gatsby-video is bad and pinned at gatsby-transformer-ffmpeg@0.3.3,
+    // but this project uses features/bugfixes from 0.3.8 or something
+    // so i use an alias (appending a "2") for the 0.3.8 one in order
+    // for npm's peer-dependency-checker thing not to throw a fit over
+    // me requesting gatsby-transformer-ffmpeg@^0.3.8 in package.json
+    // but gatsby-video requesting gatsby-transformer-ffmpeg@0.3.3
+    `gatsby-transformer-ffmpeg2`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-mdx`,
     `gatsby-plugin-sass`,

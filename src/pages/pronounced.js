@@ -52,8 +52,9 @@ const FatSoundButton = styled.button`
 const P = styled.p`
   margin: 1rem;
   font-family: "Epilogue", sans-serif;
-  font-variation-settings: "wght" 200, "slnt" -12;
-  font-weight: 200;
+  font-variation-settings: "wght" 200, "ital" 1;
+  font-style: italic;
+  font-weight: 200;  // firefox?
   ${rfs(`25px`)}
   line-height: 2;
 
@@ -61,6 +62,9 @@ const P = styled.p`
     background-color: transparent;
     font-size: inherit;
     font-family: inherit;
+    font-variation-settings: inherit;
+    font-style: inherit;
+    font-weight: inherit;
     color: inherit;
     cursor: pointer;
     display: inline-block;
