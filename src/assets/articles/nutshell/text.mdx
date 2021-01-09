@@ -31,24 +31,25 @@ repeat yourself, which makes it hard to keep track of everything going on in a m
 
 Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton.
 But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant...
-and, boy, does that not sound like a fun time! [So I wrote over three thousand lines of code instead.](https://xkcd.com/1319/)
+and, boy, does that not sound like a fun time. So I took the sensible way out:
+[I wrote over 3,000 lines of code instead.](https://xkcd.com/1319/)
 
-Long story short, it worked well enough, and over to the right is the very first rule I ever compiled with Nutshell: the
-[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model).
-(I don't have any practical use for it, but it's easy to model and it looks pretty cool.) And then, with a good 4 months of
-stop-and-start work, I managed to finish my Brainfuck rule! There it is at the very top of this page, running the following
+Long story short, it worked super well, and over to the right is the very first rule I ever compiled with Nutshell: the
+[Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model)!
+(I don't have any practical use for it, but it's easy to implement and it looks pretty cool.) And then, with a good 4 months of
+stop-and-start work, I managed to finish my Brainfuck rule. There it is at the very top of this page, running the following
 program that outputs the text `Hello, world!`:
 
 ```brainfuck
-++++++++[
-  >++++[
-    >++>+++>+++>+<<<<-
-  ]>+>+>->>+[
-    <
-  ]<-
-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
-
-
+++++++++
+  [>++++
+    [>++>+++>+++>+<<<<-]
+  >+>+>->>+
+    [<]
+  <-]
+>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
+```
+```brainfuck
 // EXPLANATION:
 // [all credit to User:Rdebath via https://esolangs.org/wiki/Brainfuck#Hello.2C_World.21]
 
