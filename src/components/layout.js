@@ -137,7 +137,7 @@ export default function Layout({
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;900&text=abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789%20()-#,.!⤴&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;900&text=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789%20%21.-()%23%2C%E2%A4%B4&display=swap"
           rel="stylesheet"
         />
       </Helmet>
