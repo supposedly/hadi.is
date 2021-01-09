@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "author": "github/supposedly",
   "dependencies": {
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
     "babel-plugin-styled-components": "^1.11.1",
     "ffmpeg-static": "^4.2.7",
     "ffprobe-static": "^3.0.0",
@@ -32,7 +34,9 @@
     "react-helmet": "^6.1.0",
     "react-highlight.js": "^1.0.7",
     "react-icons": "^3.10.0",
-    "styled-components": "^5.2.0",
+    "react-is": "^17.0.1",
+    "sass": "^1.32.2",
+    "styled-components": "^5.2.1",
     "use-sound": "^1.0.2"
   },
   "devDependencies": {
