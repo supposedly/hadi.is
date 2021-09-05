@@ -18,7 +18,7 @@ John Conway (RIP 2020) in the 1960s.
 
 Conway's Game of Life is awesome, and you can [look it up](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
 to find out more about how it works and why people like it. But it's not even the only CA there is!
-So Golly, the software from earlier, actually lets you explore all kinds of different ones
+Golly, the software from earlier, actually lets you explore all kinds of different ones
 with a sort of built-in programming language: you feed it a bunch of rules like "if a blue cell is
 surrounded by three yellow neighbors, it transitions into a yellow cell", and that translates into a whole
 cellular-automaton system of your own definition. And it's a comprehensive, complete language, so it lets you
@@ -31,13 +31,13 @@ repeat yourself, which makes it hard to keep track of everything going on in a m
 
 Personally, I had the idea one day to implement [Brainfuck](https://esolangs.org/wiki/Brainfuck) as a cellular automaton.
 But doing it in Golly's CA language would have me writing about a thousand lines of code by hand, most of them redundant...
-and, boy, does that not sound like a fun time. So I took the sensible way out:
-[I wrote over 3,000 lines of code instead.](https://xkcd.com/1319/)
+and, boy, does that not sound like a fun time. So I took the sensible way out by
+[writing over 3,000 lines of code instead.](https://xkcd.com/1319/)
 
-Long story short, it worked super well, and over to the right is the very first rule I ever compiled with Nutshell: the
+Long story short, it worked super well, and over to the right is the very first rule ever compiled with Nutshell: the
 [Biham–Middleton–Levine traffic model](https://en.wikipedia.org/wiki/Biham%E2%80%93Middleton%E2%80%93Levine_traffic_model)!
 (I don't have any practical use for it, but it's easy to implement and it looks pretty cool.) And then, with a good 4 months of
-stop-and-start work, I managed to finish my Brainfuck rule. There it is at the very top of this page, running the following
+stop-and-start work, I got Brainfuck up and running. There it is at the very top of this page, running the following
 program that outputs the text `Hello, world!`:
 
 ```brainfuck
