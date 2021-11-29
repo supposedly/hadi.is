@@ -108,7 +108,7 @@ export const ThemeProvider = ({ children, themes, transitionDuration }) => {
       IsNot: name => name !== theme,
       IsAny: names => names.includes(theme),
       Matches: check => check(theme),
-      Map: (map, defaultVal = ``) => map[theme] || defaultVal
+      Map: (map, defaultVal = ``) => map[theme] === undefined ? defaultVal : map[theme]  // two accesses yay
     },
     setTheme(newTheme) {
       const root = window.document.documentElement;

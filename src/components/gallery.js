@@ -22,12 +22,11 @@ const ImgContainer = styled.section`
     cursor: pointer;
     border-radius: 5px;
     margin: 4px;
-    --box-shadow-color: black;
     transition:
       box-shadow var(--theme-transition-duration),
       margin-bottom 150ms,
       margin-top 150ms;
-    box-shadow: var(--box-shadow-color) 0 0 1.5vmin;
+    box-shadow: black 0 0 5px ${({ theme }) => theme.Map({ dark: `2px` }, `0`)};
 
     &::after {
       content: '';
@@ -44,7 +43,6 @@ const ImgContainer = styled.section`
   }
 
   &.current .gatsby-image-wrapper {
-    ${({ theme }) => theme.Map({ dark: `--box-shadow-color: var(--content-color);` })}
     margin-bottom: 6px;
     margin-top: 2px;
 
@@ -56,7 +54,7 @@ const ImgContainer = styled.section`
       right: 0;
       top: 0;
       bottom: 0;
-      border: 2px solid var(--content-color);
+      border-width: 2px;
       border-radius: 5px;
     }
   }

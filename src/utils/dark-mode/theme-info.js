@@ -1,6 +1,6 @@
 export const themes = {
   light: {
-    bg: `white`,
+    bg: `whitesmoke`,
     content: `black`
   },
   dark: {

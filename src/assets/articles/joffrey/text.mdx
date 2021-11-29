@@ -14,24 +14,26 @@ from joffrey import CLI, Group
 
 cli = CLI('Quick demo program')
 # CLI.__setattr__() on Group objects is special-cased slightly
-cli.sc = Group(XOR=0)  # 0 is just an identifier; it can be anything
+cli.sc = Group(XOR=0)
+# that 0 can be anything at all; the important thing is for other objects to use
+# the same value for XOR if they want to be XOR'd against this one
 
 
 @cli.arg()
 def name(name):
-    """Args, positional, are parsed in the order they're added in"""
+    """Args, positional, are parsed in the order they're defined in"""
     return name
 
 @cli.sc.clump(AND='blah')
 @cli.sc.flag(short='S')
 def scream(text):
-    """I have no mouth and I must ... yeah"""
+    """This is a flag, and its function gets called whenever it's encountered in input"""
     return text.upper()
 
 @cli.sc.clump(AND='blah')  # this flag and `scream` *must* appear together (same AND)
 @cli.sc.flag('verbosity', namespace={'count': 0})
 def verbose(nsp):
-    """This does nothing but it shows namespaces (which are always passed as the first arg)"""
+    """This flag does nothing, but it shows how namespaces work"""
     if nsp.count < 3:
         nsp.count += 1
     return nsp.count
@@ -48,7 +50,7 @@ All there is to it, really. `AND` is "this flag/argument *(flargument)* needs th
 "this flargument isn't on speaking terms with these other ones."
 
 ```py
->>> cli.parse('foo -S "test test" -vvvv')
+>>> cli.parse('foo -S "test test" -vvvv')  # input will be shlex.split if given as a string (defaults to sys.argv though)
 JoffreyNamespace(name='foo', scream='TEST TEST', verbosity=3)
 >>> 
 >>> cli.parse('foo -v')
@@ -59,7 +61,7 @@ Expected all of the following flags/arguments: 'scream', 'verbosity'
 >>> cli.parse('foo --add 1 6')
 JoffreyNamespace(addition=7, name='foo')
 >>> 
->>> cli.parse('foo -a')  # same as `foo --add`
+>>> cli.parse('foo -a')  # same as `foo --add`; default short alias is first letter of name (`short=None` removes entirely)
 JoffreyNamespace(addition=4, name='foo')
 >>> 
 >>> cli.parse('foo -a 1 2 -S "this is gonna error" -v')
@@ -71,5 +73,5 @@ Expected no more than one of the following flags/arguments: 'addition', ['scream
 ```
 
 I'm not the first to come up with that by a long shot, but it turns out it's a pretty useful way of thinking about a lot
-of things. An iteration of the same idea is informing a huge part of the dictionary at
-<ArticleLink n="lebnxyz">lebn.xyz</ArticleLink>!
+of things. An iteration of the same idea is informing a huge part of the dictionary
+at <ArticleLink n="lebnxyz">lebn.xyz</ArticleLink>.
