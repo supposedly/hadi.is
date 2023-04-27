@@ -47,10 +47,7 @@ const MainImage = styled(Image)`
   ${rfs(`500px`, `width`)}
 `;
 
-const birthTime = new Date(2001, 9, 18).getTime();
-
 export default ({ data }) => {
-  const age = new Date(Date.now() - birthTime).getUTCFullYear() - 1970;
   return (
     <Layout title="Hadi" style={{ height: `unset` }}>
       {/* <MainImage as="div"></MainImage> */}
@@ -58,10 +55,10 @@ export default ({ data }) => {
         <Title inline text="hadi" />
         <MainImage
           fluid={data.file.childImageSharp.fluid}
-          alt="Young Hadi at Disneyland, striking a pose and wearing a shirt that says 'I make being COOL look EASY'."
+          alt=""
         ></MainImage>
         <P>
-          I'm Hadi! Thanks for checking my site out. I'm {age}, living in the
+          I'm Hadi! Thanks for checking my site out. I'm living in the
           Seattle area, and my professional and personal interests include
           software development, linguistics, and animation.
         </P>
